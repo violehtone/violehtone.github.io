@@ -3,7 +3,7 @@ html {
     align-content: center;
     position: absolute;
     width: 100%;
-    background: rgb(236, 236, 236);
+    background: rgb(245, 245, 245);
 }
 
 img {
@@ -25,6 +25,11 @@ a.navbar-button {
     text-decoration: none;
 }
 
+.gamedescription {
+    padding: 2px;
+    margin-bottom: 10px;
+}
+
 a:hover {
     border-bottom: 3px solid yellowgreen;
     color: rgb(126, 126, 126);
@@ -41,11 +46,7 @@ h1 {
     font-size: 50px;
     padding: 0.1rem;
     margin: 0;
-}
-
-.mainTitle {
-    background: greenyellow;
-    padding: 1.5rem;
+    color: yellowgreen;
 }
 
 nav.navbar {
