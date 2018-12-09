@@ -1,59 +1,87 @@
-html {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    align-content: center;
-    position: absolute;
+html, body {
+    height: 100%;
     width: 100%;
-    background: rgb(245, 245, 245);
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-img {
-    max-width: 200px;
+.menu-mobile {
+    justify-content: center;
+    align-items: center;
+    background-color: #07a1a7;
+    height: 3rem;
+    display: none;
 }
 
-.siteContent {
-    margin: 0 auto;
-    padding-bottom: 3rem;
-    max-width: 100%;
+.menu-mobile a {
+    display: flex;
+    flex: 9;
+    align-items: center;
+    font-size: 20;
     text-align: center;
 }
 
-a.navbar-button {
-    background: black;
+.menu-pc {
+    display: flex;
+    justify-content: space-around;
+    background-color: #07a1a7;
+    text-align: center;
+    height: 3rem;
+}
+
+a {
     color: white;
-    padding: 7px 16px;
-    display: inline-block;
     text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    margin: 0px 2px 0px 2px;
+    padding: 0px 2px 0px 2px;
 }
 
-.gamedescription {
-    padding: 2px;
-    margin-bottom: 10px;
-}
-
-a:hover {
-    border-bottom: 3px solid yellowgreen;
-    color: rgb(126, 126, 126);
-    padding: 7px 16px;
+.menu-pc a:hover {
+    color: #383838;
 }
 
 a:active {
-    border-bottom: 3px solid yellowgreen;
-    color: rgb(126, 126, 126);
-    padding: 7px 16px;
+    color: black;
+
+}
+
+label {
+    color: white;
+    margin-right: 10px;
+    font-size: 20px;
+    display: none;
+}
+
+#toggle {
+    display: none;
+}
+
+label:hover {
+    color: #000000;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+    label {
+        display: block;
+    }
+    .menu-mobile {
+        display: flex;
+    }
+    .menu-pc {
+        display: none;
+    }
+    #toggle:checked + .menu-pc {
+        display: block;
+    }
+}
+
+.content {
+    text-align: center;
 }
 
 h1 {
-    font-size: 50px;
-    padding: 0.1rem;
-    margin: 0;
-    color: yellowgreen;
-}
-
-nav.navbar {
-    background: black;
-    padding: 1rem;
-    align-items: center;
-    align-content: center;
-    text-align: center;
-    color: yellowgreen;
+    margin-top: 20px;
 }

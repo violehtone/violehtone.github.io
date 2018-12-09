@@ -4,35 +4,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="index.css">
 <body>
-        <nav class="navbar">
-                <h1> Lebasoft </h1>
-                <a href="#home" class="navbar-button">Home</a>
-                <a href="#games" class="navbar-button">Games</a>
-                <a href="#about" class="navbar-button">About</a>
-        </nav>
-        <div class="siteContent" >
-                <div>
-                        <h2 id="games"> Games </h2>
-                        <p> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.   </p>
-                        <div class="gamedescription">
-                                <h4> Dog Vs. Meteorites</h4>
-                                <img src="dogvsmeteoriteIcon.png" alt="dogvsmeteoritesicon">
-                                <p> Awesome dog game, 5/5</p>
-                        </div>
-                        <div class="gamedescription">
-                                <h4> Duck or Die</h4>
-                                <img src="gameicon.png" alt="duckordie">
-                                <p> Hunting game</p>
-                        </div>
-                        <h2 id="about"> About </h2>
-                        <p> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                        </p>
-                        <img src="ville.jpeg" alt="ville">
-                        <p> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+        <nav>
+                <div class="menu-mobile">
+                        <a href="#"><i class="fab fa-apple"></i></a>
+                        <label for="toggle">&#9776;</label>
                 </div>
-        </div>
-
-<!-- Content will go here -->
-
+                <input type="checkbox" id="toggle">
+                <div class="menu-pc">
+                        <a href="#"><i class="fab fa-apple"></i></a>
+                        <a href="#">Koti</a>
+                        <a href="#">Valmennus</a>
+                        <a href="#">Asiakastarinat</a>
+                        <a href="#">Yhteydenotto</a>
+                        <a href="#"><i class="fas fa-search"></i></a>
+                        <a href="#" class="nav-cart"><i class="fas fa-shopping-cart"></i></a>
+                </div>
+        </nav>
+        <div class="content">
+                <h1> Ville Vähäkoitti</h1>
+                <p> Olen liikunta-alan yrittäjä, jonka työ ja intohimo ovat valmentaa ihmisiä kohti parempaa kokonaisuutta.
+                        Erityisosaamisiani ovat kehon monipuolinen liikuttaminen, taitojen opettaminen sekä ravintovalmennus,
+                        jossa keskitytään tapojen opetteluun tuloshakuisuuden sijaan. Oma liikuntataustani sisältää elämän ajalta
+                        niin jalkapalloa, futsalia, kiipeilyä, voimistelua kuin voimaharjoittelua. Kilpaurheilussa pelaan 6. kautta
+                        Futsal-Liigaa ja olen myös muutamaan otteeseen saanut kunnian edustaa Suomen maajoukkuetta.
+                        
+                        Koulutukseltani olen Liikuntatieteiden maisteri (LitM), jonka lisäksi olen kiertänyt Suomea ja Eurooppaa
+                        oppiakseni alansa parhailta aiheista, joissa haluan ihmisiä valmentaa. Toimin valmentajana
+                        pääkaupunkiseudulla, sekä tarjoan myös verkkovalmennusta ravitsemuksesta. Valmennusfilosofiani
+                        perustana ovat, että asioita katsotaan kokonaisuutena, joka päivä voi olla parempi ja että perusteet pitää
+                        tehdä hyvin, aina.
+                        
+                        Elän niin kuin valmennan. Etsin jatkuvasti uutta tietoa ja kokeilen uusia asioita, jotka auttaisivat minua
+                        olemaan vähän parempi kuin eilen. Tätä tietoa yritän siirtää valmennuksiini. Lupaukseni on, että olen
+                        rehellinen valmennettavilleni, tarjoan parasta käytettävissäni olevaa tietoa ja vien heitä eteenpäin terveys
+                        ja kokonaisuus edellä.
+                </p>
+       </div>
 </body>
 </html>
