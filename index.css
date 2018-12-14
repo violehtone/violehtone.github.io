@@ -2,7 +2,7 @@ html, body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding-bottom: 50px;
-    background-image: linear-gradient(to bottom, #eeeeee, white);
+    background-color: #eeeeee;
 }
 
 .menu-mobile {
@@ -85,6 +85,15 @@ label:hover {
 .content {
     text-align: center;
     padding: 0% 15%;
+    background-color: #eeeeee;
+}
+
+.block {
+    background: white;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: white;
+    border-style: solid;
 }
 
 h1 {
