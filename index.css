@@ -29,7 +29,6 @@ html, body {
 
 p {
     text-align: center;
-    padding: 0% 15%;
 }
 
 a {
@@ -128,6 +127,9 @@ img {
     margin: 0px;
     padding: 0px;
     position: relative;
+    width: auto ;
+    max-width: 50% ;
+    height: auto ;
 }
 
 #slider-image-1:target ~ .image-holder
