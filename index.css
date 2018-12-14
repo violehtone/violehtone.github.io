@@ -2,13 +2,14 @@ html, body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     padding-bottom: 50px;
+    background-image: linear-gradient(to bottom, #eeeeee, white);
 }
 
 .menu-mobile {
     justify-content: center;
     align-items: center;
     background-color: #07a1a7;
-    height: 3rem;
+    height: 4rem;
     display: none;
 }
 
