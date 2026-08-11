@@ -536,8 +536,7 @@ const CONDITIONS = [
   lead:"Vertailukohtana terveen imeväisikäisen sydän. Nelilokeroinen pumppu: oikea puoli lähettää vähähappisen veren keuhkoihin matalalla paineella, vasen puoli hapekkaan veren muualle elimistöön. Tämän sivun paineet ja mitat ovat imeväisikäisen mittakaavassa, eivät aikuisen.",
   chips:["Syke <b>120–150/min</b>","LV <b>85/6</b>","Ao <b>85/48</b>","LA <b>7</b>","RV <b>25/4</b>"],
   mech:[
-    "<b>Sydämen paikka ja peilikuva.</b> Kuva on piirretty tavanomaiseen asentoon, jossa kärki osoittaa vasemmalle. Jos sydän osoittaa oikealle (dextrocardia), ratkaisevaa on elinten sijainti: aito peilikuva syntyy vain, kun myös vatsaontelon elimet ovat peilikuvana (situs inversus). Tavanomaisella elinsijainnilla (situs solitus) sydän on kääntynyt oikealle ilman että sen sisäinen rakenne on peilattu — tässä yhdistelmässä rakennepoikkeavuuksia esiintyy usein, joten kaikukuvauksessa käydään segmentit järjestyksessä läpi.",
-    "<b>Segmenttien läpikäynti.</b> Ensin määritetään eteisten sijainti korvakkeiden muodosta, sitten se, kumpi kammio on kumpi, ja lopuksi mihin suuret suonet lähtevät. Kun eteiset yhdistyvät oikeisiin kammioihin ja kammiot oikeisiin suoniin (AV- ja VA-konkordanssi), veri kulkee normaalia reittiä sydämen asennosta riippumatta.",
+    "<b>Sydämen paikka ja peilikuva.</b> Kuva on piirretty tavanomaiseen asentoon, jossa kärki osoittaa vasemmalle. Jos sydän osoittaa oikealle (dextrocardia), ratkaisevaa on elinten sijainti: aito peilikuva syntyy vain, kun myös vatsaontelon elimet ovat peilikuvana (situs inversus). Tavanomaisella elinsijainnilla (situs solitus) sydän on kääntynyt oikealle ilman että sen sisäinen rakenne on peilattu — tässä yhdistelmässä rakennepoikkeavuuksia esiintyy usein, joten kaikukuvauksessa käydään segmentit järjestyksessä läpi: eteisten sijainti korvakkeiden muodosta, kumpi kammio on kumpi, ja mihin suuret suonet lähtevät. Kun eteiset yhdistyvät oikeisiin kammioihin ja kammiot oikeisiin suoniin (AV- ja VA-konkordanssi), veri kulkee normaalia reittiä sydämen asennosta riippumatta.",
     "<b>Sykli.</b> Eteissystole täydentää kammion täytön → isovolyyminen supistuminen → ejektio, kun kammiopaine ylittää valtimopaineen → isovolyyminen relaksaatio → nopea täyttyminen → diastasis. Vauvan nopealla sykkeellä kierros kestää alle puoli sekuntia, ja lyhyt diastole korostaa kaikkia täyttymisen esteitä.",
     "<b>Läpät.</b> Eteis-kammioläpät ovat auki vain diastolessa, taskuläpät vain systolessa. Molemmat parit eivät koskaan ole auki yhtä aikaa.",
     "<b>Syntymän jälkeinen muutos.</b> Sikiöaikana oikea kammio työskentelee yhtä suurella paineella kuin vasen ja keuhkoverisuonten vastus on korkea. Syntymän jälkeen vastus laskee ensin nopeasti ja sitten vähitellen ensimmäisten kuukausien ajan, oikean kammion seinämä ohenee ja valtimotiehyt sulkeutuu. Siksi osa synnynnäisistä vioista paljastuu vasta ensimmäisinä elinviikkoina.",
@@ -558,21 +557,20 @@ const CONDITIONS = [
   sounds:[{t:0.13,l:"S1"},{t:0.47,l:"S2"}], murmurs:[]
 },
 {
-  id:"koarktaatio", name:"Aortan koarktaatio, korjattu", tag:"aortta", latin:"coarctatio aortae, status post correctionem",
-  lead:"Aortan paikallinen ahtauma, tyypillisesti heti vasemman solisvaltimon jälkeen valtimotiehyen alueella. Vastasyntyneellä herkin kaikulöydös on se, että laskevan aortan virtaus jatkuu diastoleen: veri joutuu puristumaan ahtauman läpi koko sydänsyklin ajan. Tavallisin korjaustapa vauvaiässä on laajennettu pääte-päätteeseen-liitos, jossa kapea kohta poistetaan ja päät yhdistetään viistosti niin, että liitos ulottuu kaaren alapinnalle asti. Kuvassa ahtauma näkyy sellaisena kuin se on ennen korjausta.",
-  chips:["Ahtauma <b>valtimotiehyen kohdalla</b>","Ei vaadi <b>sydän-keuhkokonetta</b>","Uusintaahtauma <b>1. vuonna</b>","Verenpaineseuranta <b>aikuisikään</b>"],
+  id:"koarktaatio", name:"Aortan koarktaatio", tag:"aortta", latin:"coarctatio aortae",
+  lead:"Aortan paikallinen ahtauma, tyypillisesti heti vasemman solisvaltimon jälkeen valtimotiehyen alueella. Vastasyntyneellä herkin kaikulöydös on se, että laskevan aortan virtaus jatkuu diastoleen: veri joutuu puristumaan ahtauman läpi koko sydänsyklin ajan. Vaikeusaste vaihtelee lievästä kaventumasta ahtaumaan, joka uhkaa alavartalon verenkiertoa heti valtimotiehyen sulkeuduttua.",
+  chips:["Ahtauma <b>valtimotiehyen kohdalla</b>","Yläraajoissa <b>korkea paine</b>","Alaraajoissa <b>matala paine</b>","Vaikeusaste <b>vaihtelee</b>"],
   mech:[
     "<b>Este ulosvirtaukselle.</b> Ahtauma on kiinteä vastus vasemman kammion tiellä: kammio joutuu tuottamaan korkeamman paineen samalle verimäärälle, ja paine on ahtauman yläpuolella korkea, alapuolella matala.",
     "<b>Valtimotiehyt peittää löydöksen aluksi.</b> Niin kauan kuin tiehyt on auki, veri pääsee sen kautta ahtauman ohi ja tilanne voi vaikuttaa rauhalliselta. Koarktaatio paljastuu usein vasta tiehyen sulkeutuessa ensimmäisten elinpäivien tai -viikkojen aikana. Jos vastasyntynyt on tästä syystä huonokuntoinen, tiehyt pidetään auki prostaglandiini-infuusiolla, kunnes korjaus voidaan tehdä.",
     "<b>Vastasyntyneelle ei ehdi kehittyä kiertoteitä.</b> Aikuisella koarktaatio löytyy usein vasta vuosien päästä verenpainetautina, koska kylkivälivaltimot ovat ehtineet laajentua ohitusreitiksi. Vauvalla niitä ei ole — siksi ahtauma oireilee nopeasti ja siksi tässä kuvassa ei näytetä kollateraaleja.",
-    "<b>Varhainen korjaus estää hypertrofian.</b> Jos ahtauma löytyy ja korjataan varhain, vasemman kammion seinämä ei ehdi paksuuntua painekuorman takia vaan seinämävahvuudet pysyvät iänmukaisina.",
-    "<b>Korjauksen jälkeen.</b> Onnistuneen korjauksen merkki on laminaarinen virtaus kaaren läpi ja se, että laskevan aortan virtaus rajoittuu jälleen systoleen. Diastoleen jatkuvan virtauksen häviäminen on juuri se muutos, jota korjauksella haetaan."
+    "<b>Seinämä paksuuntuu vasta ajan myötä.</b> Jos este jää paikalleen, vasemman kammion seinämä alkaa paksuuntua painekuorman takia. Vastasyntyneellä seinämävahvuudet ovat usein vielä iänmukaiset, koska kuormitus on kestänyt vasta vähän aikaa — siksi kuvassa kammio on piirretty normaalina."
   ],
   find:[
-    "<b>Ennen korjausta.</b> Kapea istmusalue ja laskevan aortan diastoleen jatkuva virtaus. Kliinisesti etsitään heikkoja reisipulsseja ja ylä- ja alaraajan painegradienttia — mittaus tehdään <b>oikeasta käsivarresta</b>, koska vasen solisvaltimo voi lähteä ahtauman kohdalta tai sen alapuolelta.",
+    "<b>Miten löydös todetaan.</b> Kaikukuvauksessa kapea istmusalue ja laskevan aortan diastoleen jatkuva virtaus. Kliinisesti etsitään heikkoja reisipulsseja ja ylä- ja alaraajan painegradienttia — mittaus tehdään <b>oikeasta käsivarresta</b>, koska vasen solisvaltimo voi lähteä ahtauman kohdalta tai sen alapuolelta.",
     "<b>Vastasyntyneiden pulssioksimetriaseulonta</b> voi antaa vihjeen: oikean käden ja jalan happikyllästeisyyden ero syntyy, kun avoin valtimotiehyt syöttää alavartaloa. Normaali seulontatulos ei kuitenkaan sulje koarktaatiota pois.",
-    "<b>Korjauksen jälkeen seurataan</b> uusintaahtaumaa, joka on tavallisin ensimmäisen vuoden aikana ja erityisesti vauvana leikatuilla. Sitä seurataan kaikukuvauksen virtausprofiililla ja raajapaine-erolla.",
-    "<b>Pitkäaikaisseuranta</b> jatkuu aikuisikään: jäännösverenpainetauti on tavallinen myös onnistuneen korjauksen jälkeen, samoin aortan seuranta.",
+    "<b>Korjauksen onnistumisen merkki</b> on laminaarinen virtaus kaaren läpi ja se, että laskevan aortan virtaus rajoittuu jälleen systoleen — diastoleen jatkuva virtaus häviää.",
+    "<b>Korjauksen jälkeen seurataan</b> uusintaahtaumaa, joka on tavallisin ensimmäisen vuoden aikana ja erityisesti vauvana leikatuilla, sekä verenpainetta aikuisikään asti: jäännösverenpainetauti on tavallinen myös onnistuneen korjauksen jälkeen.",
     "Koarktaatio kuuluu vasemman puolen ahtauttavien vikojen ryhmään, joten aorttaläppä, hiippaläppä ja ulosvirtauskanava käydään aina läpi samalla."
   ],
   care:[
@@ -583,7 +581,7 @@ const CONDITIONS = [
   shape:{lv:"normal",rv:"normal",septum:"normal",la:"normal",myo:"normal",coarct:true,inset:"aortic3"},
   valve:{mv:1,av:1,mvThick:6,avThick:6},
   flow:{mv:1,av:1,desc:.45,coll:0},
-  focus:{x:790,y:332,r:54,label:"AHTAUMA (KORJATTU)"},
+  focus:{x:790,y:332,r:54,label:"AHTAUMA"},
   press:{lv:{sys:110,edp:10},ao:{sys:105,dia:60},la:{mean:9,a:12,v:11,yBlunt:0},
          distal:{sys:75,dia:58},rv:{sys:28,edp:5},pa:{sys:28,dia:14},show:["lv","ao","distal","la"]},
   sounds:[{t:0.13,l:"S1"},{t:0.47,l:"S2"}],
@@ -683,7 +681,7 @@ const CONDITIONS = [
 },
 {
   id:"bav", name:"Bikuspinen aorttaläppä", tag:"aorttaläppä", latin:"valva aortae bicuspidalis",
-  lead:"Aorttaläpässä on kolmen purjeen sijasta kaksi, tavallisimmin kahden purjeen yhteenkasvamisen tuloksena. Se on yleisin synnynnäinen sydänvika, ja lapsuudessa läppä voi toimia pitkään hyvin: ulosvirtauskanava on avoin ja nousevassa aortassa on korkeintaan lievästi kiihtynyt virtaus. Kyse on siis ennen kaikkea seurattavasta rakenteellisesta löydöksestä.",
+  lead:"Aorttaläpässä on kolmen purjeen sijasta kaksi, tavallisimmin kahden purjeen yhteenkasvamisen tuloksena. Se on yleisin synnynnäinen sydänvika, ja vaikeusaste vaihtelee laidasta laitaan: osalla läppä toimii koko lapsuuden moitteettomasti, osalla se on ahtautunut jo vastasyntyneenä niin että toimenpide tarvitaan heti. Kuvassa on lievä muoto, jossa läppä avautuu hyvin ja nousevassa aortassa on vain lievästi kiihtynyt virtaus.",
   chips:["Väestössä <b>0,5–2 %</b>","Voi toimia <b>pitkään hyvin</b>","Ahtautuminen <b>aikuisiässä</b>","Liittyy <b>koarktaatioon</b>"],
   mech:[
     "<b>Epäsymmetrinen aukeaminen.</b> Kaksi purjetta taipuvat eri tavalla kuin kolme, jolloin virtaus muuttuu pyörteiseksi ja purjeisiin kohdistuu jatkuvaa mekaanista rasitusta.",
@@ -713,13 +711,13 @@ const CONDITIONS = [
 },
 {
   id:"rvh", name:"Oikean kammion hypertrofia", tag:"oikea kammio", latin:"hypertrophia ventriculi dextri",
-  lead:"Oikean kammion seinämä on paksuuntunut vastauksena krooniseen painekuormaan. Vauvalla syy löytyy usein sydämen vasemmalta puolelta: hiippaläpän ahtauma nostaa vasemman eteisen ja keuhkolaskimoiden painetta, mikä nostaa keuhkoverenkierron painetta ja kuormittaa oikeaa kammiota.",
-  chips:["RV-paine = <b>TR-gradientti + RA-paine</b>","TAPSE = <b>pitkittäissupistus</b>","Syy usein <b>vasemmalla puolella</b>"],
+  lead:"Oikean kammion seinämä on paksuuntunut vastauksena krooniseen painekuormaan. Vauvalla tavallisimpia syitä ovat keuhkoverenkierron kohonnut paine, keuhkovaltimoläpän tai ulosvirtauskanavan ahtauma, suuret oikovirtaukset sekä sydämen vasemman puolen esteet, jotka nostavat painetta taaksepäin keuhkoihin. Hypertrofia ei ole itsenäinen sairaus vaan seuraus, joten hoito kohdistuu aina syyhyn.",
+  chips:["RV-paine = <b>TR-gradientti + RA-paine</b>","TAPSE = <b>pitkittäissupistus</b>","Hoito <b>kohdistuu syyhyn</b>"],
   mech:[
     "<b>Vastasyntyneen oikea kammio on jo valmiiksi paksu.</b> Sikiöaikana se työskentelee samalla paineella kuin vasen. Syntymän jälkeen keuhkoverisuonten vastus laskee ja seinämän kuuluisi ohentua ensimmäisten kuukausien aikana. Jos keuhkopaine pysyy korkeana, tämä normaali oheneminen jää tapahtumatta.",
     "<b>Paksuuntuminen auttaa aluksi.</b> Paksumpi seinämä pienentää seinämäjännitystä ja pitää iskutilavuuden yllä korkeaakin painetta vastaan.",
     "<b>Sitten se alkaa haitata.</b> Paksu kammio on jäykkä: täyttyminen heikkenee ja laskimopaine nousee. Alaonttolaskimon hengitysvariaatio kertoo, ovatko täyttöpaineet vielä matalat.",
-    "<b>Väliseinä siirtyy.</b> Kun oikean kammion paine nousee riittävästi, kammioväliseinä litistyy vasemmalle ja vasen kammio muuttuu poikkileikkauksessa D-kirjaimen muotoiseksi. Se haittaa täyttymistä kammiossa, joka voi jo valmiiksi saada liian vähän verta hiippaläpän läpi.",
+    "<b>Väliseinä siirtyy.</b> Kun oikean kammion paine nousee riittävästi, kammioväliseinä litistyy vasemmalle ja vasen kammio muuttuu poikkileikkauksessa D-kirjaimen muotoiseksi. Se heikentää vasemman kammion täyttymistä, joka voi olla jo muutenkin rajoittunut.",
     "<b>Miten paine päätellään ilman katetria.</b> Trikuspidaalivuodon huippunopeudesta lasketaan paine-ero oikean kammion ja oikean eteisen välillä; kun siihen lisätään arvioitu eteispaine, saadaan oikean kammion systolinen paine. Se vastaa keuhkovaltimon painetta vain, jos ulosvirtauskanavassa ja keuhkovaltimoläpässä ei ole ahtaumaa — siksi ne tarkistetaan aina samalla. Arvio on epäluotettava, jos vuotoa on liian vähän mitattavaksi."
   ],
   find:[
@@ -906,7 +904,7 @@ const CMP_ROWS = [
  ["ven","Laskimoanatomia","yksi yläonttolaskimo"]
 ];
 const CMP = {
- koarktaatio:{ao:"paikallinen ahtauma, korjattu; kaari sen jälkeen avoin", lvWall:"pysyy normaalina, jos korjaus tehdään varhain"},
+ koarktaatio:{ao:"paikallinen ahtauma tavallisesti vas. solisvaltimon jälkeen", lvWall:"vastasyntyneellä usein vielä normaali; paksuuntuu jos este jatkuu"},
  mitraalistenoosi:{mv:"pieni tai poikkeavarakenteinen läppä, keskigradientti koholla", la:"laajentunut, väliseinä pullottaa oikealle", rvWall:"paksuuntunut (seuraus)"},
  lsvc:{ven:"kaksi yläonttolaskimoa, laaja sepelpoukama"},
  lvnc:{lvCav:"voimakkaasti trabekuloitunut, syvät kolot", lvWall:"sydänlihaksen rakenne poikkeava"},
@@ -918,9 +916,9 @@ const INTERACTIONS = [
  {need:["mitraalistenoosi","lvnc"], t:"<b>Kaksi estettä samalla reitillä.</b> Sisäänvirtaus ei kapene vain hiippaläpässä: voimakkaasti trabekuloituneessa kammiossa syvät lihaspalkit pilkkovat virtauksen useaksi suihkuksi heti läpän jälkeen. Silloin kyse ei ole pelkästä läppäviasta vaan koko sisäänvirtausreitistä — ja siksi tarkka anatomia halutaan nähdä ruokatorven kautta tehtävällä kaikukuvauksella ennen leikkauspäätöstä."},
  {need:["lsvc","mitraalistenoosi"], t:"<b>Anatomia vaikuttaa hoitoon, ei vointiin.</b> Vasen yläonttolaskimo ei kuormita sydäntä lainkaan, mutta juuri tällaisessa yhdistelmässä sillä on merkitystä: se muuttaa katetrointireittejä ja leikkauksen kanylointia, ja laaja sepelpoukama kulkee aivan hiippaläpän renkaan vierestä."},
  {need:["koarktaatio","mitraalistenoosi","bav"], t:"<b>Vasemman puolen ahtaumat kulkevat sarjassa.</b> Kun samalla lapsella on hiippaläpän ahtauma, ahtautuva aorttaläppä ja aortan koarktaatio, kyse on vasemman puolen ahtauttavien vikojen jatkumosta, jota kutsutaan Shonen kompleksiksi. Esteitä on peräkkäin koko matkalla keuhkolaskimoista aorttaan, ja siksi kokonaisuus arvioidaan aina yhtenä — yhden esteen poistaminen paljastaa seuraavan. Siksi myös koarktaation korjauksen jälkeen hiippaläpän ja aorttaläpän seuranta jatkuu."},
- {need:["koarktaatio","bav"], t:"<b>Nämä kaksi kulkevat oikeasti yhdessä.</b> Koarktaatiopotilaista 50–85 %:lla aorttaläppä on bikuspinen. Kun toinen todetaan, toista etsitään aina — ja korjatun koarktaation jälkeen aorttaläppää seurataan omana asianaan."},
+ {need:["koarktaatio","bav"], t:"<b>Nämä kaksi kulkevat oikeasti yhdessä.</b> Koarktaatiopotilaista 50–85 %:lla aorttaläppä on bikuspinen. Kun toinen todetaan, toista etsitään aina — ja aorttaläppää seurataan omana asianaan myös sen jälkeen, kun aortan ahtauma on korjattu."},
  {need:["rvh","lvnc"], t:"<b>Väliseinä vie tilaa.</b> Oikean kammion paine litistää väliseinää vasemmalle, jolloin vasen kammio täyttyy entistä huonommin. Sen sisäänvirtaus voi olla jo valmiiksi rajoittunut sekä läpän että lihaspalkkien takia."},
- {need:["koarktaatio","rvh"], t:"<b>Kuormaa molemmilla puolilla.</b> Ennen korjausta vasen kammio työskentelee ahtaumaa vastaan ja oikea kammio keuhkoverenkierron painetta vastaan. Koarktaation korjaus poistaa vasemman puolen esteen, mutta oikean puolen kuorma jää, jos sen syy on hiippaläpässä."}
+ {need:["koarktaatio","rvh"], t:"<b>Kuormaa molemmilla puolilla.</b> Vasen kammio työskentelee aortan ahtaumaa vastaan ja oikea kammio keuhkoverenkierron painetta vastaan, joten hapentarve kasvaa yhtä aikaa molemmilla puolilla. Aortan ahtauman korjaus poistaa vasemman puolen esteen, mutta oikean puolen kuorma jää, jos sen syy on muualla."}
 ];
 
 function activeList(){ return FINDINGS.filter(c => selected.has(c.id)); }
@@ -1039,7 +1037,7 @@ function cmpTable(){
     ${num("Kammioiden supistusvoima", "EF 60–70 %, FS 28–40 %", ef)}
   </tbody></table>
   <details class="explain" open><summary>Mistä nämä luvut tulevat?</summary><ul>
-    <li><b>Ne eivät ole mittaustuloksia.</b> Jokaiselle löydökselle on annettu sille tyypilliset imeväisikäisen esimerkkiarvot, joiden tarkoitus on näyttää muutoksen suunta ja suuruusluokka — ei ennustaa yhdenkään lapsen lukemia.</li>
+    <li><b>Ne eivät ole mittaustuloksia.</b> Jokaiselle löydökselle on annettu sille tyypilliset imeväisikäisen esimerkkiarvot, joiden tarkoitus on näyttää muutoksen suunta ja suuruusluokka — ei ennustaa yhdenkään lapsen lukemia. Kunkin löydöksen aste on kuvassa valittu selvästi näkyväksi, vaikka sama vika voi todellisuudessa olla lievä tai vaikea.</li>
     <li><b>Useaa löydöstä yhdistettäessä ei lasketa fysiologista mallia.</b> Jokaiselle suureelle valitaan valittujen löydösten joukosta voimakkain poikkeama: kammio-, eteis- ja keuhkovaltimopaineista suurin; aortan systolisesta <i>pienin</i>, koska ahtautunut läppä rajoittaa sitä; aortan diastolisesta suurin, koska koarktaatio nostaa sitä.</li>
     <li>Jos mukana on kaksi peräkkäistä estettä (koarktaatio ja ahtautunut aorttaläppä), kammiopaineeseen lisätään 20 mmHg, koska kammio joutuu voittamaan molemmat. Ahtauman alapuolinen aortan paine johdetaan yläpuolisesta.</li>
     <li class="ex"><b>Esimerkki, kaikki kuusi valittuna.</b> <b>LV 130/10:</b> 110 tulee koarktaatiosta, siihen +20 toisesta peräkkäisestä esteestä, ja 10 on korkein täyttöpaine mukana olevista löydöksistä. <b>Ao 85/60:</b> systolinen 85 tulee ahtautuneesta aorttaläpästä, joka rajoittaa aorttaan pääsevää painetta, ja diastolinen 60 koarktaatiosta.</li>
