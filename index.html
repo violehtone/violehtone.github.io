@@ -98,6 +98,11 @@ svg.heart{display:block;width:100%;height:auto;touch-action:manipulation}
 .toggle input{accent-color:var(--signal);width:14px;height:14px}
 .speed{display:inline-flex;align-items:center;gap:8px;color:var(--muted)}
 .speed input{width:96px;accent-color:var(--signal)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:2px;overflow:hidden}
+.segb{background:var(--plate);color:var(--muted);border:0;border-right:1px solid var(--line);
+      font-family:"IBM Plex Mono",monospace;font-size:12px;padding:5px 10px;cursor:pointer}
+.segb:last-child{border-right:0}
+.segb[aria-pressed="true"]{background:var(--signal);color:#12202a;font-weight:500}
 .phase{
   margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--signal);
@@ -153,6 +158,15 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;border-top:1px solid va
 .cond[aria-pressed="true"] .box{background:var(--signal);border-color:var(--signal)}
 .rail .sep{height:1px;background:var(--line);margin:7px 10px}
 .railhint{padding:2px 12px 8px;color:var(--muted);font-size:11.5px}
+details.explain{margin:-2px 0 14px;border-left:2px solid var(--line);padding-left:11px}
+details.explain summary{cursor:pointer;color:var(--muted);font-size:12px;list-style:none;user-select:none}
+details.explain summary::-webkit-details-marker{display:none}
+details.explain summary::before{content:"+ ";color:var(--signal);font-family:"IBM Plex Mono",monospace}
+details.explain[open] summary::before{content:"– ";color:var(--signal)}
+details.explain ul{margin:9px 0 3px;padding-left:15px}
+details.explain li{font-size:12.5px;color:var(--muted);margin:0 0 7px;line-height:1.5}
+details.explain b{color:var(--bone);font-weight:500}
+details.explain .ex{color:var(--bone)}
 table.cmp{width:100%;border-collapse:collapse;font-size:12.5px;table-layout:fixed}
 table.cmp td,table.cmp th{overflow-wrap:anywhere}
 table.cmp col.a{width:31%}table.cmp col.b{width:31%}table.cmp col.c{width:38%}
@@ -175,7 +189,7 @@ table.cmp tr.ch td.c{color:var(--signal)}
 <header class="top">
   <div>
     <h1>Sydän — rakenne, toiminta ja <em>rakennepoikkeavuudet</em></h1>
-    <p class="lede">Kaaviomainen etukuva. Valitse löydös listasta: sydämen muoto, virtaus ja painekäyrät muuttuvat sen mukaan. Klikkaa mitä tahansa rakennetta nimetäksesi sen.</p>
+    <p class="lede">Anatominen leikkauskuva, jonka tekstit on kirjoitettu imeväisikäisen näkökulmasta: synnynnäiset rakennepoikkeavuudet käyttäytyvät vauvalla eri tavalla kuin aikuisella. Valitse löydöksiä listasta — kuva, virtaus ja painekäyrät muuttuvat. Klikkaa rakennetta nimetäksesi sen.</p>
   </div>
 </header>
 
@@ -214,9 +228,18 @@ table.cmp tr.ch td.c{color:var(--signal)}
         <pattern id="fiber" width="9" height="9" patternTransform="rotate(58)" patternUnits="userSpaceOnUse">
           <line x1="0" y1="0" x2="0" y2="9" stroke="#c9887a" stroke-width="0.8" opacity="0.09"/>
         </pattern>
+        <radialGradient id="bgVig" cx="50%" cy="42%" r="72%">
+          <stop offset="0" stop-color="#16262f" stop-opacity="0.85"/>
+          <stop offset="1" stop-color="#070d11" stop-opacity="0.95"/>
+        </radialGradient>
+        <clipPath id="clipMyo"><path id="clipMyoPath" d=""/></clipPath>
+        <clipPath id="clipRA"><path id="clipRApath" d=""/></clipPath>
+        <clipPath id="clipLA"><path id="clipLApath" d=""/></clipPath>
         <clipPath id="clipLV"><path id="clipLVpath" d=""/></clipPath>
         <clipPath id="clipRV"><path id="clipRVpath" d=""/></clipPath>
       </defs>
+
+      <rect x="0" y="0" width="900" height="720" fill="url(#bgVig)"/>
 
       <!-- flow guide paths (invisible) -->
       <g fill="none" stroke="none">
@@ -285,7 +308,7 @@ table.cmp tr.ch td.c{color:var(--signal)}
               class="hit" data-name="Aortan kaaren haarat" data-lat="tr. brachiocephalicus, a. carotis communis sin., a. subclavia sin." data-info="Vievät veren päähän ja yläraajoihin. Koarktaatio sijaitsee tyypillisesti heti vasemman solisvaltimon jälkeen — siksi yläraajojen paine on korkea ja alaraajojen matala."/>
         <path id="aorta-wall" d="M 474,392 L 474,244 C 474,206 530,188 596,194 C 690,204 772,244 790,300 L 790,716" stroke="#3e1a20" stroke-width="74" fill="none"/>
         <path id="aorta-lumen" d="M 474,392 L 474,244 C 474,206 530,188 596,194 C 690,204 772,244 790,300 L 790,716" stroke="url(#gArt)" stroke-width="60" fill="none"
-              class="hit" data-name="Aortta" data-lat="aorta ascendens, arcus, aorta descendens" data-info="Vie hapekkaan veren vasemmasta kammiosta koko elimistöön. Paine normaalisti n. 120/80 mmHg."/>
+              class="hit" data-name="Aortta" data-lat="aorta ascendens, arcus, aorta descendens" data-info="Vie hapekkaan veren vasemmasta kammiosta koko elimistöön. Paine imeväisikäisellä noin 85/50 mmHg, aikuisella 120/80."/>
         <path d="M 430,388 C 414,362 418,334 434,314 L 514,310 C 528,332 530,362 516,386 Z" fill="#3e1a20"/>
         <path id="aortic-root" d="M 436,386 C 422,362 426,336 440,318 L 508,314 C 522,334 524,362 512,384 Z" fill="url(#rgArt)"
               class="hit" data-name="Aortan tyvi ja Valsalvan poukamat" data-lat="sinus aortae (Valsalvae)" data-info="Läpän yläpuoliset pullistumat. Kahdesta poukamasta lähtevät sepelvaltimot; poukamiin muodostuvat pyörteet auttavat läppää sulkeutumaan."/>
@@ -304,9 +327,18 @@ table.cmp tr.ch td.c{color:var(--signal)}
       </g>
 
       <!-- ventricular myocardium -->
+      <g id="myo-shadow-g" transform="translate(6,13)" pointer-events="none" fill="none" stroke="#000">
+        <path id="sh1" stroke-width="34" stroke-opacity=".07"/>
+        <path id="sh2" stroke-width="22" stroke-opacity=".11"/>
+        <path id="sh3" stroke-width="12" stroke-opacity=".16"/>
+        <path id="myo-shadow" fill="#000" stroke="none" opacity=".5"/>
+      </g>
       <path id="myo" d="M 206,394 C 182,452 190,536 244,594 C 316,660 424,694 512,682 C 596,656 654,520 656,394 Z"
             fill="url(#gMyo)" stroke="#33191a" stroke-width="2.5"
-            class="hit" data-name="Sydänlihas" data-lat="myocardium" data-info="Kammioiden lihasseinämä, kierteisiä lihaskerroksia. Vasen kammio 8–11 mm, oikea alle 5 mm. Ohuin kohta on kärki."/>
+            class="hit" data-name="Sydänlihas" data-lat="myocardium" data-info="Kammioiden lihasseinämä, kierteisiä lihaskerroksia. Vasen kammio on noin kolme kertaa oikeaa paksumpi; vastasyntyneellä molemmat ovat vain muutaman millimetrin. Ohuin kohta on kärki."/>
+      <g clip-path="url(#clipMyo)" pointer-events="none">
+        <path id="myo-rim" transform="translate(-3,-5)" fill="none" stroke="#d2917f" stroke-opacity=".3" stroke-width="9"/>
+      </g>
       <path id="myoFiber" d="M 206,394 C 182,452 190,536 244,594 C 316,660 424,694 512,682 C 596,656 654,520 656,394 Z" fill="url(#fiber)" pointer-events="none"/>
 
       <!-- coronary sinus in the AV groove -->
@@ -327,6 +359,7 @@ table.cmp tr.ch td.c{color:var(--signal)}
         <path id="rvot" class="hit" fill="url(#rgVen)" stroke="url(#gMyoA)" stroke-width="10"
           d="M 330,406 C 322,380 322,352 330,334 L 392,330 C 400,356 400,384 396,408 Z"
           data-name="Oikean kammion ulosvirtauskanava" data-lat="conus arteriosus / infundibulum" data-info="Sileäseinäinen suppilo, joka johtaa keuhkovaltimoläpälle. Sijaitsee aortan tyven etupuolella ja vasemmalla."/>
+        <path id="rv-ish" clip-path="url(#clipRV)" fill="none" stroke="#04121b" stroke-opacity=".45" stroke-width="17" pointer-events="none"/>
         <g id="trab-rv"></g>
         <path class="hit" fill="url(#gMyoA)" stroke="#33191a" stroke-width="1.5"
           d="M 262,548 C 282,522 310,506 334,504 C 328,532 308,564 292,584 C 280,578 268,564 262,548 Z"
@@ -341,14 +374,15 @@ table.cmp tr.ch td.c{color:var(--signal)}
       <g id="lv-g">
         <path id="lv-cav" class="hit" fill="url(#rgArt)" stroke="#5c2028" stroke-width="3"
           d="M 434,390 C 424,478 438,570 476,632 C 492,652 512,656 526,638 C 570,572 618,482 614,390 Z"
-          data-name="Vasen kammio" data-lat="ventriculus sinister" data-info="Paksuseinäinen kartio, joka muodostaa sydämen kärjen. Pumppaa hapekkaan veren aorttaan paineella 120/8 mmHg. Ejektiofraktio 55–70 %."/>
+          data-name="Vasen kammio" data-lat="ventriculus sinister" data-info="Paksuseinäinen kartio, joka muodostaa sydämen kärjen. Pumppaa hapekkaan veren aorttaan; imeväisikäisellä paine on noin 85/6 mmHg. Ejektiofraktio 55–70 %."/>
+        <path id="lv-ish" clip-path="url(#clipLV)" fill="none" stroke="#210409" stroke-opacity=".45" stroke-width="17" pointer-events="none"/>
         <g id="trab" clip-path="url(#clipLV)"></g>
         <path class="hit" fill="url(#gMyoA)" stroke="#33191a" stroke-width="1.5"
           d="M 598,548 C 592,526 570,512 546,512 C 550,540 564,570 578,590 C 588,578 594,564 598,548 Z"
-          data-name="Papillaarilihas (etu-sivuseinä)" data-lat="musculus papillaris anterolateralis" data-info="Vasemmassa kammiossa on kaksi papillaarilihasta. Kummankin jännesäikeet kiinnittyvät molempiin hiippaläpän purjeisiin — siksi yhden lihaksen repeämä ei tee läpästä täysin toimintakyvytöntä."/>
+          data-name="Papillaarilihas (etu-sivuseinä)" data-lat="musculus papillaris anterolateralis" data-info="Vasemmassa kammiossa on tavallisesti kaksi papillaarilihasta, ja kummankin jännesäikeet kiinnittyvät molempiin hiippaläpän purjeisiin. Jos lihaksia on vain yksi, kaikki säikeet suppenevat yhteen kohtaan — laskuvarjoläppä, yksi synnynnäisen hiippaläpän ahtauman muoto."/>
         <path class="hit" fill="url(#gMyoA)" stroke="#33191a" stroke-width="1.5"
           d="M 452,558 C 464,534 484,520 504,522 C 500,550 486,580 474,598 C 464,586 456,572 452,558 Z"
-          data-name="Papillaarilihas (taka-väliseinäpuoli)" data-lat="musculus papillaris posteromedialis" data-info="Saa verensä usein vain yhdestä sepelvaltimosta, joten se repeää sydäninfarktissa etu-sivuseinän lihasta useammin."/>
+          data-name="Papillaarilihas (taka-väliseinäpuoli)" data-lat="musculus papillaris posteromedialis" data-info="Papillaarilihasten määrä ja sijainti sekä jännesäikeiden pituus ratkaisevat, voidaanko ahtautunut läppä korjata omaa läppää säästäen. Siksi ne käydään tarkasti läpi ennen leikkausta."/>
       </g>
 
 
@@ -356,15 +390,16 @@ table.cmp tr.ch td.c{color:var(--signal)}
       <g id="ra-g">
         <path class="hit" fill="url(#gMyoA)" stroke="#33191a" stroke-width="1.5"
           d="M 338,244 C 366,228 396,236 404,258 C 412,282 394,300 368,300 C 350,298 338,284 338,268 Z"
-          data-name="Oikea eteiskorvake" data-lat="auricula dextra" data-info="Kolmiomainen pussi, jonka sisäpinta on kampamaisten lihasten (mm. pectinati) uurtama."/>
+          data-name="Oikea eteiskorvake" data-lat="auricula dextra" data-info="Kolmiomainen, leveäkaulainen pussi, jonka sisäpinta on kampamaisten lihasten (mm. pectinati) uurtama. Vasen korvake on kapeakaulainen ja sileämpi — ero on peruste eteisten sijainnin määritykselle."/>
         <path id="ra-cav" class="hit" fill="url(#rgVen)" stroke="url(#gMyoA)" stroke-width="13"
           d="M 286,212 C 236,216 214,258 214,308 C 214,352 226,388 246,398 L 336,398 C 348,376 352,300 344,258 C 334,218 322,208 286,212 Z"
-          data-name="Oikea eteinen" data-lat="atrium dextrum" data-info="Ohutseinäinen (2–3 mm) ontelo, joka ottaa vastaan veren onttolaskimoista ja sepelpoukamasta. Paine 3–5 mmHg. Seinämässä sinussolmuke."/>
+          data-name="Oikea eteinen" data-lat="atrium dextrum" data-info="Ohutseinäinen ontelo, joka ottaa vastaan veren onttolaskimoista ja sepelpoukamasta. Paine 3–5 mmHg. Seinämässä sinussolmuke."/>
+        <path id="ra-ish" clip-path="url(#clipRA)" fill="none" stroke="#04121b" stroke-opacity=".4" stroke-width="15" pointer-events="none"/>
       </g>
       <g id="la-g">
         <path class="hit" fill="url(#gMyoA)" stroke="#33191a" stroke-width="1.5"
           d="M 546,340 C 522,342 508,358 512,376 C 516,392 536,398 550,388 C 556,372 554,354 546,340 Z"
-          data-name="Vasen eteiskorvake" data-lat="auricula sinistra" data-info="Pitkä ja koukeroinen pussi. Eteisvärinässä veri seisoo täällä ja hyytyy — valtaosa sydänperäisistä aivoinfarkteista saa alkunsa tästä."/>
+          data-name="Vasen eteiskorvake" data-lat="auricula sinistra" data-info="Pitkä, kapeakaulainen ja koukeroinen pussi. Korvakkeiden muoto on luotettavin tapa päätellä, kumpi eteinen on kumpi — siihen perustuu eteisten sijainnin määritys, kun sydän on kääntynyt oikealle."/>
         <path id="la-cav" class="hit" fill="url(#rgArt)" stroke="url(#gMyoA)" stroke-width="13"
           d="M 606,212 C 552,214 530,254 530,304 C 530,350 546,386 570,392 L 690,392 C 712,376 718,300 710,256 C 700,216 662,208 606,212 Z"
           data-name="Vasen eteinen" data-lat="atrium sinistrum" data-info="Ottaa vastaan hapekkaan veren neljästä keuhkolaskimosta. Keskipaine n. 8 mmHg. Laajenee herkästi, jos hiippaläppä ahtautuu."/>
@@ -374,6 +409,7 @@ table.cmp tr.ch td.c{color:var(--signal)}
         <path d="M 361,338 C 356,306 370,282 396,266" stroke="#123043" stroke-width="52" fill="none" stroke-linecap="butt"/>
         <path d="M 361,338 C 356,306 370,282 396,266" stroke="url(#gVen)" stroke-width="44" fill="none" stroke-linecap="butt"
               class="hit" data-name="Keuhkovaltimorunko" data-lat="truncus pulmonalis" data-info="Lähtee oikeasta kammiosta aortan tyven etupuolelta ja vasemmalta, haarautuu oikeaksi ja vasemmaksi keuhkovaltimoksi. Paine n. 25/10 mmHg."/>
+        <path id="la-ish" clip-path="url(#clipLA)" fill="none" stroke="#210409" stroke-opacity=".4" stroke-width="15" pointer-events="none"/>
       </g>
 
       <g id="ghost" class="hidden" fill="none" stroke="#f0e8d8" stroke-width="2.2" stroke-dasharray="7 5" opacity=".6" pointer-events="none">
@@ -389,8 +425,8 @@ table.cmp tr.ch td.c{color:var(--signal)}
         <g id="v-mv" stroke="#efe4d0" stroke-width="6"><path/><path/></g>
         <g id="v-pv" stroke="#efe4d0" stroke-width="5.5"><path/><path/></g>
         <g id="v-av" stroke="#efe4d0" stroke-width="5.5"><path/><path/></g>
-        <rect class="hit" x="224" y="388" width="112" height="22" fill="transparent" data-name="Kolmiliuskaläppä" data-lat="valva tricuspidalis" data-info="Kolme purjetta, jotka kiinnittyvät jännesäikeillä papillaarilihaksiin. Renkaan halkaisija on hiippaläpän rengasta suurempi."/>
-        <rect class="hit" x="512" y="378" width="102" height="22" fill="transparent" data-name="Hiippaläppä" data-lat="valva mitralis" data-info="Kaksi purjetta: etupurje on suurempi ja erottaa sisään- ja ulosvirtauksen. Normaali aukko 4–6 cm²."/>
+        <rect class="hit" x="224" y="388" width="112" height="22" fill="transparent" data-name="Kolmiliuskaläppä" data-lat="valva tricuspidalis" data-info="Kolme purjetta, jotka kiinnittyvät jännesäikeillä papillaarilihaksiin. Rengas kiinnittyy väliseinään hiippaläpän rengasta lähempänä kärkeä — tästä porrastuksesta tunnistetaan, kumpi kammio on oikea, kun sydämen asento on poikkeava."/>
+        <rect class="hit" x="512" y="378" width="102" height="22" fill="transparent" data-name="Hiippaläppä" data-lat="valva mitralis" data-info="Kaksi purjetta: etupurje on suurempi ja erottaa sisään- ja ulosvirtauksen. Lapsella renkaan koko ilmoitetaan SD-yksikköinä suhteessa kehon kokoon."/>
         <rect class="hit" x="324" y="324" width="76" height="24" fill="transparent" data-name="Keuhkovaltimoläppä" data-lat="valva trunci pulmonalis" data-info="Kolme taskumaista purjetta. Sulkeutuminen tuottaa toisen sydänäänen jälkimmäisen osan (P2)."/>
         <rect class="hit" x="434" y="372" width="82" height="22" fill="transparent" data-name="Aorttaläppä" data-lat="valva aortae" data-info="Kolme taskupurjetta, joiden yläpuolella ovat Valsalvan poukamat. Sulkeutuminen tuottaa A2-äänen."/>
       </g>
@@ -459,11 +495,14 @@ table.cmp tr.ch td.c{color:var(--signal)}
 
     <div class="controls">
       <button class="btn" id="playBtn" aria-label="Pysäytä tai jatka sykettä">Pysäytä</button>
-      <label class="speed">Syke <input type="range" id="speed" min="40" max="140" value="70" aria-label="Syke"> <span id="bpm" style="font-family:'IBM Plex Mono',monospace">70/min</span></label>
+      <label class="speed">Syke <input type="range" id="speed" min="60" max="180" value="130" aria-label="Syke"> <span id="bpm" style="font-family:'IBM Plex Mono',monospace">130/min</span></label>
       <label class="toggle"><input type="checkbox" id="tLabels" checked> Nimet</label>
       <label class="toggle"><input type="checkbox" id="tFlow" checked> Virtaus</label>
       <label class="toggle"><input type="checkbox" id="tCond"> Johtoradat</label>
       <label class="toggle"><input type="checkbox" id="tGhost"> Normaalin ääriviiva</label>
+      <span class="toggle" style="gap:8px">Hidastus <span class="seg" id="rateSeg" role="group" aria-label="Toistonopeus">
+        <button class="segb" data-rate="0.25">¼×</button><button class="segb" data-rate="0.5">½×</button><button class="segb" data-rate="1">1×</button>
+      </span></span>
       <span class="phase" id="phaseLbl">Diastole</span>
     </div>
     <div class="pick" id="pick">Klikkaa rakennetta — nimi ja tehtävä ilmestyvät tähän.</div>
@@ -483,7 +522,7 @@ table.cmp tr.ch td.c{color:var(--signal)}
 </section>
 
 <footer>
-  Kaaviomainen opetuskuva: mittasuhteet, sijainnit ja painearvot on yksinkertaistettu havainnollisuuden vuoksi eivätkä ne korvaa anatomista atlasta tai kliinistä ohjetta.
+  Opetuskuva, ei lääketieteellinen asiakirja. Mittasuhteet, sijainnit ja painearvot ovat havainnollistavia esimerkkejä imeväisikäisen mittakaavassa — eivät kenenkään mittaustuloksia. Kuva on piirretty tavanomaiseen asentoon. Kaikki hoitoa ja seurantaa koskevat kysymykset kuuluvat hoitavalle lastenkardiologille.
 </footer>
 </div>
 
@@ -493,210 +532,221 @@ table.cmp tr.ch td.c{color:var(--signal)}
    ================================================================== */
 const CONDITIONS = [
 {
-  id:"normaali", name:"Normaali sydän", tag:"kokonaiskuva", latin:"cor",
-  lead:"Nelilokeroinen sarjaan kytketty pumppu. Oikea puoli ottaa vastaan vähähappisen veren ja lähettää sen keuhkoihin matalalla paineella; vasen puoli ottaa hapekkaan veren keuhkoista ja pumppaa sen koko elimistöön kuusinkertaisella paineella. Minuuttitilavuus levossa noin 5 l/min.",
-  chips:["LV <b>120/8</b>","Ao <b>120/80</b>","LA <b>8</b>","RV <b>25/4</b>","EF <b>55–70 %</b>"],
+  id:"normaali", name:"Normaali sydän", tag:"vertailukohta", latin:"cor",
+  lead:"Vertailukohtana terveen imeväisikäisen sydän. Nelilokeroinen pumppu: oikea puoli lähettää vähähappisen veren keuhkoihin matalalla paineella, vasen puoli hapekkaan veren muualle elimistöön. Tämän sivun paineet ja mitat ovat imeväisikäisen mittakaavassa, eivät aikuisen.",
+  chips:["Syke <b>120–150/min</b>","LV <b>85/6</b>","Ao <b>85/48</b>","LA <b>7</b>","RV <b>25/4</b>"],
   mech:[
-    "<b>Sykli.</b> Eteissystole täydentää kammion täytön (n. 20 % täytöstä) → isovolyyminen supistuminen → ejektio, kun kammiopaine ylittää valtimopaineen → isovolyyminen relaksaatio → nopea täyttyminen → diastasis.",
-    "<b>Läpät.</b> Eteis-kammioläpät (hiippa- ja kolmiliuskaläppä) auki vain diastolessa, taskuläpät (aortta- ja keuhkovaltimoläppä) vain systolessa. Molemmat parit eivät koskaan ole auki yhtä aikaa.",
-    "<b>Sydänäänet.</b> S1 = eteis-kammioläppien sulkeutuminen systolen alussa, S2 = taskuläppien sulkeutuminen systolen lopussa (A2 ennen P2).",
-    "<b>Johtorata.</b> Sinussolmuke → eteiset → AV-solmuke (viive) → Hisin kimppu → haarakkeet → Purkinjen säikeet. Viive AV-solmukkeessa antaa eteisille aikaa tyhjentyä ennen kammiosupistusta."
+    "<b>Sydämen paikka ja peilikuva.</b> Kuva on piirretty tavanomaiseen asentoon, jossa kärki osoittaa vasemmalle. Jos sydän osoittaa oikealle (dextrocardia), ratkaisevaa on elinten sijainti: aito peilikuva syntyy vain, kun myös vatsaontelon elimet ovat peilikuvana (situs inversus). Tavanomaisella elinsijainnilla (situs solitus) sydän on kääntynyt oikealle ilman että sen sisäinen rakenne on peilattu — tässä yhdistelmässä rakennepoikkeavuuksia esiintyy usein, joten kaikukuvauksessa käydään segmentit järjestyksessä läpi.",
+    "<b>Segmenttien läpikäynti.</b> Ensin määritetään eteisten sijainti korvakkeiden muodosta, sitten se, kumpi kammio on kumpi, ja lopuksi mihin suuret suonet lähtevät. Kun eteiset yhdistyvät oikeisiin kammioihin ja kammiot oikeisiin suoniin (AV- ja VA-konkordanssi), veri kulkee normaalia reittiä sydämen asennosta riippumatta.",
+    "<b>Sykli.</b> Eteissystole täydentää kammion täytön → isovolyyminen supistuminen → ejektio, kun kammiopaine ylittää valtimopaineen → isovolyyminen relaksaatio → nopea täyttyminen → diastasis. Vauvan nopealla sykkeellä kierros kestää alle puoli sekuntia, ja lyhyt diastole korostaa kaikkia täyttymisen esteitä.",
+    "<b>Läpät.</b> Eteis-kammioläpät ovat auki vain diastolessa, taskuläpät vain systolessa. Molemmat parit eivät koskaan ole auki yhtä aikaa.",
+    "<b>Syntymän jälkeinen muutos.</b> Sikiöaikana oikea kammio työskentelee yhtä suurella paineella kuin vasen ja keuhkoverisuonten vastus on korkea. Syntymän jälkeen vastus laskee ensin nopeasti ja sitten vähitellen ensimmäisten kuukausien ajan, oikean kammion seinämä ohenee ja valtimotiehyt sulkeutuu. Siksi osa synnynnäisistä vioista paljastuu vasta ensimmäisinä elinviikkoina.",
+    "<b>Sydänäänet.</b> S1 = eteis-kammioläppien sulkeutuminen, S2 = taskuläppien sulkeutuminen (A2 ennen P2)."
   ],
   find:[
-    "Kaksi sydänääntä, ei sivuääniä.",
-    "Kärkisysäys 5. kylkiluuvälissä keskisolislinjassa, halkaisija alle 2,5 cm.",
-    "Kaikututkimus: seinämäpaksuus LV 8–11 mm, RV alle 5 mm; kaikki läpät aukeavat täysin ja sulkeutuvat tiiviisti."
+    "Läppärenkaiden ja suonten koko ilmoitetaan lapsella SD-yksikköinä suhteessa kehon kokoon, ei millimetreinä sellaisenaan — sama millimetriluku tarkoittaa eri asiaa eri kokoisella lapsella.",
+    "AV-läppien sisäänvirtaus on laminaarinen ilman merkittävää painegradienttia; nousevassa aortassa virtausnopeus on matala.",
+    "Trikuspidaaliläpän vähäinen vuoto on tavallinen normaalilöydös — juuri siitä arvioidaan oikean kammion painetta.",
+    "<b>Vastasyntyneen EKG poikkeaa aikuisen EKG:stä:</b> oikean kammion vallitsevuus (oikealle kääntynyt akseli, korkea R V1:ssä) on normaali ensimmäisinä kuukausina ja väistyy vähitellen. Aikuisen hypertrofiakriteerit eivät siis päde vauvaan.",
+    "Systolista toimintaa arvioidaan silmämääräisesti sekä EF- ja FS-arvoilla; oikean kammion pitkittäissupistusta kuvaa TAPSE."
   ],
-  care:["Vertailukohta muille tiloille — vaihda löydöstä vasemmalta nähdäksesi, mikä muuttuu."],
+  care:["Valitse listasta yksi tai useampi löydös — kuva, virtaus ja painekäyrät muuttuvat sen mukaan."],
   shape:{lv:"normal",rv:"normal",septum:"normal",la:"normal",myo:"normal",inset:"aortic3"},
   valve:{mv:1,av:1,mvThick:6,avThick:6},
   flow:{mv:1,av:1,desc:1,coll:0},
-  press:{lv:{sys:120,edp:8},ao:{sys:120,dia:80},la:{mean:8,a:12,v:11,yBlunt:0},rv:{sys:25,edp:4},pa:{sys:25,dia:10},show:["lv","ao","la"]},
+  press:{lv:{sys:85,edp:6},ao:{sys:85,dia:48},la:{mean:7,a:10,v:9,yBlunt:0},rv:{sys:25,edp:4},pa:{sys:25,dia:12},show:["lv","ao","la"]},
   sounds:[{t:0.13,l:"S1"},{t:0.47,l:"S2"}], murmurs:[]
 },
 {
-  id:"koarktaatio", name:"Aortan koarktaatio", tag:"aortta", latin:"coarctatio aortae",
-  lead:"Aortan paikallinen ahtauma, tyypillisesti heti vasemman solisvaltimon lähdön jälkeen valtimotiehyen alueella. Noin 5–8 % kaikista synnynnäisistä sydänvioista, yleisempi pojilla. Liittyy hyvin usein bikuspiseen aorttaläppään (arviot 50–85 %) ja Turnerin oireyhtymään.",
-  chips:["LV <b>180/14</b>","Ao yläpuolella <b>175/95</b>","Ao alapuolella <b>110/85</b>","Gradientti <b>&gt;20 mmHg</b>"],
+  id:"koarktaatio", name:"Aortan koarktaatio, korjattu", tag:"aortta", latin:"coarctatio aortae, status post correctionem",
+  lead:"Aortan paikallinen ahtauma, tyypillisesti heti vasemman solisvaltimon jälkeen valtimotiehyen alueella. Vastasyntyneellä herkin kaikulöydös on se, että laskevan aortan virtaus jatkuu diastoleen: veri joutuu puristumaan ahtauman läpi koko sydänsyklin ajan. Tavallisin korjaustapa vauvaiässä on laajennettu pääte-päätteeseen-liitos, jossa kapea kohta poistetaan ja päät yhdistetään viistosti niin, että liitos ulottuu kaaren alapinnalle asti. Kuvassa ahtauma näkyy sellaisena kuin se on ennen korjausta.",
+  chips:["Ahtauma <b>valtimotiehyen kohdalla</b>","Ei vaadi <b>sydän-keuhkokonetta</b>","Uusintaahtauma <b>1. vuonna</b>","Verenpaineseuranta <b>aikuisikään</b>"],
   mech:[
-    "<b>Jälkikuorma nousee.</b> Ahtauma on kiinteä vastus vasemman kammion ulosvirtaukselle → kammio joutuu tuottamaan korkeamman paineen samalle virtaukselle.",
-    "<b>Konsentrinen hypertrofia.</b> Seinämä paksuuntuu sisäänpäin, ontelo pienenee. Isku­tilavuus säilyy aluksi, mutta kammio jäykistyy → diastolinen täyttöpaine nousee, hapenkulutus kasvaa.",
-    "<b>Kaksi verenpainetta.</b> Ahtauman yläpuolella (pää, yläraajat) paine on korkea, alapuolella (vatsa, munuaiset, alaraajat) matala. Munuaisten hypoperfuusio aktivoi reniini-angiotensiinijärjestelmän, mikä nostaa painetta entisestään.",
-    "<b>Kollateraalit.</b> Veri etsii kiertotien: sisemmät rintavaltimot ja kylkivälivaltimot laajenevat ja täyttävät laskevaa aorttaa ahtauman alapuolelta (näkyvät kuvassa oikealla ohittavina suonina).",
-    "<b>Pitkän ajan seuraus.</b> Hoitamattomana vasemman kammion vajaatoiminta, aivoverenvuoto (liitännäiset aivovaltimoaneurysmat), endokardiitti, aortan dissekaatio."
+    "<b>Este ulosvirtaukselle.</b> Ahtauma on kiinteä vastus vasemman kammion tiellä: kammio joutuu tuottamaan korkeamman paineen samalle verimäärälle, ja paine on ahtauman yläpuolella korkea, alapuolella matala.",
+    "<b>Valtimotiehyt peittää löydöksen aluksi.</b> Niin kauan kuin tiehyt on auki, veri pääsee sen kautta ahtauman ohi ja tilanne voi vaikuttaa rauhalliselta. Koarktaatio paljastuu usein vasta tiehyen sulkeutuessa ensimmäisten elinpäivien tai -viikkojen aikana. Jos vastasyntynyt on tästä syystä huonokuntoinen, tiehyt pidetään auki prostaglandiini-infuusiolla, kunnes korjaus voidaan tehdä.",
+    "<b>Vastasyntyneelle ei ehdi kehittyä kiertoteitä.</b> Aikuisella koarktaatio löytyy usein vasta vuosien päästä verenpainetautina, koska kylkivälivaltimot ovat ehtineet laajentua ohitusreitiksi. Vauvalla niitä ei ole — siksi ahtauma oireilee nopeasti ja siksi tässä kuvassa ei näytetä kollateraaleja.",
+    "<b>Varhainen korjaus estää hypertrofian.</b> Jos ahtauma löytyy ja korjataan varhain, vasemman kammion seinämä ei ehdi paksuuntua painekuorman takia vaan seinämävahvuudet pysyvät iänmukaisina.",
+    "<b>Korjauksen jälkeen.</b> Onnistuneen korjauksen merkki on laminaarinen virtaus kaaren läpi ja se, että laskevan aortan virtaus rajoittuu jälleen systoleen. Diastoleen jatkuvan virtauksen häviäminen on juuri se muutos, jota korjauksella haetaan."
   ],
   find:[
-    "<b>Pulssit:</b> reisivaltimopulssi heikko ja viivästynyt käteen nähden (radiofemoraalinen viive); yläraaja–alaraaja-systolinen ero yli 20 mmHg.",
-    "<b>Kuuntelu:</b> systolinen sivuääni vasemmalla lapaluiden välissä; kollateraaleista voi kuulua jatkuva humina.",
-    "<b>Röntgen:</b> kylkiluiden alareunan uurteet (rib notching) laajentuneista kylkivälivaltimoista, aortan ”3-merkki”.",
-    "<b>EKG:</b> vasemman kammion hypertrofian merkit. <b>Kaiku/TT/MRI:</b> ahtauman paikka, gradientti ja kollateraalit."
+    "<b>Ennen korjausta.</b> Kapea istmusalue ja laskevan aortan diastoleen jatkuva virtaus. Kliinisesti etsitään heikkoja reisipulsseja ja ylä- ja alaraajan painegradienttia — mittaus tehdään <b>oikeasta käsivarresta</b>, koska vasen solisvaltimo voi lähteä ahtauman kohdalta tai sen alapuolelta.",
+    "<b>Vastasyntyneiden pulssioksimetriaseulonta</b> voi antaa vihjeen: oikean käden ja jalan happikyllästeisyyden ero syntyy, kun avoin valtimotiehyt syöttää alavartaloa. Normaali seulontatulos ei kuitenkaan sulje koarktaatiota pois.",
+    "<b>Korjauksen jälkeen seurataan</b> uusintaahtaumaa, joka on tavallisin ensimmäisen vuoden aikana ja erityisesti vauvana leikatuilla. Sitä seurataan kaikukuvauksen virtausprofiililla ja raajapaine-erolla.",
+    "<b>Pitkäaikaisseuranta</b> jatkuu aikuisikään: jäännösverenpainetauti on tavallinen myös onnistuneen korjauksen jälkeen, samoin aortan seuranta.",
+    "Koarktaatio kuuluu vasemman puolen ahtauttavien vikojen ryhmään, joten aorttaläppä, hiippaläppä ja ulosvirtauskanava käydään aina läpi samalla."
   ],
   care:[
-    "Pallolaajennus ja stentti tai kirurginen korjaus (resektio ja pääte-päätteeseen-liitos).",
-    "Korjauksen jälkeenkin elinikäinen seuranta: uusiutuva ahtauma, jäännösverenpainetauti, aortan aneurysma, aorttaläpän tila."
+    "Eristetty koarktaatio korjataan vauvaiässä tavallisesti vasemman puolen thorakotomiasta laajennetulla pääte-päätteeseen-liitoksella. Se <b>ei ole avosydänleikkaus</b>: sydäntä ei avata eikä sydän-keuhkokonetta tarvita, koska ahtauma sijaitsee sydämen ulkopuolella.",
+    "Pallolaajennus ja stentti ovat ensisijaisia uusintaahtaumassa, eivät vastasyntyneen ensikorjauksessa.",
+    "Seuranta: verenpaine oikeasta käsivarresta ja jalasta sekä kaikukuvaus, elinikäisesti."
   ],
-  shape:{lv:"lvh",rv:"normal",septum:"normal",la:"normal",myo:"lvh",coarct:true,coll:true,inset:"aortic3"},
+  shape:{lv:"normal",rv:"normal",septum:"normal",la:"normal",myo:"normal",coarct:true,inset:"aortic3"},
   valve:{mv:1,av:1,mvThick:6,avThick:6},
-  flow:{mv:1,av:1,desc:.35,coll:1},
-  focus:{x:790,y:332,r:54,label:"AHTAUMA"},
-  press:{lv:{sys:180,edp:14},ao:{sys:175,dia:95},la:{mean:10,a:15,v:13,yBlunt:0},
-         distal:{sys:110,dia:85},rv:{sys:25,edp:4},pa:{sys:25,dia:10},show:["lv","ao","distal","la"]},
+  flow:{mv:1,av:1,desc:.45,coll:0},
+  focus:{x:790,y:332,r:54,label:"AHTAUMA (KORJATTU)"},
+  press:{lv:{sys:110,edp:10},ao:{sys:105,dia:60},la:{mean:9,a:12,v:11,yBlunt:0},
+         distal:{sys:75,dia:58},rv:{sys:28,edp:5},pa:{sys:28,dia:14},show:["lv","ao","distal","la"]},
   sounds:[{t:0.13,l:"S1"},{t:0.47,l:"S2"}],
-  murmurs:[{from:0.18,to:0.52,label:"systolinen sivuääni selässä"}]
+  murmurs:[{from:0.18,to:0.52,label:"systolinen sivuääni selässä (voi puuttua vauvalla)"}]
 },
 {
-  id:"mitraalistenoosi", name:"Hiippaläpän ahtauma", tag:"hiippaläppä", latin:"stenosis valvae mitralis",
-  lead:"Hiippaläpän aukko on ahtautunut. Normaali aukko on 4–6 cm²; oireita tulee tyypillisesti alle 2 cm²:ssä ja ahtauma on vaikea, kun aukko on 1,5 cm² tai pienempi. Valtaosa on reumakuumeen jälkitilaa: purjeet paksuuntuvat, kommissuurit fuusioituvat ja jännesäikeet lyhenevät.",
-  chips:["LA-keskipaine <b>25</b>","Diast. gradientti <b>~15 mmHg</b>","PA <b>50/22</b>","Aukko <b>≤1,5 cm²</b>"],
+  id:"mitraalistenoosi", name:"Synnynnäinen hiippaläpän ahtauma", tag:"hiippaläppä", latin:"stenosis valvae mitralis congenita",
+  lead:"Lapsen hiippaläpän ahtauma on rakenteeltaan eri asia kuin aikuisen tavallisin muoto: se ei ole reumakuumeen jälkitila vaan läppä on ollut pieni tai poikkeavarakenteinen syntymästä asti. Este voi olla purjeissa, renkaassa, jännesäikeissä tai papillaarilihaksissa — usein useammassa näistä yhtä aikaa.",
+  chips:["Vaikeusaste <b>keskigradientista</b>","Este <b>koko sisäänvirtausreitissä</b>","Vasen eteinen <b>laajenee</b>","Ei aikuisen <b>pinta-alarajoja</b>"],
   mech:[
-    "<b>Este täytölle.</b> Vasen eteinen ei tyhjene kunnolla diastolessa → eteisen ja kammion väliin jää painegradientti koko diastolen ajan (käyrissä sininen ja punainen eivät kohtaa).",
-    "<b>Eteinen laajenee.</b> Painekuormitus venyttää vasenta eteistä → eteisvärinä. Värinässä eteissystole katoaa, minuuttitilavuus putoaa ja hidas virtaus eteiskorvakkeessa altistaa trombille ja aivoinfarktille.",
-    "<b>Keuhkot.</b> Paine siirtyy taaksepäin keuhkolaskimoihin → hengenahdistus rasituksessa, makuulla, keuhkopöhö. Pitkään jatkuessa keuhkoverisuonten vastus nousee pysyvästi.",
-    "<b>Oikea puoli.</b> Pulmonaalihypertensio kuormittaa oikeaa kammiota → oikean kammion hypertrofia ja lopulta laajeneminen, trikuspidaalivuoto, kaulalaskimopaine, maksan suureneminen ja turvotukset.",
-    "<b>Vasen kammio.</b> Pysyy tavallisesti normaalin kokoisena mutta alitäyttyy — iskutilavuus ja minuuttitilavuus pienenevät, vaikka kammion supistuvuus on kunnossa."
+    "<b>Anatomia ratkaisee hoidon.</b> Synnynnäisiä muotoja on useita: purjeiden yläpuolinen kalvomainen rengas, pieni eli hypoplastinen läppärengas, kaksoisaukkoinen läppä ja laskuvarjoläppä, jossa kaikki jännesäikeet kiinnittyvät yhteen papillaarilihakseen. Kalvomainen rengas voidaan usein poistaa hyvin tuloksin, kun taas hypoplastinen rengas tai laskuvarjorakenne on selvästi vaikeampi korjata.",
+    "<b>Vaikeusaste mitataan lapsella gradientilla.</b> Aikuisen läppäaukon pinta-alarajat eivät sovi vauvaan, jonka koko läppärengas on senttimetrin luokkaa. Seurattava luku on sisäänvirtauksen keskigradientti ja ennen kaikkea sen muutos ajassa.",
+    "<b>Gradientti riippuu sykkeestä ja virtauksesta.</b> Sama läppä antaa korkeamman gradientin, kun lapsella on kuumetta, itku nostaa sykettä tai on anemiaa: nopea syke lyhentää diastolea, jolloin sama verimäärä ehtii virrata ahtaan aukon läpi lyhyemmässä ajassa. Yksittäistä lukua ei siksi tulkita ilman tietoa mittaushetken sykkeestä.",
+    "<b>Vasen eteinen ottaa kuorman.</b> Kun eteinen ei tyhjene kunnolla, sen paine nousee ja se laajenee. Eteisväliseinän pullottaminen oikealle on suora merkki siitä, kummalla puolella paine on korkeampi. Aikuisen tunnetuin komplikaatio, eteisvärinä, on vauvalla hyvin harvinainen.",
+    "<b>Pieni eteisväliseinän aukko toimii ylivuotoventtiilinä.</b> Jos vastasyntyneen soikea aukko (PFO) on jäänyt auki, siitä virtaa verta vasemmalta oikealle ja se purkaa hieman vasemman eteisen painetta.",
+    "<b>Paine siirtyy keuhkoihin.</b> Keuhkolaskimoiden ja edelleen keuhkovaltimoiden paine nousee, mikä kuormittaa oikeaa kammiota. Pitkään jatkuessaan korkea paine muuttaa keuhkoverisuonten seinämiä pysyvästi — juuri siksi korjausta ei voi lykätä rajattomasti, vaikka lapsi muuten voisi hyvin.",
+    "<b>Vasen kammio jää alitäytetyksi.</b> Kammion oma supistusvoima voi olla täysin normaali, mutta se saa liian vähän verta täyttyäkseen, jolloin iskutilavuus jää pieneksi."
   ],
   find:[
-    "<b>Kuuntelu:</b> voimistunut S1, avautumisnaksahdus (opening snap) pian S2:n jälkeen ja matalataajuinen diastolinen jyrinä kärjessä — parhaiten kellokalvolla vasemmassa kylkiasennossa. Sinusrytmissä presystolinen voimistuminen.",
-    "Mitä lyhyempi väli S2:n ja naksahduksen välillä, sitä korkeampi eteispaine ja sitä vaikeampi ahtauma.",
-    "<b>EKG:</b> P mitrale (leveä kaksikyttyräinen P) sinusrytmissä, usein eteisvärinä; oikean kammion kuormitusmerkit.",
-    "<b>Kaiku:</b> purjeiden paksuuntuminen ja kupolimainen aukeaminen, ”kalansuu” lyhytakselissa (kuvan pikkukuva), aukon pinta-ala planimetrialla, gradientti ja PA-paine dopplerilla."
+    "<b>Oireet vauvalla.</b> Tihentynyt hengitys, hikoilu ja väsyminen syödessä, hidas painonnousu ja toistuvat hengitystieinfektiot — ei rasitushengenahdistusta kuten aikuisella.",
+    "<b>Kaikukuvaus:</b> sisäänvirtauksen keskigradientti, läppärenkaan koko SD-yksikköinä, papillaarilihasten määrä ja jännesäikeiden rakenne, vasemman eteisen koko sekä trikuspidaalivuodon gradientti.",
+    "<b>Kuuntelu:</b> matalataajuinen diastolinen sivuääni kärjessä, joka voi vauvan nopealla sykkeellä jäädä kokonaan kuulematta. Aikuisen avautumisnaksahdus ja voimistunut S1 liittyvät reumaattiseen läppään eivätkä yleensä kuulu synnynnäiseen muotoon.",
+    "<b>Ruokatorven kautta tehtävä kaikukuvaus (TEE)</b> näyttää läpän ja sisäänvirtausreitin lähempää kuin rintakehän päältä; <b>hemodynaaminen katetrointi</b> mittaa keuhkoverenkierron paineen ja vastuksen suoraan."
   ],
   care:[
-    "Perkutaaninen mitraalikommissurotomia (pallolaajennus), jos läppäanatomia sopii eikä ole trombia tai merkittävää vuotoa.",
-    "Muutoin läpän korjaus tai tekoläppä. Eteisvärinässä antikoagulaatio (mekaaninen läppä ja reumaattinen mitraalistenoosi: varfariini)."
+    "Synnynnäinen ahtauma ei yleensä sovi pallolaajennukseen samalla tavalla kuin reumaattinen: vika on läpän rakenteessa, ei yhteenkasvaneissa purjeiden saumoissa.",
+    "Kirurginen korjaus on avosydänleikkaus: sydän pysäytetään ja verenkierto hoidetaan sydän-keuhkokoneella, jotta läppään päästään käsiksi. Tavoite on säästää lapsen oma läppä, koska se kasvaa lapsen mukana; tekoläppä ei kasva ja vaatii pysyvän antikoagulaation.",
+    "Ajoituksessa punnitaan vastakkain se, että lapsi ehtisi kasvaa mahdollisimman suureksi, ja se, ettei keuhkopaine ehtisi jäädä pysyvästi koholle."
   ],
   shape:{lv:"normal",rv:"rvh",septum:"normal",la:"dil",myo:"normal",inset:"aortic3",mitral:true},
-  valve:{mv:.22,av:1,mvThick:11,avThick:6},
-  flow:{mv:.35,av:.75,desc:.75,coll:0},
+  valve:{mv:.28,av:1,mvThick:11,avThick:6},
+  flow:{mv:.4,av:.8,desc:.8,coll:0},
   focus:{x:574,y:414,r:62,label:"AHTAUMA"},
-  press:{lv:{sys:112,edp:6},ao:{sys:112,dia:74},la:{mean:25,a:30,v:28,yBlunt:.75},rv:{sys:50,edp:8},pa:{sys:50,dia:22},show:["lv","ao","la","pa"]},
-  sounds:[{t:0.13,l:"S1↑"},{t:0.47,l:"S2"},{t:0.56,l:"OS"}],
-  murmurs:[{from:0.58,to:1.0,label:"diastolinen jyrinä"},{from:0,to:0.1,label:"presyst."}]
+  press:{lv:{sys:85,edp:6},ao:{sys:85,dia:48},la:{mean:20,a:24,v:23,yBlunt:.7},rv:{sys:60,edp:9},pa:{sys:60,dia:30},show:["lv","ao","la","pa"]},
+  sounds:[{t:0.13,l:"S1"},{t:0.47,l:"S2"}],
+  murmurs:[{from:0.56,to:1.0,label:"diastolinen sivuääni kärjessä"}]
 },
 {
-  id:"lsvc", name:"Persistoiva vasen yläonttolaskimo", tag:"laskimo", latin:"vena cava superior sinistra persistens",
-  lead:"Sikiöaikainen vasen etukardinaalilaskimo ei surkastu, vaan jää toimivaksi laskimoksi rintakehän vasemmalle puolelle. Yleisin rintakehän laskimoanomalia: noin 0,3–0,5 % väestöstä, mutta 4–11 %:lla synnynnäistä sydänvikaa sairastavista. Yleensä myös oikea yläonttolaskimo on paikallaan.",
-  chips:["Esiintyvyys <b>0,3–0,5 %</b>","Sinus coronarius <b>laajentunut</b>","Hemodynamiikka <b>normaali</b>"],
+  id:"lsvc", name:"Pysyväksi jäänyt vasen yläonttolaskimo", tag:"laskimo", latin:"vena cava superior sinistra persistens",
+  lead:"Sikiöaikainen vasen etukardinaalilaskimo ei surkastu vaan jää toimivaksi laskimoksi. Se on yleisin rintakehän laskimopoikkeavuus: noin 0,3–0,5 % väestöstä, mutta selvästi useammin niillä, joilla on synnynnäinen sydänvika. Yleensä laskimo laskee laajentuneen sepelpoukaman kautta oikeaan eteiseen, jolloin veri päätyy oikeaan paikkaan eikä löydös muuta paineita, virtauksia eikä lapsen vointia lainkaan.",
+  chips:["Väestössä <b>0,3–0,5 %</b>","Laskee <b>sepelpoukamaan</b>","Hemodynamiikka <b>ennallaan</b>","Merkitys <b>toimenpiteissä</b>"],
   mech:[
-    "<b>Tavallinen muoto (n. 90 %).</b> LSVC laskee laajentuneen sepelpoukaman kautta oikeaan eteiseen. Veri päätyy oikeaan paikkaan, joten paineet, virtaukset ja happisaturaatio ovat normaalit — kammioiden ja läppien toiminta ei muutu.",
-    "<b>Poikkeava muoto (n. 10–20 %).</b> Jos laskimo laskee suoraan vasempaan eteiseen (esim. sepelpoukaman katto puuttuu), syntyy oikea–vasen-oikovirtaus: lievä happikyllästeisyyden lasku ja paradoksaalisen embolian riski — laskimotukos voi päätyä valtimopuolelle.",
-    "<b>Miksi tällä on väliä.</b> Löydös on ennen kaikkea toimenpiteellinen: keskuslaskimokatetri tai tahdistinjohto kulkee vasemmalta poikkeavaa reittiä sepelpoukaman kautta, retrogradinen kardioplegia ja Glenn- tai Fontan-kirurgia vaikeutuvat, ja sepelpoukaman kanylointi rytmihäiriötoimenpiteissä muuttuu.",
-    "Liittyy muita poikkeavuuksia tavallista useammin: eteisväliseinäaukko, sepelpoukaman kattamattomuus, sydämen johtoratapoikkeavuudet."
+    "<b>Hemodynaamisesti merkityksetön.</b> Koska laskimo laskee sepelpoukaman kautta oikeaan eteiseen, vähähappinen veri kulkee normaalia reittiä. Happikyllästeisyys, paineet ja kammioiden työ ovat samat kuin ilman löydöstä.",
+    "<b>Siltavena ratkaisee leikkausteknisen merkityksen.</b> Osalla vasen ja oikea yläonttolaskimo ovat yhteydessä toisiinsa siltavenalla, jolloin vasen voidaan tarvittaessa sulkea. Jos siltavenaa ei ole, vasen yläonttolaskimo on ainoa poistumisreitti sen puolen yläkehon verelle: sitä ei voi sitoa pois, vaan se on huomioitava kanyloinnissa ja leikkaussuunnitelmassa.",
+    "<b>Leikkauksessa se palauttaa verta kenttään.</b> Sydän-keuhkokoneen aikana vasemmasta yläonttolaskimosta tuleva veri purkautuu sepelpoukaman kautta oikeaan eteiseen, joten se on erikseen kanyloitava tai imettävä pois, jotta kirurgi näkee työskentelyalueen.",
+    "<b>Laajentunut sepelpoukama vie tilaa.</b> Poukama kulkee eteis-kammiouurteessa aivan hiippaläpän renkaan vieressä ja sen suuaukko oikeassa eteisessä on tavallista suurempi — molemmat on tunnettava läppä- ja väliseinäleikkauksissa.",
+    "<b>Harvinaisempi muoto.</b> Osalla sepelpoukaman katto puuttuu ja laskimo laskee suoraan vasempaan eteiseen. Silloin syntyy pieni oikea–vasen-oikovirtaus, ja löydöksellä on myös hemodynaaminen merkitys."
   ],
   find:[
-    "<b>Ensivihje:</b> laajentunut sepelpoukama sydämen kaikututkimuksessa ilman muuta selitystä.",
-    "<b>Varmistus:</b> agitoitu keittosuola ruiskutetaan vasempaan kyynärlaskimoon → kuplat näkyvät ensin sepelpoukamassa ja vasta sitten oikeassa eteisessä. Oikeaan käteen ruiskutettuna järjestys on päinvastainen.",
-    "<b>Sattumalöydös:</b> keskuslaskimokatetri tai tahdistinjohto kulkee thorax-kuvassa vasemmalla mediastinumin reunaa pitkin.",
-    "TT- tai magneettikuvaus varmistaa anatomian ja laskukohdan."
+    "<b>Ensivihje.</b> Laaja sepelpoukama kaikukuvauksessa ilman muuta selitystä.",
+    "Varmistus onnistuu ruiskuttamalla agitoitua keittosuolaa vasempaan käsivarteen: kuplat näkyvät ensin sepelpoukamassa ja vasta sitten oikeassa eteisessä.",
+    "Siltavenan olemassaolo tai puuttuminen kirjataan erikseen — se ratkaisee leikkausteknisen merkityksen.",
+    "Löydös on pysyvä anatominen piirre eikä muutu ajan myötä; se kirjataan potilastietoihin toimenpiteitä varten."
   ],
   care:[
-    "Ei vaadi hoitoa, jos laskee sepelpoukamaan.",
-    "Merkitään potilastietoihin — tieto on tärkeä ennen katetrointeja, tahdistinasennusta ja sydänkirurgiaa.",
-    "Jos laskee vasempaan eteiseen ja oikovirtaus on merkittävä, harkitaan sulkua tai kirurgista korjausta."
+    "Ei vaadi hoitoa eikä rajoita lapsen elämää millään tavalla, kun laskimo laskee sepelpoukamaan.",
+    "Tieto on tärkeä ennen katetrointia, sydänleikkausta ja mahdollisia myöhempiä toimenpiteitä."
   ],
   shape:{lv:"normal",rv:"normal",septum:"normal",la:"normal",myo:"normal",lsvc:true,csDil:true,inset:"aortic3"},
   valve:{mv:1,av:1,mvThick:6,avThick:6},
   flow:{mv:1,av:1,desc:1,coll:0},
   focus:{x:706,y:330,r:62,label:"LSVC → SINUS CORONARIUS"},
-  press:{lv:{sys:120,edp:8},ao:{sys:120,dia:80},la:{mean:8,a:12,v:11,yBlunt:0},rv:{sys:25,edp:4},pa:{sys:25,dia:10},show:["lv","ao","la"]},
+  press:{lv:{sys:85,edp:6},ao:{sys:85,dia:48},la:{mean:7,a:10,v:9,yBlunt:0},rv:{sys:25,edp:4},pa:{sys:25,dia:12},show:["lv","ao","la"]},
   sounds:[{t:0.13,l:"S1"},{t:0.47,l:"S2"}], murmurs:[]
 },
 {
-  id:"lvnc", name:"Trabekuloitunut vasen kammio", tag:"vasen kammio", latin:"hypertrabeculatio / non-compactio",
-  lead:"Vasemman kammion seinämässä on runsaat, korostuneet lihaspalkit ja niiden välissä syvät kolot, jotka ovat yhteydessä kammio-onteloon. Tyypillisesti kärjessä sekä sivu- ja alaseinässä. Aiemmin tulkittiin sikiökauden tiivistymishäiriöksi; nykykäsityksen mukaan kyse on morfologisesta ilmiasusta, joka voi liittyä sydänlihassairauteen mutta esiintyy myös terveillä.",
-  chips:["NC/C-suhde kaiussa <b>&gt;2</b>","NC/C MRI:ssä <b>&gt;2,3</b>","EF tässä <b>~35 %</b>"],
+  id:"lvnc", name:"Voimakkaasti trabekuloitunut vasen kammio", tag:"vasen kammio", latin:"hypertrabeculatio ventriculi sinistri",
+  lead:"Vasemman kammion seinämässä on runsaat, korostuneet lihaspalkit ja niiden välissä syvät kolot, jotka ovat yhteydessä kammio-onteloon. Nykykäsityksen mukaan runsas trabekulaatio on ennen kaikkea rakenteellinen piirre — ei itsenäinen sydänlihassairaus. Se voi liittyä kardiomyopatiaan, mutta esiintyy myös ilman sitä, ja pumppausvoima voi olla täysin normaali.",
+  chips:["Piirre, <b>ei diagnoosi</b>","Voi vaikuttaa <b>sisäänvirtaukseen</b>","Arvio <b>kokonaisuudesta</b>"],
   mech:[
-    "<b>Trabekulaatio itsessään ei ole tauti.</b> Sama kuva näkyy kestävyysurheilijoilla, raskaana olevilla, sirppisoluanemiassa ja tummaihoisilla ilman sydänsairautta — usein ohimenevänä kuormituksen mukana.",
-    "<b>Kun taustalla on kardiomyopatia,</b> supistuvuus heikkenee: ontelo laajenee, ejektiofraktio laskee ja seinämän liike on epätasaista. Kuvassa vasen kammio on laajentunut ja supistuu vaimeasti.",
-    "<b>Diastolinen jäykkyys.</b> Paksu trabekulaarikerros heikentää kammion joustoa → täyttöpaine nousee, vaikka EF olisi vielä kohtalainen.",
-    "<b>Rytmihäiriöt.</b> Epäjärjestäytynyt lihasrakenne ja fibroosi altistavat kammiotakykardialle ja äkkikuolemalle.",
-    "<b>Tromboembolia.</b> Veri seisoo syvissä koloissa; riski kasvaa selvästi, jos EF on alentunut tai potilaalla on eteisvärinä."
+    "<b>Mekaaninen vaikutus voi olla välitön.</b> Syvät palkkien väliset kolot voivat pilkkoa hiippaläpän läpi tulevan virtauksen useaksi suihkuksi, jolloin ne lisäävät sisäänvirtauksen vastusta läpän oman ahtauman päälle.",
+    "<b>Pumppausvoima voi silti olla hyvä.</b> Trabekulaatio itsessään ei estä supistumista, ja systolinen toiminta voi olla täysin vireä.",
+    "<b>Miksi tästä tarvitaan mittaluku.</b> Muut rakennepoikkeavuudet ovat kyllä tai ei -asioita: suoni on ahdas tai ei, purjeita on kaksi tai kolme. Lihaspalkkeja on jokaisen kammiossa, joten runsas trabekulaatio erotetaan tavallisesta vain sopimalla raja jossakin kohtaa jatkumoa.",
+    "<b>Mitä mitataan.</b> Seinämästä erotetaan kaksi kerrosta: sisäpinnan sienimäinen palkkikerros ja sen alla oleva tiivis lihaskerros. Niiden paksuuksien suhde on se luku, joka lausunnoissa esiintyy. Kaikukuvauksessa mittaus tehdään supistuksen lopussa ja magneettikuvauksessa täyttymisen lopussa — eri hetkissä, joten myös raja-arvo on eri.",
+    "<b>Raja ei ole diagnoosi.</b> Rajat on johdettu aikuisaineistoista ja ne täyttyvät myös monella terveellä; lapsilla ne ylidiagnosoivat erityisen herkästi. Ylittynyt raja on yksi havainto, jota tulkitaan kammion toiminnan, oireiden, EKG:n ja sukutaustan rinnalla.",
+    "<b>Mitä seurataan.</b> Merkitykselliseksi löydös muuttuu, jos supistusvoima heikkenee, kammio laajenee tai ilmaantuu rytmihäiriöitä. Siksi toimintaa, EKG:tä ja oireita seurataan, vaikka tilanne olisi hyvä.",
+    "<b>Geenitesti täydentää kuvan.</b> Kardiomyopatia-geenipaneelilla haetaan sydänlihassairauden taustaa; tulos vaikuttaa seurannan tiheyteen ja siihen, tutkitaanko perheenjäseniä."
   ],
   find:[
-    "<b>Kriteerit:</b> kaikututkimuksessa (Jenni) systolen lopussa ei-kompaktin ja kompaktin kerroksen suhde yli 2; magneettikuvauksessa (Petersen) diastolen lopussa yli 2,3. Kriteerit ovat herkkiä mutta epätarkkoja — yksin ne ylidiagnosoivat.",
-    "Diagnoosi tehdään kokonaisuudesta: kuvantaminen + kammion toiminta + oireet + EKG + sukuanamneesi.",
-    "<b>Oireet:</b> sydämen vajaatoiminta, rytmihäiriötuntemukset, tykytys, pyörtyminen, embolia.",
-    "<b>EKG:</b> epäspesifiset ST-T-muutokset, haarakatkos, kammiolisälyönnit."
+    "<b>Kaikukuvaus:</b> runsaat lihaspalkit ja syvät kolot erityisesti kärjessä ja sivuseinässä; sisäänvirtaus voi jakautua palkkien väliin.",
+    "Seurattavia asioita ovat kammion supistusvoima ja koko, EKG-muutokset ja rytmihäiriötuntemukset.",
+    "Magneettikuvaus antaa tarkimman arvion kerrosten suhteesta, mutta se tehdään lapsella yleensä myöhemmin, kun tutkimus onnistuu ilman nukutusta.",
+    "Trabekulaation määrä voi lapsella myös muuttua kasvun myötä — yksittäinen kuvaus ei kerro lopullista tilannetta."
   ],
   care:[
-    "Vajaatoiminnan lääkehoito tavanomaisesti, jos EF on alentunut.",
-    "Antikoagulaatio, jos eteisvärinä, kammiotrombi tai selvästi alentunut EF.",
-    "Rytmihäiriöiden arviointi, tarvittaessa rytmihäiriötahdistin; sukuselvitys ja harkittu geenitestaus."
+    "Jos kammion toiminta on hyvä, hoitona on seuranta.",
+    "Geenipaneelin tulos ohjaa jatkoseurantaa ja mahdollista perheselvitystä.",
+    "Jos supistusvoima myöhemmin heikkenisi, käytössä on tavanomainen sydämen vajaatoiminnan lääkitys; antikoagulaatiota harkitaan, jos ontelossa todetaan trombi."
   ],
-  shape:{lv:"dil",rv:"normal",septum:"normal",la:"normal",myo:"normal",trab:true,inset:"aortic3"},
+  shape:{lv:"normal",rv:"normal",septum:"normal",la:"normal",myo:"normal",trab:true,inset:"aortic3"},
   valve:{mv:1,av:1,mvThick:6,avThick:6},
-  flow:{mv:.9,av:.55,desc:.55,coll:0},
+  flow:{mv:.85,av:1,desc:1,coll:0},
   focus:{x:522,y:558,r:88,label:"SYVÄT TRABEKULAT",below:true},
-  lvContract:.4,
-  press:{lv:{sys:104,edp:20},ao:{sys:104,dia:68},la:{mean:18,a:22,v:22,yBlunt:.2},rv:{sys:32,edp:6},pa:{sys:32,dia:14},show:["lv","ao","la"]},
-  sounds:[{t:0.13,l:"S1"},{t:0.47,l:"S2"},{t:0.66,l:"S3"}],
+  press:{lv:{sys:85,edp:8},ao:{sys:85,dia:48},la:{mean:10,a:13,v:12,yBlunt:.15},rv:{sys:28,edp:5},pa:{sys:28,dia:14},show:["lv","ao","la"]},
+  sounds:[{t:0.13,l:"S1"},{t:0.47,l:"S2"}],
   murmurs:[]
 },
 {
   id:"bav", name:"Bikuspinen aorttaläppä", tag:"aorttaläppä", latin:"valva aortae bicuspidalis",
-  lead:"Aorttaläpässä on kolmen purjeen sijasta kaksi, tavallisimmin kahden purjeen yhteenkasvamisen tuloksena (raphe-juoste). Yleisin synnynnäinen sydänvika: 0,5–2 % väestöstä, miehillä noin kolme kertaa yleisempi, ja noin 9 %:lla ensimmäisen asteen sukulaisista. Tavallisin muoto on oikean ja vasemman sepelpurjeen fuusio.",
-  chips:["LV <b>190/16</b>","Ao <b>110/70</b>","Gradientti <b>~70 mmHg</b>","Väestössä <b>0,5–2 %</b>"],
+  lead:"Aorttaläpässä on kolmen purjeen sijasta kaksi, tavallisimmin kahden purjeen yhteenkasvamisen tuloksena. Se on yleisin synnynnäinen sydänvika, ja lapsuudessa läppä voi toimia pitkään hyvin: ulosvirtauskanava on avoin ja nousevassa aortassa on korkeintaan lievästi kiihtynyt virtaus. Kyse on siis ennen kaikkea seurattavasta rakenteellisesta löydöksestä.",
+  chips:["Väestössä <b>0,5–2 %</b>","Voi toimia <b>pitkään hyvin</b>","Ahtautuminen <b>aikuisiässä</b>","Liittyy <b>koarktaatioon</b>"],
   mech:[
-    "<b>Epäsymmetrinen aukeaminen.</b> Kaksi purjetta taipuvat epätasaisesti → turbulentti suihku ja jatkuva mekaaninen rasitus purjeissa.",
-    "<b>Kalkkeutuminen aikaistuu.</b> Ahtauma kehittyy tyypillisesti 10–20 vuotta trikuspista läppää aiemmin, usein 40–60 vuoden iässä.",
-    "<b>Painekuormitus.</b> Ahtautunut läppä nostaa vasemman kammion systolista painetta → konsentrinen hypertrofia → jäykkä kammio, kohonnut täyttöpaine, hapentarve kasvaa samalla kun sepelvirtausvara pienenee. Oireina rasitusrintakipu, pyörtyminen ja hengenahdistus.",
-    "<b>Vuoto vaihtoehtona.</b> Osalla purje prolapsoituu → aorttaläpän vuoto → tilavuuskuormitus ja kammion laajeneminen ahtauman sijaan.",
-    "<b>Aortopatia.</b> Nouseva aortta laajenee seinämän oman rakennepoikkeavuuden takia — riippumatta siitä, kuinka hyvin läppä toimii. Siksi aortan halkaisijaa seurataan erikseen (kuvassa katkoviiva).",
-    "Liittyy koarktaatioon: jos toinen todetaan, toinen on aina poissuljettava."
+    "<b>Epäsymmetrinen aukeaminen.</b> Kaksi purjetta taipuvat eri tavalla kuin kolme, jolloin virtaus muuttuu pyörteiseksi ja purjeisiin kohdistuu jatkuvaa mekaanista rasitusta.",
+    "<b>Kalkkeutuminen on vuosikymmenten asia.</b> Bikuspinen läppä ahtautuu tyypillisesti aikuisiässä, usein 40–60 vuoden iässä ja 10–20 vuotta kolmipurjeista läppää aiemmin. Lapsuudessa kyse on seurannasta, ei hoidosta.",
+    "<b>Toinen mahdollinen suunta on vuoto.</b> Osalla purje pullistuu ja läppä alkaa vuotaa ahtautumisen sijaan; sekin todetaan seurantakuvauksissa.",
+    "<b>Nousevan aortan seuranta.</b> Bikuspiseen läppään liittyy taipumus nousevan aortan laajenemiseen läpän toiminnasta riippumatta. Lapsella halkaisija suhteutetaan kehon kokoon SD-yksikköinä, koska aortta kasvaa lapsen mukana.",
+    "<b>Yhteys koarktaatioon on todellinen.</b> Koarktaatiopotilaista arviolta 50–85 %:lla aorttaläppä on bikuspinen. Vastasyntyneen pienessä sydämessä purjeiden välinen juoste on vaikea erottaa ja läppä voidaan aluksi tulkita kolmipurjeiseksi; tulkinta tarkentuu usein myöhemmissä kuvauksissa."
   ],
   find:[
-    "<b>Kuuntelu:</b> karkea systolinen ejektiosivuääni oikealla 2. kylkiluuvälissä, säteilee kaulalle; usein varhainen ejektioklikki. Ahtauman edetessä pulssi nousee hitaasti ja jää heikoksi (pulsus parvus et tardus) ja A2 vaimenee.",
-    "<b>Kaiku:</b> lyhytakselissa kaksi purjetta ja ”kalansuu”-aukko (kuvan pikkukuva); gradientti ja aukon pinta-ala dopplerilla; nousevan aortan halkaisija.",
-    "<b>EKG:</b> vasemman kammion hypertrofia ja kuormitusmuutokset.",
-    "Endokardiittiriski on suurentunut — hammashoidon ja infektioiden huomiointi."
+    "<b>Kaikukuvaus:</b> lyhytakselikuvassa kaksi purjetta (kuvan pikkukuva); virtausnopeus ja gradientti nousevassa aortassa sekä aortan halkaisija SD-yksikköinä.",
+    "<b>Kuuntelu:</b> varhainen ejektioklikki on bikuspisen läpän tyypillisin löydös lapsella, usein selvempi kuin sivuääni itse.",
+    "<b>Endokardiitti.</b> Riski on hieman suurentunut, mutta pelkkä bikuspinen aorttaläppä <b>ei</b> ole nykyohjeiden mukaan aihe antibioottiprofylaksialle hammastoimenpiteissä. Suun terveydestä huolehtiminen on se, mikä vaikuttaa; profylaksia varataan tekoläpille, aiemmin sairastetulle endokardiitille ja tietyille synnynnäisille vioille.",
+    "Perheenjäsenten kaikukuvausta harkitaan, koska löydös esiintyy suvuittain."
   ],
   care:[
-    "Oireeton lievä löydös: seuranta kaikututkimuksella, myös aortan halkaisija.",
-    "Vaikea oireinen ahtauma: läppäleikkaus tai valikoiden TAVI.",
-    "Nousevan aortan laajentuma: korjaus omien raja-arvojen mukaan, usein läppäleikkauksen yhteydessä."
+    "Hyvin toimiva läppä ei vaadi hoitoa.",
+    "Jos ahtauma etenee lapsuudessa merkittäväksi, ensisijainen toimenpide on pallolaajennus — ei tekoläppä, joka ei kasva lapsen mukana.",
+    "Elinikäinen seuranta kaikukuvauksella: gradientti, mahdollinen vuoto ja nousevan aortan halkaisija."
   ],
-  shape:{lv:"lvh",rv:"normal",septum:"normal",la:"normal",myo:"lvh",aortaDil:true,inset:"aortic2"},
-  valve:{mv:1,av:.3,mvThick:6,avThick:11},
-  flow:{mv:1,av:.4,desc:.4,coll:0},
+  shape:{lv:"normal",rv:"normal",septum:"normal",la:"normal",myo:"normal",inset:"aortic2"},
+  valve:{mv:1,av:.75,mvThick:6,avThick:9},
+  flow:{mv:1,av:.8,desc:.8,coll:0},
   focus:{x:474,y:356,r:50,label:"KAKSI PURJETTA"},
-  press:{lv:{sys:190,edp:16},ao:{sys:110,dia:70},la:{mean:14,a:20,v:16,yBlunt:0},rv:{sys:25,edp:4},pa:{sys:25,dia:10},show:["lv","ao","la"]},
-  sounds:[{t:0.13,l:"S1"},{t:0.18,l:"EK"},{t:0.49,l:"S2"}],
-  murmurs:[{from:0.17,to:0.47,label:"systolinen ejektiosivuääni"}]
+  press:{lv:{sys:110,edp:8},ao:{sys:85,dia:48},la:{mean:9,a:12,v:11,yBlunt:0},rv:{sys:25,edp:4},pa:{sys:25,dia:12},show:["lv","ao","la"]},
+  sounds:[{t:0.13,l:"S1"},{t:0.18,l:"EK"},{t:0.48,l:"S2"}],
+  murmurs:[{from:0.17,to:0.45,label:"systolinen ejektiosivuääni"}]
 },
 {
   id:"rvh", name:"Oikean kammion hypertrofia", tag:"oikea kammio", latin:"hypertrophia ventriculi dextri",
-  lead:"Oikean kammion seinämä paksuuntuu (normaali alle 5 mm) vastauksena krooniseen painekuormaan. Tavallisimmat syyt: keuhkoverenpainetauti, krooninen keuhkosairaus (cor pulmonale), keuhkovaltimoläpän ahtauma, Fallot'n tetralogia, pitkään jatkunut oikovirtaus — ja vasemman puolen sydänvika, kuten hiippaläpän ahtauma.",
-  chips:["RV <b>70/12</b>","PA <b>70/30</b>","RV-seinämä <b>&gt;5 mm</b>","LV <b>D-muotoinen</b>"],
+  lead:"Oikean kammion seinämä on paksuuntunut vastauksena krooniseen painekuormaan. Vauvalla syy löytyy usein sydämen vasemmalta puolelta: hiippaläpän ahtauma nostaa vasemman eteisen ja keuhkolaskimoiden painetta, mikä nostaa keuhkoverenkierron painetta ja kuormittaa oikeaa kammiota.",
+  chips:["RV-paine = <b>TR-gradientti + RA-paine</b>","TAPSE = <b>pitkittäissupistus</b>","Syy usein <b>vasemmalla puolella</b>"],
   mech:[
-    "<b>Paksuuntuminen auttaa aluksi.</b> Laplacen lain mukaan paksumpi seinämä pienentää seinämäjännitystä ja pitää iskutilavuuden yllä korkeaakin painetta vastaan.",
-    "<b>Sitten se haittaa.</b> Paksu kammio on jäykkä → diastolinen täyttö heikkenee ja täyttöpaine nousee → laskimopaine kohoaa: kaulalaskimot pullottavat, maksa suurenee, nilkat turpoavat, vatsaan kertyy nestettä.",
-    "<b>Väliseinä siirtyy.</b> Kun oikean kammion paine ylittää vasemman diastolisen paineen, kammioväliseinä litistyy ja pullistuu vasemmalle. Vasen kammio muuttuu poikkileikkauksessa D-kirjaimen muotoiseksi ja täyttyy huonommin — vaikka se itse on terve, minuuttitilavuus laskee. Tätä kutsutaan kammioiden keskinäisriippuvuudeksi.",
-    "<b>Iskemia.</b> Normaalisti oikea sepelvirtaus tapahtuu sekä systolessa että diastolessa. Kun kammiopaine nousee, virtaus rajoittuu diastoleen samalla kun lihasmassa ja hapentarve ovat kasvaneet → subendokardiaalisen iskemian riski.",
-    "<b>Loppuvaihe.</b> Kammio laajenee, kolmiliuskaläpän rengas venyy → trikuspidaalivuoto → tilavuuskuorma pahentaa laajenemista. Oikean puolen vajaatoiminta."
+    "<b>Vastasyntyneen oikea kammio on jo valmiiksi paksu.</b> Sikiöaikana se työskentelee samalla paineella kuin vasen. Syntymän jälkeen keuhkoverisuonten vastus laskee ja seinämän kuuluisi ohentua ensimmäisten kuukausien aikana. Jos keuhkopaine pysyy korkeana, tämä normaali oheneminen jää tapahtumatta.",
+    "<b>Paksuuntuminen auttaa aluksi.</b> Paksumpi seinämä pienentää seinämäjännitystä ja pitää iskutilavuuden yllä korkeaakin painetta vastaan.",
+    "<b>Sitten se alkaa haitata.</b> Paksu kammio on jäykkä: täyttyminen heikkenee ja laskimopaine nousee. Alaonttolaskimon hengitysvariaatio kertoo, ovatko täyttöpaineet vielä matalat.",
+    "<b>Väliseinä siirtyy.</b> Kun oikean kammion paine nousee riittävästi, kammioväliseinä litistyy vasemmalle ja vasen kammio muuttuu poikkileikkauksessa D-kirjaimen muotoiseksi. Se haittaa täyttymistä kammiossa, joka voi jo valmiiksi saada liian vähän verta hiippaläpän läpi.",
+    "<b>Miten paine päätellään ilman katetria.</b> Trikuspidaalivuodon huippunopeudesta lasketaan paine-ero oikean kammion ja oikean eteisen välillä; kun siihen lisätään arvioitu eteispaine, saadaan oikean kammion systolinen paine. Se vastaa keuhkovaltimon painetta vain, jos ulosvirtauskanavassa ja keuhkovaltimoläpässä ei ole ahtaumaa — siksi ne tarkistetaan aina samalla. Arvio on epäluotettava, jos vuotoa on liian vähän mitattavaksi."
   ],
   find:[
-    "<b>Tutkimus:</b> parasternaalinen kohouma (RV heave), voimistunut P2, kaulalaskimoiden aaltoilu, maksan suureneminen, turvotukset.",
-    "<b>EKG:</b> oikea akselipoikkeama, R/S-suhde yli 1 kytkennässä V1, korkea R V1:ssä ja syvä S V5–V6:ssa, P pulmonale, kuormitusmuutokset V1–V3.",
-    "<b>Kaiku:</b> RV-seinämä yli 5 mm, laajentunut oikea kammio, litistynyt väliseinä ja D-muotoinen vasen kammio, trikuspidaalivuodon gradientista arvioitu keuhkovaltimopaine.",
-    "Sydänkatetrointi varmistaa keuhkovaltimopaineen ja vastuksen, jos hoito sitä vaatii."
+    "<b>Kaikukuvaus:</b> trikuspidaalivuodon gradientti, oikean kammion seinämävahvuus ja koko, TAPSE, väliseinän liike sekä keuhkovaltimon päärungon ja haarojen virtaus.",
+    "<b>EKG lapsella on tulkinnanvarainen:</b> vastasyntyneellä oikean kammion vallitsevuus on normaalia. Poikkeavaa on se, ettei tämä vallitsevuus väisty odotetusti — ja ensimmäisen elinviikon jälkeen pystysuuntainen T-aalto V1:ssä viittaa oikean kammion painekuormaan.",
+    "<b>Hemodynaaminen katetrointi</b> mittaa keuhkovaltimopaineen ja -vastuksen suoraan, kun kaikukuvaus antaa vain arvion. Se erottaa myös sen, johtuuko paine korkeasta vastuksesta vai suuresta virtauksesta.",
+    "Kliinisiä merkkejä ovat voimistunut toisen sydänäänen jälkiosa (P2) ja pitkälle edenneenä maksan suureneminen."
   ],
   care:[
-    "Hoito kohdistuu perussyyhyn: keuhkoverenpainetaudin lääkkeet, keuhkosairauden ja uniapnean hoito, läppävian korjaus, synnynnäisen vian korjaus.",
-    "Nesteenpoisto oireiden mukaan; liian aggressiivinen nesteenpoisto huonontaa jäykän oikean kammion täyttöä."
+    "Hoito kohdistuu perussyyhyn; oikean kammion tilanne on peruste toimenpiteen ajoitukselle, ei itsessään hoidettava asia.",
+    "Keuhkoverenkierron paine ja vastus mitataan katetroinnissa ennen ratkaisua.",
+    "Oikean kammion toimintaa seurataan jokaisessa kaikukuvauksessa."
   ],
   shape:{lv:"dshape",rv:"rvh",septum:"rvh",la:"normal",myo:"normal",inset:"aortic3"},
   valve:{mv:1,av:1,mvThick:6,avThick:6},
-  flow:{mv:.8,av:.8,desc:.8,coll:0},
+  flow:{mv:.85,av:.85,desc:.85,coll:0},
   focus:{x:282,y:502,r:94,label:"PAKSUUNTUNUT SEINÄMÄ",below:true},
-  press:{lv:{sys:116,edp:12},ao:{sys:116,dia:76},la:{mean:8,a:12,v:11,yBlunt:0},rv:{sys:70,edp:12},pa:{sys:70,dia:30},show:["lv","ao","rv","pa"]},
-  sounds:[{t:0.13,l:"S1"},{t:0.49,l:"S2 (P2↑)"}],
-  murmurs:[{from:0.15,to:0.48,label:"trikuspidaalivuoto"}]
+  press:{lv:{sys:85,edp:8},ao:{sys:85,dia:48},la:{mean:9,a:12,v:11,yBlunt:0},rv:{sys:60,edp:9},pa:{sys:60,dia:30},show:["lv","ao","rv","pa"]},
+  sounds:[{t:0.13,l:"S1"},{t:0.48,l:"S2 (P2↑)"}],
+  murmurs:[{from:0.15,to:0.46,label:"trikuspidaalivuoto"}]
 }
 ];
 
 /* ==================================================================
    2. MUODOT
    ================================================================== */
+const RA_D = "M 286,212 C 236,216 214,258 214,308 C 214,352 226,388 246,398 L 336,398 C 348,376 352,300 344,258 C 334,218 322,208 286,212 Z";
 const SHAPES = {
  lv:{
   normal:"M 434,390 C 424,478 438,570 476,632 C 492,652 512,656 526,638 C 570,572 618,482 614,390 Z",
@@ -834,40 +884,43 @@ const SERIES_META={
 let cur = CONDITIONS[0];
 let t = 0.55;
 let playing = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-let bpm = 70;
+let bpm = 130;
+let rate = 0.5;
 let lastTs = performance.now();
 let particles = [];
+let lastPhase = "";
 
 /* ---------- valinta ---------- */
 const NORMAL = CONDITIONS[0], FINDINGS = CONDITIONS.slice(1);
 let selected = new Set();
 
 const CMP_ROWS = [
- ["lvWall","Vasemman kammion seinämä","8–11 mm"],
- ["lvCav","Vasemman kammion ontelo","45–55 mm, sileä sisäpinta"],
- ["rvWall","Oikean kammion seinämä","alle 5 mm"],
+ ["lvWall","Vasemman kammion seinämä","väliseinä n. 4 mm, takaseinä n. 3 mm"],
+ ["lvCav","Vasemman kammion ontelo","sileä sisäpinta, hienot lihaspalkit"],
+ ["rvWall","Oikean kammion seinämä","ohenee syntymän jälkeen viikoissa"],
  ["sept","Kammioväliseinä ja LV:n muoto","suora väliseinä, pyöreä LV"],
- ["la","Vasen eteinen","alle 40 mm, sinusrytmi"],
- ["mv","Hiippaläppä","2 purjetta, aukko 4–6 cm²"],
- ["av","Aorttaläppä","3 purjetta, ei gradienttia"],
- ["ao","Aortta","tasainen kaliiperi"],
+ ["la","Vasen eteinen","normaali koko, väliseinä suora"],
+ ["mv","Hiippaläppä","laminaari sisäänvirtaus, ei gradienttia"],
+ ["av","Aorttaläppä","3 purjetta, nouseva aortta alle 1,5 m/s"],
+ ["ao","Aortta","tasainen kaliiperi, istmus normaali"],
  ["ven","Laskimoanatomia","yksi yläonttolaskimo"]
 ];
 const CMP = {
- koarktaatio:{lvWall:"14–16 mm, konsentrinen hypertrofia", ao:"ahtauma vas. solisvaltimon jälkeen, kollateraalit"},
- mitraalistenoosi:{mv:"paksut purjeet, aukko ~1,2 cm²", la:"yli 50 mm, eteisvärinä todennäköinen", rvWall:"9–10 mm (jälkitauti)"},
- lsvc:{ven:"kaksi yläonttolaskimoa, laajentunut sepelpoukama"},
- lvnc:{lvCav:"laajentunut, syvät trabekulat (NC/C > 2,3)", lvWall:"ohut kompakti kerros"},
- bav:{av:"2 purjetta, gradientti ~70 mmHg", lvWall:"14–16 mm, konsentrinen hypertrofia", ao:"nouseva aortta laajentunut"},
- rvh:{rvWall:"9–10 mm", sept:"litistynyt väliseinä, D-muotoinen LV"}
+ koarktaatio:{ao:"paikallinen ahtauma, korjattu; kaari sen jälkeen avoin", lvWall:"pysyy normaalina, jos korjaus tehdään varhain"},
+ mitraalistenoosi:{mv:"pieni tai poikkeavarakenteinen läppä, keskigradientti koholla", la:"laajentunut, väliseinä pullottaa oikealle", rvWall:"paksuuntunut (seuraus)"},
+ lsvc:{ven:"kaksi yläonttolaskimoa, laaja sepelpoukama"},
+ lvnc:{lvCav:"voimakkaasti trabekuloitunut, syvät kolot", lvWall:"sydänlihaksen rakenne poikkeava"},
+ bav:{av:"2 purjetta, virtaus nousevassa aortassa kiihtynyt"},
+ rvh:{rvWall:"paksuuntunut, TR-gradientti koholla", sept:"litistyy vasemmalle, LV D-muotoinen"}
 };
 const INTERACTIONS = [
- {need:["koarktaatio","bav"], t:"<b>Kaksi estettä samassa putkessa.</b> Ahtautunut aorttaläppä ja aortan koarktaatio ovat molemmat kiinteitä vastuksia peräkkäin. Vasen kammio joutuu tuottamaan molempien gradienttien summan — painekuorma on suurempi kuin kummastakaan yksin. Nämä kaksi myös esiintyvät oikeasti yhdessä: koarktaatiopotilaista 50–85 %:lla aorttaläppä on bikuspinen."},
- {need:["mitraalistenoosi","rvh"], t:"<b>Syy ja seuraus.</b> Hiippaläpän ahtauma nostaa keuhkoverenkierron painetta, ja oikean kammion hypertrofia on sen luonnollinen jatke. Tässä kuvassa ne näkyvät yhtä aikaa saman ketjun alku- ja loppupäänä."},
- {need:["mitraalistenoosi","lvnc"], t:"<b>Vasen kammio kärsii kahdesta suunnasta.</b> Ahtauma rajoittaa täyttymistä ja heikko sydänlihas supistumista. Isku­tilavuus romahtaa, vaikka kumpikin vika erikseen olisi vielä siedettävä."},
- {need:["rvh","lvnc"], t:"<b>Väliseinä vie tilaa.</b> Oikean kammion paine litistää väliseinän vasemmalle, jolloin jo valmiiksi heikko vasen kammio täyttyy entistä huonommin (kammioiden keskinäisriippuvuus)."},
- {need:["lsvc","mitraalistenoosi"], t:"<b>Anatomia hankaloittaa hoitoa.</b> Persistoiva vasen yläonttolaskimo on itsessään vaaraton, mutta juuri tässä yhdistelmässä sillä on merkitystä: se muuttaa katetrireittejä, joita hiippaläpän pallolaajennus, tahdistin ja sydänleikkaus tarvitsevat."},
- {need:["koarktaatio","rvh"], t:"<b>Molemmat kammiot painekuormassa.</b> Vasen kammio työskentelee koarktaatiota vastaan ja oikea keuhkoverenkierron vastusta vastaan — sydämen hapentarve kasvaa molemmilla puolilla samanaikaisesti."}
+ {need:["mitraalistenoosi","rvh"], t:"<b>Syy ja seuraus samassa kuvassa.</b> Hiippaläpän ahtauma nostaa vasemman eteisen painetta, paine siirtyy keuhkolaskimoihin ja edelleen keuhkovaltimoihin, ja oikea kammio joutuu painekuormaan. Siksi vasemman puolen vika näkyy mittarina oikealla: trikuspidaalivuodon gradientin nousu on merkki siitä, että keuhkopaine on kohonnut."},
+ {need:["mitraalistenoosi","lvnc"], t:"<b>Kaksi estettä samalla reitillä.</b> Sisäänvirtaus ei kapene vain hiippaläpässä: voimakkaasti trabekuloituneessa kammiossa syvät lihaspalkit pilkkovat virtauksen useaksi suihkuksi heti läpän jälkeen. Silloin kyse ei ole pelkästä läppäviasta vaan koko sisäänvirtausreitistä — ja siksi tarkka anatomia halutaan nähdä ruokatorven kautta tehtävällä kaikukuvauksella ennen leikkauspäätöstä."},
+ {need:["lsvc","mitraalistenoosi"], t:"<b>Anatomia vaikuttaa hoitoon, ei vointiin.</b> Vasen yläonttolaskimo ei kuormita sydäntä lainkaan, mutta juuri tällaisessa yhdistelmässä sillä on merkitystä: se muuttaa katetrointireittejä ja leikkauksen kanylointia, ja laaja sepelpoukama kulkee aivan hiippaläpän renkaan vierestä."},
+ {need:["koarktaatio","mitraalistenoosi","bav"], t:"<b>Vasemman puolen ahtaumat kulkevat sarjassa.</b> Kun samalla lapsella on hiippaläpän ahtauma, ahtautuva aorttaläppä ja aortan koarktaatio, kyse on vasemman puolen ahtauttavien vikojen jatkumosta, jota kutsutaan Shonen kompleksiksi. Esteitä on peräkkäin koko matkalla keuhkolaskimoista aorttaan, ja siksi kokonaisuus arvioidaan aina yhtenä — yhden esteen poistaminen paljastaa seuraavan. Siksi myös koarktaation korjauksen jälkeen hiippaläpän ja aorttaläpän seuranta jatkuu."},
+ {need:["koarktaatio","bav"], t:"<b>Nämä kaksi kulkevat oikeasti yhdessä.</b> Koarktaatiopotilaista 50–85 %:lla aorttaläppä on bikuspinen. Kun toinen todetaan, toista etsitään aina — ja korjatun koarktaation jälkeen aorttaläppää seurataan omana asianaan."},
+ {need:["rvh","lvnc"], t:"<b>Väliseinä vie tilaa.</b> Oikean kammion paine litistää väliseinää vasemmalle, jolloin vasen kammio täyttyy entistä huonommin. Sen sisäänvirtaus voi olla jo valmiiksi rajoittunut sekä läpän että lihaspalkkien takia."},
+ {need:["koarktaatio","rvh"], t:"<b>Kuormaa molemmilla puolilla.</b> Ennen korjausta vasen kammio työskentelee ahtaumaa vastaan ja oikea kammio keuhkoverenkierron painetta vastaan. Koarktaation korjaus poistaa vasemman puolen esteen, mutta oikean puolen kuorma jää, jos sen syy on hiippaläpässä."}
 ];
 
 function activeList(){ return FINDINGS.filter(c => selected.has(c.id)); }
@@ -924,7 +977,9 @@ function mergeConditions(list){
     id:"combo", multi:true, list,
     name: list.length === FINDINGS.length ? "Kaikki kuusi löydöstä yhtä aikaa" : list.length + " löydöstä yhtä aikaa",
     latin: names,
-    lead: "Sama sydän kantaa nyt " + list.length + " poikkeavuutta: " + names + ". Yhdistelmä ei ole tyypillinen potilastapaus vaan tapa nähdä, miten eri viat kuormittavat samaa pumppua eri suunnista — ja mitkä niistä kasautuvat samaan kuormaan, mitkä eivät.",
+    lead: "Sama sydän kantaa " + list.length + " poikkeavuutta yhtä aikaa: " + names + "." +
+      (list.length === FINDINGS.length ? " Kuva on piirretty tavanomaiseen asentoon; jos sydän sijaitsee rintakehän oikealla puolella, rakenne ja kytkennät ovat samat peilikuvana." : "") +
+      " Osa löydöksistä kasautuu samaan kuormaan, osa on toistensa syy ja seuraus, ja yksi näkyy vasta toimenpiteissä.",
     chips:["LV <b>" + Math.round(p.lv.sys) + "/" + Math.round(p.lv.edp) + "</b>","Ao <b>" + Math.round(p.ao.sys) + "/" + Math.round(p.ao.dia) + "</b>","LA <b>" + Math.round(p.la.mean) + "</b>","PA <b>" + Math.round(p.pa.sys) + "/" + Math.round(p.pa.dia) + "</b>"],
     mech: inter.concat(["<b>Kunkin löydöksen ydin</b>"]).concat(list.map(c => "<b>" + c.name + ".</b> " + c.mech[0].replace(/<b>.*?<\/b>\s*/, ""))),
     find: list.map(c => "<b>" + c.name + ".</b> " + c.find[0].replace(/<b>.*?<\/b>\s*/, "")),
@@ -969,7 +1024,7 @@ function cmpTable(){
     vals[k] = vals[k] ? (vals[k].indexOf(v) < 0 ? vals[k] + " · " + v : vals[k]) : v;
   }));
   const p = cur.press, np = NORMAL.press;
-  const ef = act.some(c => c.id === "lvnc") ? "noin 35 %" : act.some(c => c.shape.lv === "lvh") ? "säilynyt, mutta jäykkä kammio" : "55–70 %";
+  const ef = act.length === 0 ? "EF 60–70 %, FS 28–40 %" : "voi säilyä normaalina — arvioidaan jokaisessa kuvauksessa";
   const rows = CMP_ROWS.map(r => {
     const v = vals[r[0]];
     return `<tr class="${v?"ch":""}"><td class="k">${r[1]}</td><td class="n">${r[2]}</td><td class="c">${v || "ennallaan"}</td></tr>`;
@@ -981,9 +1036,15 @@ function cmpTable(){
     ${num("Aortan paine", np.ao.sys+"/"+np.ao.dia+" mmHg", Math.round(p.ao.sys)+"/"+Math.round(p.ao.dia)+" mmHg" + (p.distal ? " (alaraajoissa "+Math.round(p.distal.sys)+"/"+Math.round(p.distal.dia)+")" : ""))}
     ${num("Vasemman eteisen keskipaine", np.la.mean+" mmHg", Math.round(p.la.mean)+" mmHg")}
     ${num("Keuhkovaltimopaine", np.pa.sys+"/"+np.pa.dia+" mmHg", Math.round(p.pa.sys)+"/"+Math.round(p.pa.dia)+" mmHg")}
-    ${num("Ejektiofraktio", "55–70 %", ef)}
+    ${num("Kammioiden supistusvoima", "EF 60–70 %, FS 28–40 %", ef)}
   </tbody></table>
-  <div class="note">Painearvot ovat havainnollistavia. Useaa löydöstä yhdistettäessä ne on laskettu yksinkertaisella säännöllä (kunkin suureen voimakkain poikkeama), eivät potilasmittauksista.</div>`;
+  <details class="explain" open><summary>Mistä nämä luvut tulevat?</summary><ul>
+    <li><b>Ne eivät ole mittaustuloksia.</b> Jokaiselle löydökselle on annettu sille tyypilliset imeväisikäisen esimerkkiarvot, joiden tarkoitus on näyttää muutoksen suunta ja suuruusluokka — ei ennustaa yhdenkään lapsen lukemia.</li>
+    <li><b>Useaa löydöstä yhdistettäessä ei lasketa fysiologista mallia.</b> Jokaiselle suureelle valitaan valittujen löydösten joukosta voimakkain poikkeama: kammio-, eteis- ja keuhkovaltimopaineista suurin; aortan systolisesta <i>pienin</i>, koska ahtautunut läppä rajoittaa sitä; aortan diastolisesta suurin, koska koarktaatio nostaa sitä.</li>
+    <li>Jos mukana on kaksi peräkkäistä estettä (koarktaatio ja ahtautunut aorttaläppä), kammiopaineeseen lisätään 20 mmHg, koska kammio joutuu voittamaan molemmat. Ahtauman alapuolinen aortan paine johdetaan yläpuolisesta.</li>
+    <li class="ex"><b>Esimerkki, kaikki kuusi valittuna.</b> <b>LV 130/10:</b> 110 tulee koarktaatiosta, siihen +20 toisesta peräkkäisestä esteestä, ja 10 on korkein täyttöpaine mukana olevista löydöksistä. <b>Ao 85/60:</b> systolinen 85 tulee ahtautuneesta aorttaläpästä, joka rajoittaa aorttaan pääsevää painetta, ja diastolinen 60 koarktaatiosta.</li>
+    <li>Todellisella potilaalla luvut riippuvat ahtauman asteesta, sykkeestä, nestetilanteesta ja iästä. Eri vikojen vaikutuksia ei voi laskea yhteen näin suoraviivaisesti — siksi kuvan luvut kelpaavat suunnan hahmottamiseen, eivät arviointiin.</li>
+  </ul></details>`;
 }
 function renderRead(){
   const c = cur, multi = !!c.multi, some = selected.size > 0;
@@ -997,6 +1058,14 @@ function renderRead(){
     <div class="latin">${c.latin}</div>
     <p>${c.lead}</p>
     <div class="chips">${c.chips.map(x => `<span class="chip">${x}</span>`).join("")}</div>
+    <details class="explain"><summary>Mitä lyhenteet ja luvut tarkoittavat?</summary><ul>
+      <li><b>LV</b> vasen kammio · <b>RV</b> oikea kammio · <b>LA</b> vasen eteinen · <b>Ao</b> aortta · <b>PA</b> keuhkovaltimo. Kaikki luvut ovat paineita, yksikkönä mmHg.</li>
+      <li><b>Kahden luvun pari</b> tarkoittaa huippupainetta supistuksen aikana ja matalinta painetta sen jälkeen.</li>
+      <li><b>Kammiolla</b> jälkimmäinen luku on paine täyttymisen lopussa juuri ennen supistusta. Kammio tyhjenee joka lyönnillä lähes nollaan, joten luku on pieni — se kertoo, kuinka jäykkä tai täysi kammio on.</li>
+      <li><b>Valtimolla</b> jälkimmäinen luku on se, mihin paine ehtii laskea ennen seuraavaa lyöntiä. Suoni ei tyhjene, joten paine ei putoa nollaan. Ao 85/48 on sama lukupari kuin verenpainemittarissa.</li>
+      <li><b>Eteisellä</b> on vain yksi luku, keskipaine, koska vaihtelu yhden lyönnin aikana on pieni.</li>
+      <li>Kuvan lyhenteet <b>TV, MV, PV, AV</b> ovat läppiä: kolmiliuska-, hiippa-, keuhkovaltimo- ja aorttaläppä.</li>
+    </ul></details>
     <div class="tabs" role="tablist">${tabs.map(t => `<button class="tab" role="tab" data-tab="${t}" aria-selected="${tab===t}">${names[t]}</button>`).join("")}</div>
     ${body}
     ${c.id === "normaali" ? '<div class="note">Valitse yksi tai useampi löydös vasemmalta. Kytke ”Normaalin ääriviiva” päälle, niin näet katkoviivalla, mistä terveen sydämen muoto poikkeaa.</div>' : ''}`;
@@ -1010,6 +1079,15 @@ function applyShape(){
   $("clipLVpath").setAttribute("d", SHAPES.lv[s.lv]);
   $("rv-cav").setAttribute("d", SHAPES.rv[s.rv]);
   $("clipRVpath").setAttribute("d", SHAPES.rv[s.rv]);
+  $("clipRApath").setAttribute("d", RA_D);
+  $("clipLApath").setAttribute("d", SHAPES.la[s.la]);
+  $("clipMyoPath").setAttribute("d", SHAPES.myo[s.myo]);
+  ["sh1","sh2","sh3","myo-shadow"].forEach(i => $(i).setAttribute("d", SHAPES.myo[s.myo]));
+  $("myo-rim").setAttribute("d", SHAPES.myo[s.myo]);
+  $("lv-ish").setAttribute("d", SHAPES.lv[s.lv]);
+  $("rv-ish").setAttribute("d", SHAPES.rv[s.rv]);
+  $("ra-ish").setAttribute("d", RA_D);
+  $("la-ish").setAttribute("d", SHAPES.la[s.la]);
   $("septum").setAttribute("d", SHAPES.septum[s.septum]);
   $("la-cav").setAttribute("d", SHAPES.la[s.la]);
   $("myo").setAttribute("d", SHAPES.myo[s.myo]);
@@ -1093,14 +1171,15 @@ function insetUpdate(kind, f, pref){
 function buildParticles(){
   const g = $("flow"); g.innerHTML = ""; particles = [];
   STREAMS.forEach(s => {
-    const path = $(s.id), L = path.getTotalLength();
+    const path = $(s.id), L = path.getTotalLength(), N = 240, tab = new Float32Array(N*2);
+    for(let i=0;i<N;i++){ const pt = path.getPointAtLength(L*i/(N-1)); tab[i*2] = pt.x; tab[i*2+1] = pt.y; }
     for(let i=0;i<s.n;i++){
       const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
-      c.setAttribute("r", 4.6);
+      c.setAttribute("r", (4.2 + (i%3)*0.7).toFixed(1));
       c.setAttribute("fill", s.col === "art" ? "#f3868c" : "#7fc0ec");
       c.setAttribute("opacity", .95);
       g.appendChild(c);
-      particles.push({el:c, path, L, p:i/s.n, s});
+      particles.push({el:c, tab, N, p:i/s.n, s, op:-1});
     }
   });
 }
@@ -1204,12 +1283,18 @@ $("tLabels").onchange = e => $("labels").classList.toggle("hidden", !e.target.ch
 $("tFlow").onchange = e => $("flow").classList.toggle("hidden", !e.target.checked);
 $("tCond").onchange = e => $("conduction").classList.toggle("hidden", !e.target.checked);
 $("tGhost").onchange = e => $("ghost").classList.toggle("hidden", !e.target.checked);
+$("rateSeg").addEventListener("click", e => {
+  const b = e.target.closest(".segb"); if(!b) return;
+  rate = +b.dataset.rate;
+  $("rateSeg").querySelectorAll(".segb").forEach(x => x.setAttribute("aria-pressed", +x.dataset.rate === rate));
+});
+$("rateSeg").querySelectorAll(".segb").forEach(x => x.setAttribute("aria-pressed", +x.dataset.rate === rate));
 if(!playing) $("playBtn").textContent = "Jatka";
 
 /* ---------- loop ---------- */
 function frame(ts){
   const dt = Math.min(0.05, (ts - lastTs)/1000); lastTs = ts;
-  if(playing) t = (t + dt/(60/bpm)) % 1;
+  if(playing) t = (t + dt*rate/(60/bpm)) % 1;
 
   const av = avOpen(t), sl = slOpen(t), c = contract(t), ac = atrialC(t), af = atrialFill(t);
   const mvF = av * (cur.valve.mv), avF = sl * (cur.valve.av);
@@ -1232,15 +1317,15 @@ function frame(ts){
     else if(o.s.gate === "vein") gate = 0.55 + 0.45*av;
     gate *= streamMult(o.s);
     if(o.s.mult === "coll" && !cur.shape.coll) gate = 0;
-    if(gate <= 0.001 && (o.s.mult === "coll" || o.s.mult === "lsvcOnly")){ o.el.setAttribute("opacity", 0); return; }
-    if(gate < 0.03){ o.el.setAttribute("opacity", .3); }
-    else {
-      o.el.setAttribute("opacity", .95);
-      o.p += dt * o.s.v * gate;
-      if(o.p >= 1) o.p = 0;
-    }
-    const pt = o.path.getPointAtLength(o.p * o.L);
-    o.el.setAttribute("cx", pt.x); o.el.setAttribute("cy", pt.y);
+    let op;
+    if(gate <= 0.001 && (o.s.mult === "coll" || o.s.mult === "lsvcOnly")) op = 0;
+    else if(gate < 0.03) op = 0.3;
+    else { op = 0.95; o.p += dt * o.s.v * gate; if(o.p >= 1) o.p = 0; }
+    if(op !== o.op){ o.el.setAttribute("opacity", op); o.op = op; }
+    if(op === 0) return;
+    const f = o.p*(o.N-1), i0 = f|0, fr = f-i0, i1 = i0+1 < o.N ? i0+1 : i0;
+    o.el.setAttribute("cx", (o.tab[i0*2] + (o.tab[i1*2]-o.tab[i0*2])*fr).toFixed(1));
+    o.el.setAttribute("cy", (o.tab[i0*2+1] + (o.tab[i1*2+1]-o.tab[i0*2+1])*fr).toFixed(1));
   });
 
   $("focus").setAttribute("opacity", (0.45 + 0.5*Math.abs(Math.sin(ts/700))).toFixed(2));
@@ -1257,7 +1342,8 @@ function frame(ts){
 
   const cx = TX0 + t*(TX1-TX0), cl = $("cursor");
   if(cl){ cl.setAttribute("x1", cx.toFixed(1)); cl.setAttribute("x2", cx.toFixed(1)); }
-  $("phaseLbl").textContent = phaseName(t);
+  const pn = phaseName(t);
+  if(pn !== lastPhase){ $("phaseLbl").textContent = pn; lastPhase = pn; }
 
   requestAnimationFrame(frame);
 }
