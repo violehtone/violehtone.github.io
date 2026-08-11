@@ -77,13 +77,26 @@ header.top h1 em{font-style:italic;color:var(--signal);font-weight:300}
 .cond[aria-pressed="true"] .tag{color:var(--signal)}
 .cond:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
 @media (max-width:1100px){
-  .rail .list{display:flex;gap:6px;overflow-x:auto;padding:8px;scrollbar-width:thin}
-  .cond{flex:0 0 auto;width:auto;border-left:0;border-bottom:2px solid transparent;white-space:nowrap}
-  .cond[aria-pressed="true"]{border-left:0;border-bottom-color:var(--signal)}
+  .rail .list{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:8px}
+  .cond{width:auto;border-left:0;border:1px solid var(--line);border-radius:3px;padding:8px 9px;font-size:13px;line-height:1.3}
+  .cond[aria-pressed="true"]{border-color:var(--signal)}
+  .cond[data-id="__none"],.cond[data-id="__all"]{grid-column:1/-1}
+  .rail .sep{display:none}
 }
+@media (max-width:520px){ .cond .tag{display:none} .cond{min-height:44px;display:flex;align-items:center} }
 
 /* ---------- heart stage ---------- */
 .heart-panel{position:relative;overflow:hidden}
+.heart-panel.zoomed{position:fixed;inset:0;z-index:60;border-radius:0;display:flex;flex-direction:column;overflow:auto}
+.heart-panel.zoomed svg.heart{flex:1 1 auto;min-height:0;width:100%;height:auto}
+@media (min-width:1101px){
+  .rail{position:sticky;top:16px}
+  .heart-panel:not(.zoomed){position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto}
+}
+svg.heart:focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
+.hit.kbd{outline:none;stroke:#e0a72e!important;stroke-width:4!important}
+.selcount{float:right;color:var(--signal);letter-spacing:.08em}
+.zoombtn{margin-left:auto}
 svg.heart{display:block;width:100%;height:auto;touch-action:manipulation}
 .controls{
   display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;
@@ -104,13 +117,16 @@ svg.heart{display:block;width:100%;height:auto;touch-action:manipulation}
 .segb:last-child{border-right:0}
 .segb[aria-pressed="true"]{background:var(--signal);color:#12202a;font-weight:500}
 .phase{
-  margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;
+  position:absolute;top:10px;right:12px;z-index:2;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--signal);
+  background:rgba(10,17,21,.82);border:1px solid var(--line);border-radius:2px;padding:4px 9px;
 }
 .pick{
   padding:9px 14px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);min-height:42px;
 }
 .pick b{color:var(--bone);font-weight:500}
+.pick .hint{color:var(--muted)}
 .pick i{font-style:italic;color:var(--muted)}
 
 /* ---------- readout ---------- */
@@ -154,7 +170,7 @@ footer{margin-top:28px;color:var(--muted);font-size:12px;border-top:1px solid va
 .hit{cursor:pointer}
 .hit:hover{filter:brightness(1.25)}
 .hidden{display:none}
-.cond .box{display:inline-block;width:11px;height:11px;border:1px solid var(--muted);border-radius:2px;margin-right:9px;position:relative;top:1px}
+.cond .box{display:inline-block;flex:0 0 11px;width:11px;height:11px;align-self:flex-start;margin-top:3px;border:1px solid var(--muted);border-radius:2px;margin-right:9px;position:relative;top:1px}
 .cond[aria-pressed="true"] .box{background:var(--signal);border-color:var(--signal)}
 .rail .sep{height:1px;background:var(--line);margin:7px 10px}
 .railhint{padding:2px 12px 8px;color:var(--muted);font-size:11.5px}
@@ -193,24 +209,24 @@ table.cmp tr.ch td.c{color:var(--signal)}
   </div>
 </header>
 
-<div class="stage">
+<main class="stage">
 
   <!-- ============ RAIL ============ -->
   <section class="panel rail">
-    <div class="hd">Löydökset</div>
+    <div class="hd">Löydökset<span class="selcount" id="selCount"></span></div>
     <div class="railhint">Valitse yksi tai useita.</div>
     <div class="list" id="condList"></div>
   </section>
 
   <!-- ============ HEART ============ -->
   <section class="panel heart-panel">
-    <svg class="heart" id="heartSvg" viewBox="0 0 900 720" role="img" aria-label="Sydämen anatominen leikkauskuva">
+    <svg class="heart" id="heartSvg" viewBox="0 0 900 720" role="group" tabindex="0" aria-label="Sydämen anatominen leikkauskuva. Selaa rakenteita nuolinäppäimillä.">
       <defs>
         <radialGradient id="rgVen" cx="42%" cy="34%" r="76%">
-          <stop offset="0" stop-color="#5e95bd"/><stop offset="1" stop-color="#20465f"/>
+          <stop offset="0" stop-color="#5b93bc"/><stop offset="1" stop-color="#17394f"/>
         </radialGradient>
         <radialGradient id="rgArt" cx="42%" cy="34%" r="76%">
-          <stop offset="0" stop-color="#d15b62"/><stop offset="1" stop-color="#832a33"/>
+          <stop offset="0" stop-color="#c9525b"/><stop offset="1" stop-color="#6d1f28"/>
         </radialGradient>
         <linearGradient id="gVen" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stop-color="#5b8db4"/><stop offset="1" stop-color="#2c5878"/>
@@ -219,14 +235,14 @@ table.cmp tr.ch td.c{color:var(--signal)}
           <stop offset="0" stop-color="#cf5158"/><stop offset="1" stop-color="#94333c"/>
         </linearGradient>
         <linearGradient id="gMyo" gradientUnits="userSpaceOnUse" x1="180" y1="380" x2="470" y2="700">
-          <stop offset="0" stop-color="#8d5146"/>
-          <stop offset="0.55" stop-color="#6d3b34"/><stop offset="1" stop-color="#472622"/>
+          <stop offset="0" stop-color="#dcb691"/>
+          <stop offset="0.5" stop-color="#b98a6b"/><stop offset="1" stop-color="#8a604a"/>
         </linearGradient>
         <linearGradient id="gMyoA" gradientUnits="userSpaceOnUse" x1="240" y1="480" x2="360" y2="620">
-          <stop offset="0" stop-color="#a05f52"/><stop offset="1" stop-color="#70413a"/>
+          <stop offset="0" stop-color="#a86a54"/><stop offset="1" stop-color="#754434"/>
         </linearGradient>
         <pattern id="fiber" width="9" height="9" patternTransform="rotate(58)" patternUnits="userSpaceOnUse">
-          <line x1="0" y1="0" x2="0" y2="9" stroke="#c9887a" stroke-width="0.8" opacity="0.09"/>
+          <line x1="0" y1="0" x2="0" y2="9" stroke="#7a4a33" stroke-width="0.8" opacity="0.14"/>
         </pattern>
         <radialGradient id="bgVig" cx="50%" cy="42%" r="72%">
           <stop offset="0" stop-color="#16262f" stop-opacity="0.85"/>
@@ -245,23 +261,23 @@ table.cmp tr.ch td.c{color:var(--signal)}
       <g fill="none" stroke="none">
         <path id="p-svc"  d="M 252,24 L 252,188 C 252,220 262,244 282,266"/>
         <path id="p-ivc"  d="M 130,716 L 130,438 C 134,398 164,376 206,370"/>
-        <path id="p-tv"   d="M 282,300 C 286,356 288,412 292,466 C 296,514 300,540 304,562"/>
-        <path id="p-rvot" d="M 304,562 C 296,520 292,468 302,430 C 318,402 342,388 358,372 L 360,338 C 362,308 372,284 396,266 C 348,228 300,214 250,222"/>
-        <path id="p-lpa"  d="M 398,266 C 452,270 510,266 556,260"/>
-        <path id="p-pv"   d="M 886,232 C 820,238 754,250 706,272 C 686,282 674,296 668,308"/>
-        <path id="p-mv"   d="M 668,308 C 640,342 606,374 580,412 C 560,442 546,472 538,498"/>
-        <path id="p-lvot" d="M 538,498 C 522,452 500,414 478,384 L 474,246 C 474,208 530,190 596,196 C 690,206 772,244 790,300"/>
+        <path id="p-tv"   d="M 278,304 C 284,358 288,412 292,468 C 296,518 300,546 306,570"/>
+        <path id="p-rvot" d="M 306,570 C 296,524 292,470 300,434 C 316,406 344,388 372,366 L 374,334 C 376,304 382,278 400,260 C 350,224 300,210 250,218"/>
+        <path id="p-lpa"  d="M 402,260 C 452,264 508,260 554,254"/>
+        <path id="p-pv"   d="M 886,232 C 820,238 754,250 706,272 C 684,282 672,294 664,306"/>
+        <path id="p-mv"   d="M 664,306 C 638,340 604,372 580,410 C 560,440 544,470 534,500"/>
+        <path id="p-lvot" d="M 534,500 C 520,456 500,416 478,386 L 474,246 C 474,208 530,190 596,196 C 690,206 772,244 790,300"/>
         <path id="p-desc" d="M 790,300 L 790,716"/>
         <path id="p-coll" d="M 716,58 C 802,100 868,222 856,348 C 848,432 826,458 806,470"/>
-        <path id="p-cs"   d="M 704,398 C 640,416 520,424 430,418 C 382,414 342,404 322,396"/>
-        <path id="p-lsvc" d="M 748,24 L 748,292 C 748,342 736,376 704,398"/>
+        <path id="p-cs"   d="M 700,388 C 638,404 520,414 430,414 C 382,414 346,412 326,408"/>
+        <path id="p-lsvc" d="M 748,24 L 748,292 C 748,340 734,372 700,388"/>
       </g>
 
       <!-- pulmonary veins (behind) -->
       <g id="veinsBack">
         <path d="M 886,232 C 820,238 754,250 706,272" stroke="#3e1a20" stroke-width="32" fill="none" stroke-linecap="round"/>
         <path d="M 886,232 C 820,238 754,250 706,272" stroke="url(#gArt)" stroke-width="24" fill="none" stroke-linecap="round"
-              class="hit" data-name="Keuhkolaskimot" data-lat="venae pulmonales" data-info="Neljä laskimoa tuovat hapekkaan veren keuhkoista vasempaan eteiseen. Ainoat laskimot, joissa virtaa hapekas veri."/>
+              class="hit" data-name="Keuhkolaskimot" data-lat="venae pulmonales" data-info="Neljä laskimoa tuovat hapekkaan veren keuhkoista vasempaan eteiseen. Syntymän jälkeen ainoat laskimot, joissa virtaa hapekas veri; sikiöllä sama pätee myös napalaskimoon."/>
         <path d="M 886,352 C 826,356 762,362 714,344" stroke="#3e1a20" stroke-width="32" fill="none" stroke-linecap="round"/>
         <path d="M 886,352 C 826,356 762,362 714,344" stroke="url(#gArt)" stroke-width="24" fill="none" stroke-linecap="round"
               class="hit" data-name="Keuhkolaskimot" data-lat="venae pulmonales" data-info="Neljä laskimoa tuovat hapekkaan veren keuhkoista vasempaan eteiseen."/>
@@ -269,18 +285,18 @@ table.cmp tr.ch td.c{color:var(--signal)}
 
       <!-- pulmonary arteries -->
       <g id="pulmArt">
-        <path d="M 396,266 C 348,228 300,214 250,222" stroke="#123043" stroke-width="46" fill="none" stroke-linecap="round"/>
-        <path d="M 398,266 C 452,270 510,266 556,260" stroke="#123043" stroke-width="42" fill="none" stroke-linecap="round"/>
-        <path d="M 396,266 C 348,228 300,214 250,222" stroke="url(#gVen)" stroke-width="38" fill="none" stroke-linecap="round"
+        <path d="M 400,260 C 350,224 300,210 250,218" stroke="#123043" stroke-width="46" fill="none" stroke-linecap="round"/>
+        <path d="M 402,260 C 452,264 508,260 554,254" stroke="#123043" stroke-width="42" fill="none" stroke-linecap="round"/>
+        <path d="M 400,260 C 350,224 300,210 250,218" stroke="url(#gVen)" stroke-width="38" fill="none" stroke-linecap="round"
               class="hit" data-name="Oikea keuhkovaltimo" data-lat="arteria pulmonalis dextra" data-info="Kulkee nousevan aortan ja yläonttolaskimon takaa oikeaan keuhkoon."/>
-        <path d="M 398,266 C 452,270 510,266 556,260" stroke="url(#gVen)" stroke-width="34" fill="none" stroke-linecap="round"
+        <path d="M 402,260 C 452,264 508,260 554,254" stroke="url(#gVen)" stroke-width="34" fill="none" stroke-linecap="round"
               class="hit" data-name="Vasen keuhkovaltimo" data-lat="arteria pulmonalis sinistra" data-info="Kulkee aortan kaaren alitse vasempaan keuhkoon; kiinnittyy kaareen valtimotiehyen jäänteellä (lig. arteriosum)."/>
       </g>
 
       <!-- LSVC (hidden by default) -->
       <g id="lsvcGroup" class="hidden">
-        <path d="M 748,24 L 748,292 C 748,342 736,376 704,398" stroke="#123043" stroke-width="44" fill="none" stroke-linecap="round"/>
-        <path d="M 748,24 L 748,292 C 748,342 736,376 704,398" stroke="url(#gVen)" stroke-width="36" fill="none" stroke-linecap="round"
+        <path d="M 748,24 L 748,292 C 748,340 734,372 700,388" stroke="#123043" stroke-width="44" fill="none" stroke-linecap="round"/>
+        <path d="M 748,24 L 748,292 C 748,340 734,372 700,388" stroke="url(#gVen)" stroke-width="36" fill="none" stroke-linecap="round"
               class="hit" data-name="Persistoiva vasen yläonttolaskimo (LSVC)" data-lat="vena cava superior sinistra persistens" data-info="Sikiöaikaisen vasemman etukardinaalilaskimon jäänne. Laskee tyypillisesti sepelpoukaman kautta oikeaan eteiseen."/>
       </g>
 
@@ -305,7 +321,7 @@ table.cmp tr.ch td.c{color:var(--signal)}
       <g id="aortaGroup">
         <path d="M 566,190 L 566,26 M 640,196 L 640,22 M 716,220 L 716,32" stroke="#3e1a20" stroke-width="30" fill="none" stroke-linecap="round"/>
         <path d="M 566,190 L 566,26 M 640,196 L 640,22 M 716,220 L 716,32" stroke="url(#gArt)" stroke-width="21" fill="none" stroke-linecap="round"
-              class="hit" data-name="Aortan kaaren haarat" data-lat="tr. brachiocephalicus, a. carotis communis sin., a. subclavia sin." data-info="Vievät veren päähän ja yläraajoihin. Koarktaatio sijaitsee tyypillisesti heti vasemman solisvaltimon jälkeen — siksi yläraajojen paine on korkea ja alaraajojen matala."/>
+              class="hit" data-name="Aortan kaaren haarat" data-lat="tr. brachiocephalicus, a. carotis communis sin., a. subclavia sin." data-info="Vievät veren päähän ja yläraajoihin. Koarktaatio sijaitsee tyypillisesti heti vasemman solisvaltimon jälkeen — siksi yläraajojen paine on korkea ja alaraajojen matala. Paine mitataan oikeasta käsivarresta, koska vasen solisvaltimo voi lähteä ahtauman kohdalta tai sen alapuolelta."/>
         <path id="aorta-wall" d="M 474,392 L 474,244 C 474,206 530,188 596,194 C 690,204 772,244 790,300 L 790,716" stroke="#3e1a20" stroke-width="74" fill="none"/>
         <path id="aorta-lumen" d="M 474,392 L 474,244 C 474,206 530,188 596,194 C 690,204 772,244 790,300 L 790,716" stroke="url(#gArt)" stroke-width="60" fill="none"
               class="hit" data-name="Aortta" data-lat="aorta ascendens, arcus, aorta descendens" data-info="Vie hapekkaan veren vasemmasta kammiosta koko elimistöön. Paine imeväisikäisellä noin 85/50 mmHg, aikuisella 120/80."/>
@@ -315,6 +331,22 @@ table.cmp tr.ch td.c{color:var(--signal)}
         <path d="M 434,352 C 414,356 400,366 388,378 M 512,348 C 532,352 548,362 560,374" stroke="#7e262e" stroke-width="9" fill="none" stroke-linecap="round"/>
         <path d="M 434,352 C 414,356 400,366 388,378 M 512,348 C 532,352 548,362 560,374" stroke="#d05b62" stroke-width="5" fill="none" stroke-linecap="round"
               class="hit" data-name="Sepelvaltimot" data-lat="arteriae coronariae" data-info="Lähtevät aortan tyven poukamista heti läpän yläpuolelta. Vasen sepelvaltimo haarautuu etulaskevaan ja kiertävään haaraan, oikea kulkee eteis-kammiouurteessa."/>
+      </g>
+
+      <g id="vesselEnds" pointer-events="none" stroke="#e9cba6" stroke-width="3">
+        <ellipse cx="252" cy="24"  rx="23" ry="8"  fill="#0d2b3c"/>
+        <ellipse cx="130" cy="712" rx="23" ry="8"  fill="#0d2b3c"/>
+        <ellipse cx="248" cy="218" rx="7"  ry="19" fill="#0d2b3c"/>
+        <ellipse cx="554" cy="254" rx="7"  ry="17" fill="#0d2b3c"/>
+        <ellipse cx="566" cy="27"  rx="10.5" ry="4" fill="#3a1218"/>
+        <ellipse cx="640" cy="23"  rx="10.5" ry="4" fill="#3a1218"/>
+        <ellipse cx="716" cy="33"  rx="10.5" ry="4" fill="#3a1218"/>
+        <ellipse cx="884" cy="232" rx="6"  ry="12" fill="#3a1218"/>
+        <ellipse cx="884" cy="352" rx="6"  ry="12" fill="#3a1218"/>
+        <ellipse cx="790" cy="712" rx="30" ry="10" fill="#3a1218"/>
+      </g>
+      <g id="lsvcEnd" class="hidden" pointer-events="none" stroke="#e9cba6" stroke-width="3">
+        <ellipse cx="748" cy="26" rx="18" ry="7" fill="#0d2b3c"/>
       </g>
 
       <!-- coarctation -->
@@ -333,18 +365,19 @@ table.cmp tr.ch td.c{color:var(--signal)}
         <path id="sh3" stroke-width="12" stroke-opacity=".16"/>
         <path id="myo-shadow" fill="#000" stroke="none" opacity=".5"/>
       </g>
+      <path id="epi-shell" fill="none" stroke="#d8a0a0" stroke-width="24" stroke-opacity=".9" stroke-linejoin="round" pointer-events="none"/>
       <path id="myo" d="M 206,394 C 182,452 190,536 244,594 C 316,660 424,694 512,682 C 596,656 654,520 656,394 Z"
-            fill="url(#gMyo)" stroke="#33191a" stroke-width="2.5"
+            fill="url(#gMyo)" stroke="#f2ddc0" stroke-width="4.5" stroke-linejoin="round"
             class="hit" data-name="Sydänlihas" data-lat="myocardium" data-info="Kammioiden lihasseinämä, kierteisiä lihaskerroksia. Vasen kammio on noin kolme kertaa oikeaa paksumpi; vastasyntyneellä molemmat ovat vain muutaman millimetrin. Ohuin kohta on kärki."/>
       <g clip-path="url(#clipMyo)" pointer-events="none">
-        <path id="myo-rim" transform="translate(-3,-5)" fill="none" stroke="#d2917f" stroke-opacity=".3" stroke-width="9"/>
+        <path id="myo-rim" transform="translate(-4,-6)" fill="none" stroke="#ffeed6" stroke-opacity=".28" stroke-width="11"/>
       </g>
       <path id="myoFiber" d="M 206,394 C 182,452 190,536 244,594 C 316,660 424,694 512,682 C 596,656 654,520 656,394 Z" fill="url(#fiber)" pointer-events="none"/>
 
       <!-- coronary sinus in the AV groove -->
       <g id="csGroup" opacity=".92">
-        <path id="cs-wall" d="M 704,398 C 640,416 520,424 430,418 C 382,414 342,404 322,396" stroke="#123043" stroke-width="22" fill="none" stroke-linecap="round"/>
-        <path id="cs-lumen" d="M 704,398 C 640,416 520,424 430,418 C 382,414 342,404 322,396" stroke="url(#gVen)" stroke-width="15" fill="none" stroke-linecap="round"
+        <path id="cs-wall" d="M 700,388 C 638,404 520,414 430,414 C 382,414 346,412 326,408" stroke="#123043" stroke-width="22" fill="none" stroke-linecap="round"/>
+        <path id="cs-lumen" d="M 700,388 C 638,404 520,414 430,414 C 382,414 346,412 326,408" stroke="url(#gVen)" stroke-width="15" fill="none" stroke-linecap="round"
               class="hit" data-name="Sepelpoukama" data-lat="sinus coronarius" data-info="Kerää sydänlihaksen laskimoveren ja laskee oikeaan eteiseen. Kulkee sydämen takana eteis-kammiouurteessa. Laajentuu, jos vasen yläonttolaskimo on jäänyt paikalleen."/>
       </g>
 
@@ -353,61 +386,63 @@ table.cmp tr.ch td.c{color:var(--signal)}
         d="M 394,400 C 384,484 372,566 366,620 C 400,640 440,646 476,632 C 438,570 424,478 434,390 Z"
         data-name="Kammioväliseinä" data-lat="septum interventriculare" data-info="Paksu lihaksinen osa ja ohut kalvomainen yläosa. Toiminnallisesti osa vasenta kammiota; litistyy tai pullistuu vasemmalle, jos oikean kammion paine nousee."/>
       <g id="rv-g">
-        <path id="rv-cav" class="hit" fill="url(#rgVen)" stroke="#16374b" stroke-width="3"
+        <path id="rvot" class="hit" fill="url(#rgVen)" stroke="url(#gMyoA)" stroke-width="10" stroke-linejoin="round"
+          d="M 348,412 C 338,386 338,354 348,334 L 406,326 C 416,352 414,384 410,408 Z"
+          data-name="Oikean kammion ulosvirtauskanava" data-lat="conus arteriosus / infundibulum" data-info="Sileäseinäinen suppilo, joka johtaa keuhkovaltimoläpälle. Sijaitsee aortan tyven etupuolella ja vasemmalla."/>
+        <path id="rv-cav" class="hit" fill="url(#rgVen)" stroke="#eed9bb" stroke-width="3.4"
           d="M 222,398 C 202,450 208,528 250,578 C 292,620 336,634 366,620 C 372,566 384,484 394,400 Z"
           data-name="Oikea kammio" data-lat="ventriculus dexter" data-info="Puolikuun muotoinen ontelo, joka kietoutuu vasemman kammion ympärille. Pumppaa keuhkoverenkiertoon matalalla paineella (25/4 mmHg). Sisäpinta karkeasti trabekuloitunut."/>
-        <path id="rvot" class="hit" fill="url(#rgVen)" stroke="url(#gMyoA)" stroke-width="10"
-          d="M 330,406 C 322,380 322,352 330,334 L 392,330 C 400,356 400,384 396,408 Z"
-          data-name="Oikean kammion ulosvirtauskanava" data-lat="conus arteriosus / infundibulum" data-info="Sileäseinäinen suppilo, joka johtaa keuhkovaltimoläpälle. Sijaitsee aortan tyven etupuolella ja vasemmalla."/>
         <path id="rv-ish" clip-path="url(#clipRV)" fill="none" stroke="#04121b" stroke-opacity=".45" stroke-width="17" pointer-events="none"/>
         <g id="trab-rv"></g>
-        <path class="hit" fill="url(#gMyoA)" stroke="#33191a" stroke-width="1.5"
-          d="M 262,548 C 282,522 310,506 334,504 C 328,532 308,564 292,584 C 280,578 268,564 262,548 Z"
+        <path class="hit" fill="url(#gMyoA)" stroke="#5a3223" stroke-width="1.5"
+          d="M 270,552 C 288,526 314,508 336,506 C 330,536 312,568 296,588 C 284,580 276,566 270,552 Z"
           data-name="Papillaarilihas (oikea kammio)" data-lat="musculus papillaris" data-info="Vetää jännesäikeitä ja estää läpän purjeita kääntymästä eteiseen kammiosupistuksen aikana. Ei avaa eikä sulje läppää."/>
-        <path class="hit" fill="url(#gMyoA)" stroke="#33191a" stroke-width="1.2"
-          d="M 388,498 C 380,510 374,522 372,534 C 384,536 394,530 398,518 C 398,510 394,502 388,498 Z"
+        <path class="hit" fill="url(#gMyoA)" stroke="#5a3223" stroke-width="1.2"
+          d="M 382,498 C 374,510 368,522 366,534 C 378,536 388,530 392,518 C 392,510 388,502 382,498 Z"
           data-name="Väliseinän papillaarilihas" data-lat="musculus papillaris septalis" data-info="Kolmiliuskaläpän erikoisuus: osa jännesäikeistä lähtee suoraan kammioväliseinästä. Hiippaläpällä vastaavaa ei ole."/>
-        <path class="hit" d="M 390,514 C 366,526 344,522 332,508" stroke="url(#gMyoA)" stroke-width="13" fill="none" stroke-linecap="round"
+        <path class="hit" d="M 378,516 C 358,526 346,524 336,510" stroke="url(#gMyoA)" stroke-width="13" fill="none" stroke-linecap="round"
           data-name="Moderaattorikimppu" data-lat="trabecula septomarginalis" data-info="Lihaspalkki, joka kulkee väliseinästä etupapillaarilihakseen. Sisältää oikean haarakkeen säikeitä ja nopeuttaa oikean kammion kärjen aktivaatiota. Näkyy vain oikeassa kammiossa."/>
       </g>
 
       <g id="lv-g">
-        <path id="lv-cav" class="hit" fill="url(#rgArt)" stroke="#5c2028" stroke-width="3"
+        <path id="lv-cav" class="hit" fill="url(#rgArt)" stroke="#eed9bb" stroke-width="3.4"
           d="M 434,390 C 424,478 438,570 476,632 C 492,652 512,656 526,638 C 570,572 618,482 614,390 Z"
           data-name="Vasen kammio" data-lat="ventriculus sinister" data-info="Paksuseinäinen kartio, joka muodostaa sydämen kärjen. Pumppaa hapekkaan veren aorttaan; imeväisikäisellä paine on noin 85/6 mmHg. Ejektiofraktio 55–70 %."/>
         <path id="lv-ish" clip-path="url(#clipLV)" fill="none" stroke="#210409" stroke-opacity=".45" stroke-width="17" pointer-events="none"/>
         <g id="trab" clip-path="url(#clipLV)"></g>
-        <path class="hit" fill="url(#gMyoA)" stroke="#33191a" stroke-width="1.5"
-          d="M 598,548 C 592,526 570,512 546,512 C 550,540 564,570 578,590 C 588,578 594,564 598,548 Z"
+        <path class="hit" fill="url(#gMyoA)" stroke="#5a3223" stroke-width="1.5"
+          d="M 592,544 C 584,520 562,506 540,506 C 544,534 558,564 572,584 C 582,572 588,558 592,544 Z"
           data-name="Papillaarilihas (etu-sivuseinä)" data-lat="musculus papillaris anterolateralis" data-info="Vasemmassa kammiossa on tavallisesti kaksi papillaarilihasta, ja kummankin jännesäikeet kiinnittyvät molempiin hiippaläpän purjeisiin. Jos lihaksia on vain yksi, kaikki säikeet suppenevat yhteen kohtaan — laskuvarjoläppä, yksi synnynnäisen hiippaläpän ahtauman muoto."/>
-        <path class="hit" fill="url(#gMyoA)" stroke="#33191a" stroke-width="1.5"
-          d="M 452,558 C 464,534 484,520 504,522 C 500,550 486,580 474,598 C 464,586 456,572 452,558 Z"
+        <path class="hit" fill="url(#gMyoA)" stroke="#5a3223" stroke-width="1.5"
+          d="M 448,562 C 460,538 480,524 500,526 C 496,554 482,584 470,602 C 460,590 452,576 448,562 Z"
           data-name="Papillaarilihas (taka-väliseinäpuoli)" data-lat="musculus papillaris posteromedialis" data-info="Papillaarilihasten määrä ja sijainti sekä jännesäikeiden pituus ratkaisevat, voidaanko ahtautunut läppä korjata omaa läppää säästäen. Siksi ne käydään tarkasti läpi ennen leikkausta."/>
       </g>
 
 
       <!-- atria -->
       <g id="ra-g">
-        <path class="hit" fill="url(#gMyoA)" stroke="#33191a" stroke-width="1.5"
+        <path id="ra-shell" fill="none" stroke="#d8a0a0" stroke-width="19" stroke-opacity=".85" pointer-events="none"/>
+        <path class="hit" fill="url(#gMyoA)" stroke="#5a3223" stroke-width="1.5"
           d="M 338,244 C 366,228 396,236 404,258 C 412,282 394,300 368,300 C 350,298 338,284 338,268 Z"
           data-name="Oikea eteiskorvake" data-lat="auricula dextra" data-info="Kolmiomainen, leveäkaulainen pussi, jonka sisäpinta on kampamaisten lihasten (mm. pectinati) uurtama. Vasen korvake on kapeakaulainen ja sileämpi — ero on peruste eteisten sijainnin määritykselle."/>
-        <path id="ra-cav" class="hit" fill="url(#rgVen)" stroke="url(#gMyoA)" stroke-width="13"
+        <path id="ra-cav" class="hit" fill="url(#rgVen)" stroke="url(#gMyo)" stroke-width="11" stroke-linejoin="round"
           d="M 286,212 C 236,216 214,258 214,308 C 214,352 226,388 246,398 L 336,398 C 348,376 352,300 344,258 C 334,218 322,208 286,212 Z"
           data-name="Oikea eteinen" data-lat="atrium dextrum" data-info="Ohutseinäinen ontelo, joka ottaa vastaan veren onttolaskimoista ja sepelpoukamasta. Paine 3–5 mmHg. Seinämässä sinussolmuke."/>
         <path id="ra-ish" clip-path="url(#clipRA)" fill="none" stroke="#04121b" stroke-opacity=".4" stroke-width="15" pointer-events="none"/>
       </g>
       <g id="la-g">
-        <path class="hit" fill="url(#gMyoA)" stroke="#33191a" stroke-width="1.5"
+        <path id="la-shell" fill="none" stroke="#d8a0a0" stroke-width="19" stroke-opacity=".85" pointer-events="none"/>
+        <path class="hit" fill="url(#gMyoA)" stroke="#5a3223" stroke-width="1.5"
           d="M 546,340 C 522,342 508,358 512,376 C 516,392 536,398 550,388 C 556,372 554,354 546,340 Z"
           data-name="Vasen eteiskorvake" data-lat="auricula sinistra" data-info="Pitkä, kapeakaulainen ja koukeroinen pussi. Korvakkeiden muoto on luotettavin tapa päätellä, kumpi eteinen on kumpi — siihen perustuu eteisten sijainnin määritys, kun sydän on kääntynyt oikealle."/>
-        <path id="la-cav" class="hit" fill="url(#rgArt)" stroke="url(#gMyoA)" stroke-width="13"
+        <path id="la-cav" class="hit" fill="url(#rgArt)" stroke="url(#gMyo)" stroke-width="11" stroke-linejoin="round"
           d="M 606,212 C 552,214 530,254 530,304 C 530,350 546,386 570,392 L 690,392 C 712,376 718,300 710,256 C 700,216 662,208 606,212 Z"
           data-name="Vasen eteinen" data-lat="atrium sinistrum" data-info="Ottaa vastaan hapekkaan veren neljästä keuhkolaskimosta. Keskipaine n. 8 mmHg. Laajenee herkästi, jos hiippaläppä ahtautuu."/>
       </g>
 
       <g id="pulmTrunk">
-        <path d="M 361,338 C 356,306 370,282 396,266" stroke="#123043" stroke-width="52" fill="none" stroke-linecap="butt"/>
-        <path d="M 361,338 C 356,306 370,282 396,266" stroke="url(#gVen)" stroke-width="44" fill="none" stroke-linecap="butt"
+        <path d="M 377,330 C 372,300 380,276 400,260" stroke="#123043" stroke-width="52" fill="none" stroke-linecap="butt"/>
+        <path d="M 377,330 C 372,300 380,276 400,260" stroke="url(#gVen)" stroke-width="44" fill="none" stroke-linecap="butt"
               class="hit" data-name="Keuhkovaltimorunko" data-lat="truncus pulmonalis" data-info="Lähtee oikeasta kammiosta aortan tyven etupuolelta ja vasemmalta, haarautuu oikeaksi ja vasemmaksi keuhkovaltimoksi. Paine n. 25/10 mmHg."/>
         <path id="la-ish" clip-path="url(#clipLA)" fill="none" stroke="#210409" stroke-opacity=".4" stroke-width="15" pointer-events="none"/>
       </g>
@@ -420,30 +455,30 @@ table.cmp tr.ch td.c{color:var(--signal)}
       <g id="chordae" stroke="#e6dcc6" stroke-width="1.7" fill="none" opacity=".85"></g>
 
       <!-- valves -->
-      <g id="valves" stroke-linecap="round" fill="none">
-        <g id="v-tv" stroke="#efe4d0" stroke-width="6"><path/><path/></g>
-        <g id="v-mv" stroke="#efe4d0" stroke-width="6"><path/><path/></g>
-        <g id="v-pv" stroke="#efe4d0" stroke-width="5.5"><path/><path/></g>
-        <g id="v-av" stroke="#efe4d0" stroke-width="5.5"><path/><path/></g>
-        <rect class="hit" x="224" y="388" width="112" height="22" fill="transparent" data-name="Kolmiliuskaläppä" data-lat="valva tricuspidalis" data-info="Kolme purjetta, jotka kiinnittyvät jännesäikeillä papillaarilihaksiin. Rengas kiinnittyy väliseinään hiippaläpän rengasta lähempänä kärkeä — tästä porrastuksesta tunnistetaan, kumpi kammio on oikea, kun sydämen asento on poikkeava."/>
-        <rect class="hit" x="512" y="378" width="102" height="22" fill="transparent" data-name="Hiippaläppä" data-lat="valva mitralis" data-info="Kaksi purjetta: etupurje on suurempi ja erottaa sisään- ja ulosvirtauksen. Lapsella renkaan koko ilmoitetaan SD-yksikköinä suhteessa kehon kokoon."/>
-        <rect class="hit" x="324" y="324" width="76" height="24" fill="transparent" data-name="Keuhkovaltimoläppä" data-lat="valva trunci pulmonalis" data-info="Kolme taskumaista purjetta. Sulkeutuminen tuottaa toisen sydänäänen jälkimmäisen osan (P2)."/>
-        <rect class="hit" x="434" y="372" width="82" height="22" fill="transparent" data-name="Aorttaläppä" data-lat="valva aortae" data-info="Kolme taskupurjetta, joiden yläpuolella ovat Valsalvan poukamat. Sulkeutuminen tuottaa A2-äänen."/>
+      <g id="valves" stroke-linejoin="round">
+        <g id="v-tv" fill="#f4e8d2" stroke="#c3a781" stroke-width="1.4"><path/><path/></g>
+        <g id="v-mv" fill="#f4e8d2" stroke="#c3a781" stroke-width="1.4"><path/><path/></g>
+        <g id="v-pv" fill="#f4e8d2" stroke="#c3a781" stroke-width="1.2"><path/><path/></g>
+        <g id="v-av" fill="#f4e8d2" stroke="#c3a781" stroke-width="1.2"><path/><path/></g>
+        <rect class="hit" x="226" y="398" width="118" height="24" fill="transparent" data-name="Kolmiliuskaläppä" data-lat="valva tricuspidalis" data-info="Kolme purjetta, jotka kiinnittyvät jännesäikeillä papillaarilihaksiin. Rengas kiinnittyy väliseinään hiippaläpän rengasta lähempänä kärkeä — tästä porrastuksesta tunnistetaan, kumpi kammio on oikea, kun sydämen asento on poikkeava."/>
+        <rect class="hit" x="510" y="372" width="106" height="24" fill="transparent" data-name="Hiippaläppä" data-lat="valva mitralis" data-info="Kaksi purjetta: etupurje on suurempi ja erottaa sisään- ja ulosvirtauksen. Lapsella renkaan koko ilmoitetaan SD-yksikköinä suhteessa kehon kokoon."/>
+        <rect class="hit" x="342" y="318" width="74" height="26" fill="transparent" data-name="Keuhkovaltimoläppä" data-lat="valva trunci pulmonalis" data-info="Kolme taskumaista purjetta. Sulkeutuminen tuottaa toisen sydänäänen jälkimmäisen osan (P2)."/>
+        <rect class="hit" x="432" y="368" width="82" height="24" fill="transparent" data-name="Aorttaläppä" data-lat="valva aortae" data-info="Kolme taskupurjetta, joiden yläpuolella ovat Valsalvan poukamat. Sulkeutuminen tuottaa A2-äänen."/>
       </g>
 
       <g id="flow"></g>
 
       <!-- conduction system -->
       <g id="conduction" class="hidden" stroke="#e0a72e" fill="#e0a72e">
-        <path d="M 306,236 C 322,290 340,346 366,392" stroke-width="3" fill="none" opacity=".45"/>
-        <path d="M 378,398 L 404,428 L 412,560 M 412,470 L 470,548 M 404,428 L 380,470" stroke-width="3" fill="none" opacity=".45"/>
-        <circle id="n-sa" cx="300" cy="230" r="9"/>
-        <circle id="n-av" cx="372" cy="394" r="8"/>
-        <circle id="n-his" cx="406" cy="446" r="7"/>
-        <circle id="n-pk" cx="414" cy="566" r="7"/>
-        <text class="lbl small" x="290" y="216" text-anchor="end">Sinussolmuke</text>
-        <text class="lbl small" x="362" y="378" text-anchor="end">AV-solmuke</text>
-        <text class="lbl small" x="422" y="462" text-anchor="start">Hisin kimppu</text>
+        <path d="M 300,240 C 316,296 336,354 362,400" stroke-width="3" fill="none" opacity=".45"/>
+        <path d="M 374,406 L 398,436 L 396,566 M 398,480 L 458,556 M 398,436 L 372,478" stroke-width="3" fill="none" opacity=".45"/>
+        <circle id="n-sa" cx="296" cy="234" r="9"/>
+        <circle id="n-av" cx="368" cy="402" r="8"/>
+        <circle id="n-his" cx="400" cy="452" r="7"/>
+        <circle id="n-pk" cx="400" cy="572" r="7"/>
+        <text class="lbl small" x="286" y="220" text-anchor="end">Sinussolmuke</text>
+        <text class="lbl small" x="358" y="386" text-anchor="end">AV-solmuke</text>
+        <text class="lbl small" x="416" y="468" text-anchor="start">Hisin kimppu</text>
       </g>
 
       <g id="focus" class="hidden">
@@ -463,10 +498,10 @@ table.cmp tr.ch td.c{color:var(--signal)}
       </g>
 
       <g id="labels">
-        <text class="lbl" x="278" y="308" text-anchor="middle">Oikea eteinen</text>
-        <text class="lbl" x="624" y="300" text-anchor="middle">Vasen eteinen</text>
-        <text class="lbl" x="278" y="474" text-anchor="middle">Oikea kammio</text>
-        <text class="lbl" x="536" y="470" text-anchor="middle">Vasen kammio</text>
+        <text class="lbl" x="278" y="304" text-anchor="middle">Oikea eteinen</text>
+        <text class="lbl" x="618" y="304" text-anchor="middle">Vasen eteinen</text>
+        <text class="lbl" x="272" y="480" text-anchor="middle">Oikea kammio</text>
+        <text class="lbl" x="528" y="482" text-anchor="middle">Vasen kammio</text>
         <text class="lbl small" x="252" y="88" text-anchor="middle">Yläonttolaskimo</text>
         <text class="lbl small" x="120" y="660" text-anchor="middle">Alaonttolaskimo</text>
         <text class="lbl small" x="600" y="164" text-anchor="middle">Aortan kaari</text>
@@ -476,20 +511,20 @@ table.cmp tr.ch td.c{color:var(--signal)}
         <text class="lbl small" x="336" y="196" text-anchor="start">Oik. keuhkovaltimo</text>
         <text class="lbl small" x="520" y="240" text-anchor="start">Vas. keuhkovaltimo</text>
         <text class="lbl small" x="382" y="300" text-anchor="middle" transform="rotate(-64 382 300)">Keuhkovaltimorunko</text>
-        <text class="lbl small" x="424" y="618" text-anchor="middle">Kammioväliseinä</text>
+        <text class="lbl small" x="408" y="606" text-anchor="middle">Kammioväliseinä</text>
         <g stroke="#8fa4ae" stroke-width="1.2" fill="none" opacity=".75">
-          <path d="M 262,690 C 300,680 330,600 344,528"/>
+          <path d="M 258,690 C 296,676 326,590 336,510"/>
           <path d="M 352,204 C 344,216 336,226 326,234"/>
-          <path d="M 626,606 L 588,580"/>
-          <path d="M 634,508 L 570,514"/>
+          <path d="M 620,600 L 584,574"/>
+          <path d="M 628,504 L 564,510"/>
         </g>
         <text class="lbl small" x="196" y="702" text-anchor="start">Moderaattorikimppu</text>
-        <text class="lbl small" x="630" y="612" text-anchor="start">Papillaarilihas</text>
-        <text class="lbl small" x="638" y="504" text-anchor="start">Jännesäikeet</text>
-        <text class="tag-lbl" x="218" y="394" text-anchor="end">TV</text>
-        <text class="tag-lbl" x="624" y="386" text-anchor="start">MV</text>
-        <text class="tag-lbl" x="408" y="330" text-anchor="start">PV</text>
-        <text class="tag-lbl" x="428" y="374" text-anchor="end">AV</text>
+        <text class="lbl small" x="624" y="606" text-anchor="start">Papillaarilihas</text>
+        <text class="lbl small" x="632" y="500" text-anchor="start">Jännesäikeet</text>
+        <text class="tag-lbl" x="214" y="402" text-anchor="end">TV</text>
+        <text class="tag-lbl" x="624" y="390" text-anchor="start">MV</text>
+        <text class="tag-lbl" x="420" y="326" text-anchor="start">PV</text>
+        <text class="tag-lbl" x="428" y="372" text-anchor="end">AV</text>
       </g>
     </svg>
 
@@ -503,14 +538,15 @@ table.cmp tr.ch td.c{color:var(--signal)}
       <span class="toggle" style="gap:8px">Hidastus <span class="seg" id="rateSeg" role="group" aria-label="Toistonopeus">
         <button class="segb" data-rate="0.25">¼×</button><button class="segb" data-rate="0.5">½×</button><button class="segb" data-rate="1">1×</button>
       </span></span>
+      <button class="btn zoombtn" id="zoomBtn" aria-pressed="false">Suurenna</button>
       <span class="phase" id="phaseLbl">Diastole</span>
     </div>
-    <div class="pick" id="pick">Klikkaa rakennetta — nimi ja tehtävä ilmestyvät tähän.</div>
+    <div class="pick" id="pick" role="status" aria-live="polite"><span class="hint">Napauta rakennetta — nimi ja tehtävä ilmestyvät tähän. Näppäimistöllä: sarkain kuvaan, sitten nuolinäppäimet.</span></div>
   </section>
 
   <!-- ============ READOUT ============ -->
   <section class="panel read" id="read"></section>
-</div>
+</main>
 
 <!-- ============ TRACES ============ -->
 <section class="panel traces">
@@ -550,6 +586,15 @@ const CONDITIONS = [
     "Systolista toimintaa arvioidaan silmämääräisesti sekä EF- ja FS-arvoilla; oikean kammion pitkittäissupistusta kuvaa TAPSE."
   ],
   care:["Valitse listasta yksi tai useampi löydös — kuva, virtaus ja painekäyrät muuttuvat sen mukaan."],
+  prog:[
+    "<b>Tämä välilehti kuvaa</b> kunkin löydöksen kanssa tyypillistä kulkua: mitä toimenpiteitä on odotettavissa, mihin perhe voi vaikuttaa ja mihin ei. Valitse löydös listasta.",
+    "<b>Kokonaiskuva on muuttunut paljon.</b> Synnynnäistä sydänvikaa sairastavista lapsista yli 90 % yltää nykyään aikuisikään. Julkaistut elossaololuvut perustuvat usein vuosikymmenten takaisiin potilasryhmiin ja aliarvioivat siksi nykytilannetta.",
+    "<b>Hoidettu ei tarkoita parannettua.</b> Useimmat synnynnäiset sydänviat ovat elinikäisiä: korjaus poistaa esteen tai vuodon, mutta seuranta jatkuu aikuisiässä siihen erikoistuneessa yksikössä. Siirtymä lastenkardiologiasta aikuisten yksikköön on oma vaiheensa, jota valmistellaan nuoruusiässä.",
+    "<b>Elämänlaatu on useimmilla hyvä.</b> Valtaosa korjatuista lapsista käy tavallista koulua, harrastaa ja elää tavanomaista elämää. Rajoitukset koskevat yleensä kilpaurheilua ja raskasta voimaharjoittelua, eivät arkea.",
+    "<b>Kehityksen seuranta kuuluu asiaan.</b> Vauvaiässä sydän-keuhkokoneella tehty leikkaus lisää jonkin verran oppimisen, tarkkaavuuden ja motoriikan pulmien todennäköisyyttä myöhemmin. Erot ovat keskimäärin pieniä ja vaihtelevat paljon, mutta juuri siksi kehitystä seurataan ja tukea on saatavilla varhain — se on asia, johon voi vaikuttaa.",
+    "<b>Periytyvyys ja tulevaisuus.</b> Osalla vioista on suvuittaista taipumusta, ja jälkeläisten riski on hieman väestön tasoa suurempi. Nuoruusiässä käydään läpi myös liikuntasuositukset, ehkäisy ja raskauteen liittyvät kysymykset — nämä kuuluvat aikuisseurannan valmisteluun.",
+    "<b>Ennuste on yksilöllisin osa koko aihetta.</b> Se riippuu vaikeusasteesta, tarkasta anatomiasta, liitännäislöydöksistä, toimenpiteiden ajoituksesta ja hoitopaikan kokemuksesta. Mikään näistä ei näy tästä kuvasta."
+  ],
   shape:{lv:"normal",rv:"normal",septum:"normal",la:"normal",myo:"normal",inset:"aortic3"},
   valve:{mv:1,av:1,mvThick:6,avThick:6},
   flow:{mv:1,av:1,desc:1,coll:0},
@@ -577,6 +622,13 @@ const CONDITIONS = [
     "Eristetty koarktaatio korjataan vauvaiässä tavallisesti vasemman puolen thorakotomiasta laajennetulla pääte-päätteeseen-liitoksella. Se <b>ei ole avosydänleikkaus</b>: sydäntä ei avata eikä sydän-keuhkokonetta tarvita, koska ahtauma sijaitsee sydämen ulkopuolella.",
     "Pallolaajennus ja stentti ovat ensisijaisia uusintaahtaumassa, eivät vastasyntyneen ensikorjauksessa.",
     "Seuranta: verenpaine oikeasta käsivarresta ja jalasta sekä kaikukuvaus, elinikäisesti."
+  ],
+  prog:[
+    "<b>Korjauksen tulos on tavallisesti hyvä.</b> Eristetyn koarktaation leikkauskuolleisuus vauvaiässä on nykyään pieni, ja valtaosa lapsista toipuu ilman pysyviä rajoituksia arkeen.",
+    "<b>Todennäköisin jatkotoimenpide on pallolaajennus.</b> Uusintaahtauma kehittyy noin 5–15 %:lle vauvana leikatuista ja on sitä todennäköisempi mitä pienempänä leikkaus on tehty; se ilmaantuu tavallisimmin ensimmäisen vuoden aikana. Se hoidetaan yleensä katetrilla, ei uudella leikkauksella.",
+    "<b>Verenpaine on pitkän aikavälin pääkysymys.</b> Merkittävä osa saa verenpainetaudin aikuisiässä, vaikka ahtauma olisi korjattu hyvin — arviot vaihtelevat suuresti korjausiän ja seuranta-ajan mukaan. Tämä on tärkein yksittäinen syy siihen, että elinajanodote jää keskimäärin väestön tasoa lyhyemmäksi: kohonnut verenpaine lisää sepelvaltimotaudin ja aivoverenkierron häiriöiden riskiä, ja koarktaatioon liittyy tavallista useammin myös aivovaltimoiden pullistumia. Verenpaineen hoito on se tekijä, johon näistä pystyy vaikuttamaan.",
+    "<b>Mihin voi vaikuttaa:</b> verenpaineen mittaus ja hoito, paino, liikunta, tupakoimattomuus aikuisena. <b>Mihin ei:</b> aortan seinämän rakenne pysyy poikkeavana, joten seurantaa ei voi lopettaa.",
+    "<b>Liikunta:</b> korjauksen jälkeen tavanomainen liikunta ja koululiikunta ovat yleensä sallittuja, jos verenpaine ja jäännösgradientti ovat kunnossa. Raskasta voimaharjoittelua rajoitetaan, jos verenpaine on koholla."
   ],
   shape:{lv:"normal",rv:"normal",septum:"normal",la:"normal",myo:"normal",coarct:true,inset:"aortic3"},
   valve:{mv:1,av:1,mvThick:6,avThick:6},
@@ -611,10 +663,19 @@ const CONDITIONS = [
     "Kirurginen korjaus on avosydänleikkaus: sydän pysäytetään ja verenkierto hoidetaan sydän-keuhkokoneella, jotta läppään päästään käsiksi. Tavoite on säästää lapsen oma läppä, koska se kasvaa lapsen mukana; tekoläppä ei kasva ja vaatii pysyvän antikoagulaation.",
     "Ajoituksessa punnitaan vastakkain se, että lapsi ehtisi kasvaa mahdollisimman suureksi, ja se, ettei keuhkopaine ehtisi jäädä pysyvästi koholle."
   ],
+  prog:[
+    "<b>Vaihteluväli on suuri.</b> Tämä on löydöksistä se, jonka ennuste vaihtelee eniten, ja ratkaisevaa on läpän tarkka anatomia — ei se, että kyseessä on hiippaläpän ahtauma.",
+    "<b>Paras tilanne:</b> purjeiden yläpuolinen kalvomainen rengas. Sen poisto antaa usein hyvän ja kestävän tuloksen yhdellä leikkauksella.",
+    "<b>Vaativampi tilanne:</b> pieni läppärengas tai laskuvarjorakenne. Korjaus jää tällöin usein osittaiseksi, gradienttia jää, ja uusintaleikkaus lapsuuden aikana on pikemminkin sääntö kuin poikkeus.",
+    "<b>Tekoläppää lykätään niin pitkälle kuin mahdollista.</b> Se ei kasva lapsen mukana, vaatii pysyvän varfariinin ja se joudutaan aikanaan vaihtamaan suurempaan. Siksi omaa läppää säästävä korjaus on ensisijainen, vaikka tulos jäisi epätäydelliseksi.",
+    "<b>Leikkaus on iso toimenpide pienelle lapselle.</b> Sydän-keuhkokoneella tehtävään korjaukseen kuuluu tehohoitojakso ja toipuminen viikkojen mittakaavassa, ja vauvaiän avosydänleikkaus lisää jonkin verran myöhempien oppimisen ja motoriikan pulmien todennäköisyyttä. Siksi kehitystä seurataan leikkauksen jälkeen osana normaalia jälkiseurantaa.",
+    "<b>Ennusteen kannalta tärkein yksittäinen asia on keuhkoverenkierron paine</b> ja se, ehditäänkö este poistaa ennen kuin keuhkoverisuonten muutokset muuttuvat pysyviksi.",
+    "<b>Elinajanodotteesta ei ole yhtä lukua.</b> Lievässä, hyvin korjautuvassa muodossa se on lähellä normaalia; vaikeassa, useaa tasoa koskevassa muodossa selvästi matalampi ja riippuvainen siitä, miten korjaukset onnistuvat. Vain hoitava taho voi arvioida, kummasta päästä asteikkoa on kyse."
+  ],
   shape:{lv:"normal",rv:"rvh",septum:"normal",la:"dil",myo:"normal",inset:"aortic3",mitral:true},
   valve:{mv:.28,av:1,mvThick:11,avThick:6},
   flow:{mv:.4,av:.8,desc:.8,coll:0},
-  focus:{x:574,y:414,r:62,label:"AHTAUMA"},
+  focus:{x:566,y:412,r:62,label:"AHTAUMA"},
   press:{lv:{sys:85,edp:6},ao:{sys:85,dia:48},la:{mean:20,a:24,v:23,yBlunt:.7},rv:{sys:60,edp:9},pa:{sys:60,dia:30},show:["lv","ao","la","pa"]},
   sounds:[{t:0.13,l:"S1"},{t:0.47,l:"S2"}],
   murmurs:[{from:0.56,to:1.0,label:"diastolinen sivuääni kärjessä"}]
@@ -639,6 +700,11 @@ const CONDITIONS = [
   care:[
     "Ei vaadi hoitoa eikä rajoita lapsen elämää millään tavalla, kun laskimo laskee sepelpoukamaan.",
     "Tieto on tärkeä ennen katetrointia, sydänleikkausta ja mahdollisia myöhempiä toimenpiteitä."
+  ],
+  prog:[
+    "<b>Ei vaikutusta ennusteeseen, kun laskimo laskee sepelpoukamaan.</b> Silloin veri kulkee normaalia reittiä eikä löydös vaikuta terveyteen, elinikään, kasvuun eikä liikuntaan. Harvinaisessa muodossa, jossa laskimo laskee suoraan vasempaan eteiseen, tilanne arvioidaan erikseen oikovirtauksen suuruuden mukaan.",
+    "<b>Ei vaadi hoitoa eikä omia seurantakäyntejä.</b> Lapsi ei tarvitse mitään rajoituksia tämän löydöksen takia.",
+    "<b>Ainoa käytännön merkitys</b> on se, että tieto on kirjattuna ennen katetrointeja, tahdistinasennusta ja sydänleikkauksia — silloin se säästää aikaa ja välttää yllätyksiä."
   ],
   shape:{lv:"normal",rv:"normal",septum:"normal",la:"normal",myo:"normal",lsvc:true,csDil:true,inset:"aortic3"},
   valve:{mv:1,av:1,mvThick:6,avThick:6},
@@ -671,10 +737,17 @@ const CONDITIONS = [
     "Geenipaneelin tulos ohjaa jatkoseurantaa ja mahdollista perheselvitystä.",
     "Jos supistusvoima myöhemmin heikkenisi, käytössä on tavanomainen sydämen vajaatoiminnan lääkitys; antikoagulaatiota harkitaan, jos ontelossa todetaan trombi."
   ],
+  prog:[
+    "<b>Toiminta ratkaisee, ei rakenne.</b> Ennusteen määrää kammion supistusvoima ja rytmi, ei lihaspalkkien määrä. Kaksi lasta, joilla on samanlainen kuva, voivat olla ennusteeltaan hyvin eri asemassa.",
+    "<b>Suotuisa tilanne:</b> supistusvoima normaali, ei oireita, ei rytmihäiriöitä, ei sukurasitusta. Silloin moni pysyy oireettomana, ja trabekulaatio voi jopa vähentyä kasvun myötä.",
+    "<b>Vaativampi tilanne:</b> taustalla on sydänlihassairaus ja supistusvoima on alentunut jo varhain. Silloin edessä on vajaatoiminnan lääkitys, tiivis rytmiseuranta, joskus rytmihäiriötahdistin ja harvinaisissa tapauksissa sydämensiirron arviointi.",
+    "<b>Geenitulos ohjaa</b> seurannan tiheyttä ja sitä, tutkitaanko sisarukset ja vanhemmat. Se voi myös rauhoittaa tilanteen, jos löydöstä ei tule.",
+    "<b>Mihin voi vaikuttaa:</b> seurantakäynnit, oireiden tunnistaminen, liikunta sovituissa rajoissa. <b>Mihin ei:</b> lihaksen rakennetta ei voi muuttaa."
+  ],
   shape:{lv:"normal",rv:"normal",septum:"normal",la:"normal",myo:"normal",trab:true,inset:"aortic3"},
   valve:{mv:1,av:1,mvThick:6,avThick:6},
   flow:{mv:.85,av:1,desc:1,coll:0},
-  focus:{x:522,y:558,r:88,label:"SYVÄT TRABEKULAT",below:true},
+  focus:{x:512,y:556,r:88,label:"SYVÄT TRABEKULAT",below:true},
   press:{lv:{sys:85,edp:8},ao:{sys:85,dia:48},la:{mean:10,a:13,v:12,yBlunt:.15},rv:{sys:28,edp:5},pa:{sys:28,dia:14},show:["lv","ao","la"]},
   sounds:[{t:0.13,l:"S1"},{t:0.47,l:"S2"}],
   murmurs:[]
@@ -701,10 +774,18 @@ const CONDITIONS = [
     "Jos ahtauma etenee lapsuudessa merkittäväksi, ensisijainen toimenpide on pallolaajennus — ei tekoläppä, joka ei kasva lapsen mukana.",
     "Elinikäinen seuranta kaikukuvauksella: gradientti, mahdollinen vuoto ja nousevan aortan halkaisija."
   ],
+  prog:[
+    "<b>Lapsuus sujuu useimmiten ilman toimenpiteitä.</b> Valtaosa yltää aikuisikään ilman lapsuudenaikaista toimenpidettä, jos läppä toimii hyvin, eikä moni tarvitse mitään hoitoa vuosikymmeniin.",
+    "<b>Toimenpide tulee eteen merkittävälle osalle</b> — arviot vaihtelevat noin kolmanneksesta puoleen elämän mittaan, tavallisimmin vasta keski-iässä tai myöhemmin. Se ei siis ole varmuus vaan todennäköisyys, ja osa ei tarvitse toimenpidettä koskaan.",
+    "<b>Jos läppä on ahdas jo lapsena</b>, ensimmäinen toimenpide on pallolaajennus. Se ostaa aikaa mutta johtaa usein myöhempiin toimenpiteisiin. Lapsen vaihtoehtoja ovat myöhemmin muun muassa Rossin leikkaus, jossa lapsen oma keuhkovaltimoläppä siirretään aortan paikalle ja keuhkovaltimoon asetetaan siirre — siirre ei kasva, joten se vaihdetaan aikanaan — tai mekaaninen tekoläppä, joka vaatii pysyvän antikoagulaation.",
+    "<b>Nousevaa aorttaa seurataan erikseen.</b> Laajentuma korjataan omien raja-arvojensa mukaan; dissekaatio on harvinainen, mutta juuri sen takia seurantaa tehdään.",
+    "<b>Elinajanodote</b> on hyvin toimivalla läpällä ja normaalikokoisella aortalla lähellä väestön keskitasoa, kun seuranta toteutuu.",
+    "<b>Suun terveys on se, mihin perhe voi vaikuttaa</b> — endokardiitin riski on pieni mutta todellinen, ja hyvä hammashoito vaikuttaa siihen enemmän kuin mikään muu."
+  ],
   shape:{lv:"normal",rv:"normal",septum:"normal",la:"normal",myo:"normal",inset:"aortic2"},
   valve:{mv:1,av:.75,mvThick:6,avThick:9},
   flow:{mv:1,av:.8,desc:.8,coll:0},
-  focus:{x:474,y:356,r:50,label:"KAKSI PURJETTA"},
+  focus:{x:472,y:352,r:50,label:"KAKSI PURJETTA"},
   press:{lv:{sys:110,edp:8},ao:{sys:85,dia:48},la:{mean:9,a:12,v:11,yBlunt:0},rv:{sys:25,edp:4},pa:{sys:25,dia:12},show:["lv","ao","la"]},
   sounds:[{t:0.13,l:"S1"},{t:0.18,l:"EK"},{t:0.48,l:"S2"}],
   murmurs:[{from:0.17,to:0.45,label:"systolinen ejektiosivuääni"}]
@@ -731,10 +812,16 @@ const CONDITIONS = [
     "Keuhkoverenkierron paine ja vastus mitataan katetroinnissa ennen ratkaisua.",
     "Oikean kammion toimintaa seurataan jokaisessa kaikukuvauksessa."
   ],
+  prog:[
+    "<b>Syy määrää ennusteen.</b> Ennuste ei riipu hypertrofiasta itsestään vaan siitä, mikä sen aiheuttaa ja onko syy korjattavissa.",
+    "<b>Suotuisa kulku:</b> syy korjataan ajoissa, keuhkopaine laskee, seinämä ohenee ja oikea kammio palautuu. Silloin pitkän aikavälin ennusteen määrää perussairaus, ei oikea kammio.",
+    "<b>Epäsuotuisa kulku:</b> keuhkoverisuonten muutokset ehtivät muuttua pysyviksi. Silloin keuhkoverenpainetauti muuttuu omaksi sairaudekseen, joka rajoittaa sekä hoitovaihtoehtoja että ennustetta. Tämä on syy siihen, miksi seuranta on tiivistä ja toimenpiteen ajoitusta punnitaan tarkasti.",
+    "<b>Mihin voi vaikuttaa:</b> infektioiden ehkäisy rokotuksin ja RSV-suojalla, hyvä ravitsemus ja kasvu sekä se, että seurantakäynnit toteutuvat. Ne vaikuttavat siihen, missä kunnossa lapsi on toimenpiteen hetkellä."
+  ],
   shape:{lv:"dshape",rv:"rvh",septum:"rvh",la:"normal",myo:"normal",inset:"aortic3"},
   valve:{mv:1,av:1,mvThick:6,avThick:6},
   flow:{mv:.85,av:.85,desc:.85,coll:0},
-  focus:{x:282,y:502,r:94,label:"PAKSUUNTUNUT SEINÄMÄ",below:true},
+  focus:{x:280,y:496,r:92,label:"PAKSUUNTUNUT SEINÄMÄ",below:true},
   press:{lv:{sys:85,edp:8},ao:{sys:85,dia:48},la:{mean:9,a:12,v:11,yBlunt:0},rv:{sys:60,edp:9},pa:{sys:60,dia:30},show:["lv","ao","rv","pa"]},
   sounds:[{t:0.13,l:"S1"},{t:0.48,l:"S2 (P2↑)"}],
   murmurs:[{from:0.15,to:0.46,label:"trikuspidaalivuoto"}]
@@ -744,44 +831,45 @@ const CONDITIONS = [
 /* ==================================================================
    2. MUODOT
    ================================================================== */
-const RA_D = "M 286,212 C 236,216 214,258 214,308 C 214,352 226,388 246,398 L 336,398 C 348,376 352,300 344,258 C 334,218 322,208 286,212 Z";
+const RA_D = "M 286,198 C 228,204 206,258 208,320 C 210,370 220,406 240,418 C 270,412 302,408 326,402 C 340,376 344,298 334,252 C 324,206 314,194 286,198 Z";
 const SHAPES = {
  lv:{
-  normal:"M 434,390 C 424,478 438,570 476,632 C 492,652 512,656 526,638 C 570,572 618,482 614,390 Z",
-  lvh:   "M 452,390 C 444,478 456,556 486,606 C 500,622 516,624 528,608 C 562,552 596,478 592,390 Z",
-  dil:   "M 428,390 C 416,486 430,588 472,650 C 492,674 518,678 536,656 C 584,586 632,486 628,390 Z",
-  dshape:"M 468,390 C 486,470 476,566 500,634 C 514,652 528,652 540,634 C 578,566 618,482 614,390 Z",
-  lvhD:  "M 478,390 C 496,466 486,546 510,598 C 522,614 536,614 548,598 C 576,546 596,478 592,390 Z",
-  dilD:  "M 462,390 C 484,478 470,586 506,646 C 524,672 548,674 564,652 C 600,584 632,486 628,390 Z"
+  normal:"M 440,386 C 428,470 434,556 456,624 C 466,652 484,662 502,648 C 554,596 612,500 620,396 C 596,378 512,372 440,386 Z",
+  lvh:   "M 452,386 C 444,468 450,540 470,600 C 480,624 496,632 510,620 C 550,572 594,496 602,394 C 580,378 512,374 452,386 Z",
+  dil:   "M 434,386 C 420,478 426,574 452,650 C 464,682 490,692 508,674 C 562,614 626,504 632,396 C 606,376 512,372 434,386 Z",
+  dshape:"M 470,386 C 486,468 478,552 492,626 C 502,652 518,660 534,646 C 574,594 616,500 620,396 C 596,378 528,372 470,386 Z",
+  lvhD:  "M 484,386 C 500,462 492,534 506,592 C 514,614 528,620 542,606 C 574,556 602,492 602,394 C 580,378 528,374 484,386 Z",
+  dilD:  "M 462,386 C 484,478 470,588 500,660 C 512,686 538,694 556,674 C 604,606 630,504 632,396 C 606,376 528,372 462,386 Z"
  },
  rv:{
-  normal:"M 222,398 C 202,450 208,528 250,578 C 292,620 336,634 366,620 C 372,566 384,484 394,400 Z",
-  rvh:   "M 250,400 C 236,450 244,510 276,548 C 306,580 336,590 358,578 C 366,530 374,470 380,402 Z"
+  normal:"M 388,404 C 378,486 372,558 358,612 C 322,618 288,602 262,574 C 228,534 212,470 214,418 C 244,404 320,398 388,404 Z",
+  rvh:   "M 372,406 C 364,482 358,544 346,590 C 316,596 290,582 268,558 C 244,522 238,468 240,420 C 268,406 320,400 372,406 Z"
  },
  septum:{
-  normal:"M 394,400 C 384,484 372,566 366,620 C 400,640 440,646 476,632 C 438,570 424,478 434,390 Z",
-  rvh:   "M 380,402 C 374,470 366,530 358,578 C 400,610 458,628 500,634 C 476,566 486,470 468,390 Z"
+  normal:"M 388,404 C 378,486 372,558 358,612 C 396,636 432,640 456,624 C 434,556 428,470 440,386 Z",
+  rvh:   "M 372,406 C 364,482 358,544 346,590 C 390,618 444,628 492,626 C 478,552 486,468 470,386 Z"
  },
  la:{
-  normal:"M 604,238 C 554,240 530,272 530,314 C 530,354 546,386 570,392 L 690,392 C 712,378 718,306 710,270 C 700,242 658,234 604,238 Z",
-  dil:   "M 622,236 C 546,238 516,286 516,334 C 516,366 540,388 570,392 L 706,392 C 740,376 756,296 744,256 C 730,226 682,230 622,236 Z"
+  normal:"M 606,232 C 552,234 526,268 524,312 C 522,352 536,376 560,384 C 596,382 646,384 686,388 C 710,374 718,304 710,266 C 700,236 660,228 606,232 Z",
+  dil:   "M 622,228 C 546,230 512,280 510,330 C 508,362 528,380 558,386 C 600,384 660,386 702,390 C 736,374 754,292 742,250 C 728,222 682,222 622,228 Z"
  },
  myo:{
-  normal:"M 206,394 C 182,452 190,536 244,594 C 316,660 424,694 512,682 C 596,656 654,520 656,394 Z",
-  lvh:   "M 206,394 C 180,452 188,540 246,600 C 322,670 436,706 528,692 C 616,664 672,522 674,394 Z"
+  normal:"M 200,414 C 200,490 222,556 270,604 C 334,666 424,696 486,684 C 558,658 626,568 650,470 C 662,430 658,402 644,392 Z",
+  lvh:   "M 200,414 C 200,492 222,560 272,610 C 338,676 430,708 492,692 C 568,664 638,570 662,470 C 674,428 670,402 656,392 Z"
  }
 };
 
 const VALVES = {
- tv:{el:"v-tv", a:[228,400], b:[336,398], closed:[286,466], o1:[240,474], o2:[330,470], bow:-11},
- mv:{el:"v-mv", a:[516,382], b:[612,390], closed:[578,454], o1:[520,464], o2:[606,458], bow:-11},
- pv:{el:"v-pv", a:[330,336], b:[392,332], closed:[361,306], o1:[330,296], o2:[392,292], bow:8},
- av:{el:"v-av", a:[438,388], b:[510,384], closed:[474,354], o1:[440,344], o2:[508,340], bow:8}
+ tv:{el:"v-tv", a:[232,414], b:[330,404], closed:[288,470], o1:[246,484], o2:[326,470], bow:-9, w:10},
+ mv:{el:"v-mv", a:[516,380], b:[610,392], closed:[574,450], o1:[522,460], o2:[604,456], bow:-9, w:10},
+ pv:{el:"v-pv", a:[348,336], b:[406,328], closed:[377,306], o1:[350,298], o2:[404,290], bow:6, w:6},
+ av:{el:"v-av", a:[438,386], b:[508,378], closed:[473,354], o1:[442,344], o2:[504,336], bow:6, w:6}
 };
 const CHORD = {
- mv:{pm:[[546,512],[504,522]], cx:520, cy:510},
- tv:{pm:[[332,504],[380,520]], cx:300, cy:502}
+ mv:{pm:[[540,508],[500,528]], cx:524, cy:508},
+ tv:{pm:[[336,508],[378,512]], cx:300, cy:504}
 };
+
 
 const STREAMS = [
  {id:"p-svc", n:5, v:0.42, gate:"vein", col:"ven"},
@@ -915,10 +1003,18 @@ const INTERACTIONS = [
  {need:["mitraalistenoosi","rvh"], t:"<b>Syy ja seuraus samassa kuvassa.</b> Hiippaläpän ahtauma nostaa vasemman eteisen painetta, paine siirtyy keuhkolaskimoihin ja edelleen keuhkovaltimoihin, ja oikea kammio joutuu painekuormaan. Siksi vasemman puolen vika näkyy mittarina oikealla: trikuspidaalivuodon gradientin nousu on merkki siitä, että keuhkopaine on kohonnut."},
  {need:["mitraalistenoosi","lvnc"], t:"<b>Kaksi estettä samalla reitillä.</b> Sisäänvirtaus ei kapene vain hiippaläpässä: voimakkaasti trabekuloituneessa kammiossa syvät lihaspalkit pilkkovat virtauksen useaksi suihkuksi heti läpän jälkeen. Silloin kyse ei ole pelkästä läppäviasta vaan koko sisäänvirtausreitistä — ja siksi tarkka anatomia halutaan nähdä ruokatorven kautta tehtävällä kaikukuvauksella ennen leikkauspäätöstä."},
  {need:["lsvc","mitraalistenoosi"], t:"<b>Anatomia vaikuttaa hoitoon, ei vointiin.</b> Vasen yläonttolaskimo ei kuormita sydäntä lainkaan, mutta juuri tällaisessa yhdistelmässä sillä on merkitystä: se muuttaa katetrointireittejä ja leikkauksen kanylointia, ja laaja sepelpoukama kulkee aivan hiippaläpän renkaan vierestä."},
- {need:["koarktaatio","mitraalistenoosi","bav"], t:"<b>Vasemman puolen ahtaumat kulkevat sarjassa.</b> Kun samalla lapsella on hiippaläpän ahtauma, ahtautuva aorttaläppä ja aortan koarktaatio, kyse on vasemman puolen ahtauttavien vikojen jatkumosta, jota kutsutaan Shonen kompleksiksi. Esteitä on peräkkäin koko matkalla keuhkolaskimoista aorttaan, ja siksi kokonaisuus arvioidaan aina yhtenä — yhden esteen poistaminen paljastaa seuraavan. Siksi myös koarktaation korjauksen jälkeen hiippaläpän ja aorttaläpän seuranta jatkuu."},
+ {need:["koarktaatio","mitraalistenoosi","bav"], t:"<b>Vasemman puolen ahtaumat kulkevat sarjassa.</b> Kun samalla lapsella on hiippaläpän ahtauma, ahtautuva aorttaläppä ja aortan koarktaatio, kyse on vasemman puolen ahtauttavien vikojen jatkumosta. Sen tunnetuin nimetty muoto on Shonen kompleksi, johon klassisesti kuuluvat purjeiden yläpuolinen mitraalirengas, laskuvarjomainen hiippaläppä, aorttaläpän alapuolinen ahtauma ja koarktaatio; osittaiset muodot ovat selvästi täydellistä yleisempiä, ja bikuspinen aorttaläppä esiintyy niiden rinnalla usein. Olennaista on, että esteitä on peräkkäin koko matkalla keuhkolaskimoista aorttaan, joten kokonaisuus arvioidaan aina yhtenä — yhden esteen poistaminen paljastaa seuraavan. Siksi myös koarktaation korjauksen jälkeen hiippaläpän ja aorttaläpän seuranta jatkuu."},
  {need:["koarktaatio","bav"], t:"<b>Nämä kaksi kulkevat oikeasti yhdessä.</b> Koarktaatiopotilaista 50–85 %:lla aorttaläppä on bikuspinen. Kun toinen todetaan, toista etsitään aina — ja aorttaläppää seurataan omana asianaan myös sen jälkeen, kun aortan ahtauma on korjattu."},
  {need:["rvh","lvnc"], t:"<b>Väliseinä vie tilaa.</b> Oikean kammion paine litistää väliseinää vasemmalle, jolloin vasen kammio täyttyy entistä huonommin. Sen sisäänvirtaus voi olla jo valmiiksi rajoittunut sekä läpän että lihaspalkkien takia."},
  {need:["koarktaatio","rvh"], t:"<b>Kuormaa molemmilla puolilla.</b> Vasen kammio työskentelee aortan ahtaumaa vastaan ja oikea kammio keuhkoverenkierron painetta vastaan, joten hapentarve kasvaa yhtä aikaa molemmilla puolilla. Aortan ahtauman korjaus poistaa vasemman puolen esteen, mutta oikean puolen kuorma jää, jos sen syy on muualla."}
+];
+
+const PROG_COMBO = [
+ {need:["koarktaatio","mitraalistenoosi","bav"], t:"<b>Vasemman puolen ahtaumat sarjassa on ennusteen kannalta merkittävin yhdistelmä.</b> Useita toimenpiteitä lapsuuden aikana on tavallista, jäännösgradientteja jää usein, ja keuhkoverenkierron paine on keskeisin seurattava suure. Nykyhoidolla valtaosa näistäkin lapsista yltää aikuisikään, mutta seurannan ja toimenpiteiden tarve on elinikäinen eikä yhtä toimenpidettä voi ajatella päätepisteenä."},
+ {need:["mitraalistenoosi","rvh"], t:"<b>Ajoitus ratkaisee enemmän kuin mikään muu.</b> Ehditäänkö vasemman puolen este poistaa ennen kuin keuhkoverisuonten muutokset muuttuvat pysyviksi. Tämä yksi kysymys vaikuttaa pitkän aikavälin ennusteeseen enemmän kuin yksikään muu tässä kuvassa oleva löydös."},
+ {need:["mitraalistenoosi","lvnc"], t:"<b>Kaksi estettä samalla reitillä vaikeuttaa arviota.</b> Kun sisäänvirtausta rajoittaa sekä läppä että lihaspalkisto, korjauksen tulosta on vaikeampi ennustaa etukäteen ja jäännösgradientin todennäköisyys on suurempi."},
+ {need:["koarktaatio","bav"], t:"<b>Kaksi elinikäistä seurantalinjaa eri aikatauluilla.</b> Aortan ahtauma ja verenpaine ovat ajankohtaisia varhain, aorttaläppä ja nousevan aortan halkaisija vasta vuosikymmenten päästä. Kumpikaan ei poista toisen seurantatarvetta."},
+ {need:["lsvc"], t:"<b>Vasen yläonttolaskimo ei huononna ennustetta lainkaan.</b> Se lisää vain toimenpiteiden teknistä vaativuutta, ei riskiä eikä rajoituksia."}
 ];
 
 function activeList(){ return FINDINGS.filter(c => selected.has(c.id)); }
@@ -982,6 +1078,10 @@ function mergeConditions(list){
     mech: inter.concat(["<b>Kunkin löydöksen ydin</b>"]).concat(list.map(c => "<b>" + c.name + ".</b> " + c.mech[0].replace(/<b>.*?<\/b>\s*/, ""))),
     find: list.map(c => "<b>" + c.name + ".</b> " + c.find[0].replace(/<b>.*?<\/b>\s*/, "")),
     care: list.map(c => "<b>" + c.name + ".</b> " + c.care[0]),
+    prog: ["<b>Ennusteet eivät laskeudu yhteen.</b> Kahden löydöksen yhdistelmä ei tarkoita kaksinkertaisesti huonompaa ennustetta. Käytännössä yksi löydös on lähes aina se, joka määrää kulun; muut lisäävät toimenpiteiden määrää ja teknistä vaativuutta. Ennustetta ei siis voi lukea tästä työkalusta laskemalla."]
+      .concat(PROG_COMBO.filter(i => i.need.every(n => selected.has(n))).map(i => i.t))
+      .concat(["<b>Kunkin löydöksen ydin</b>"])
+      .concat(list.map(c => "<b>" + c.name + ".</b> " + c.prog[0].replace(/<b>.*?<\/b>\s*/, ""))),
     shape: sh, valve, flow, lvContract: lvC, press: p, sounds, murmurs,
     focus: list.filter(c => c.focus).map(c => c.focus),
     approx: true
@@ -994,6 +1094,8 @@ function recompute(){
   document.querySelectorAll(".cond").forEach(b => b.setAttribute("aria-pressed",
     b.dataset.id === "__none" ? selected.size === 0 :
     b.dataset.id === "__all" ? selected.size === FINDINGS.length : selected.has(b.dataset.id)));
+  const n = act.length;
+  $("selCount").textContent = n === 0 ? "" : n === FINDINGS.length ? "kaikki" : n + " valittu";
   applyShape(); renderRead(); buildTrace();
 }
 
@@ -1046,11 +1148,18 @@ function cmpTable(){
 }
 function renderRead(){
   const c = cur, multi = !!c.multi, some = selected.size > 0;
-  const secs = {mech:c.mech, find:c.find, care:c.care};
-  const names = {mech: multi ? "Yhteisvaikutus" : "Mekanismi", find:"Löydökset", care:"Hoito", cmp:"Vertailu"};
-  const tabs = ["mech","find","care"].concat(some ? ["cmp"] : []);
+  const secs = {mech:c.mech, find:c.find, care:c.care, prog:c.prog};
+  const names = {mech: multi ? "Yhteisvaikutus" : "Mekanismi", find:"Löydökset", care:"Hoito", prog:"Ennuste", cmp:"Vertailu"};
+  const tabs = ["mech","find","care","prog"].concat(some ? ["cmp"] : []);
   if(!some && tab === "cmp") tab = "mech";
-  const body = tab === "cmp" ? cmpTable() : `<ul>${secs[tab].map(x => `<li>${x}</li>`).join("")}</ul>`;
+  const progNote = `<details class="explain" open><summary>Miksi tässä ei ole tarkkoja lukuja?</summary><ul>
+    <li>Ennuste on koko aiheen yksilöllisin osa. Se riippuu vaikeusasteesta, tarkasta anatomiasta, liitännäislöydöksistä, toimenpiteiden ajoituksesta ja hoitopaikan kokemuksesta — eikä yksikään näistä näy tästä kuvasta.</li>
+    <li>Julkaistut elossaololuvut kuvaavat vuosikymmenten takaisia potilasryhmiä. Ne aliarvioivat nykyhoidon tuloksia, joten yksittäisen luvun toistaminen antaisi väärän kuvan kumpaankin suuntaan.</li>
+    <li>Yhdistelmien ennustetta ei ole tutkittu samalla tavalla kuin yksittäisten vikojen, ja niitä on liian monta erilaista, jotta keskiarvo tarkoittaisi mitään.</li>
+    <li>Yksittäistä lasta koskevan arvion voi antaa vain hoitava lastenkardiologi, joka näkee kuvat, mitat ja kehityksen ajassa. Se kysymys kannattaa esittää suoraan — se on tavallisimpia ja odotetuimpia kysymyksiä vastaanotolla.</li>
+  </ul></details>`;
+  const body = tab === "cmp" ? cmpTable()
+    : `<ul>${secs[tab].map(x => `<li>${x}</li>`).join("")}</ul>` + (tab === "prog" ? progNote : "");
   $("read").innerHTML = `
     <h2>${c.name}</h2>
     <div class="latin">${c.latin}</div>
@@ -1064,10 +1173,20 @@ function renderRead(){
       <li><b>Eteisellä</b> on vain yksi luku, keskipaine, koska vaihtelu yhden lyönnin aikana on pieni.</li>
       <li>Kuvan lyhenteet <b>TV, MV, PV, AV</b> ovat läppiä: kolmiliuska-, hiippa-, keuhkovaltimo- ja aorttaläppä.</li>
     </ul></details>
-    <div class="tabs" role="tablist">${tabs.map(t => `<button class="tab" role="tab" data-tab="${t}" aria-selected="${tab===t}">${names[t]}</button>`).join("")}</div>
-    ${body}
+    <div class="tabs" role="tablist">${tabs.map(t => `<button class="tab" role="tab" id="tab-${t}" data-tab="${t}" aria-controls="tabpanel" aria-selected="${tab===t}" tabindex="${tab===t?0:-1}">${names[t]}</button>`).join("")}</div>
+    <div id="tabpanel" role="tabpanel" aria-labelledby="tab-${tab}">${body}</div>
     ${c.id === "normaali" ? '<div class="note">Valitse yksi tai useampi löydös vasemmalta. Kytke ”Normaalin ääriviiva” päälle, niin näet katkoviivalla, mistä terveen sydämen muoto poikkeaa.</div>' : ''}`;
-  $("read").querySelectorAll(".tab").forEach(b => b.onclick = () => { tab = b.dataset.tab; renderRead(); });
+  const tabEls = [...$("read").querySelectorAll(".tab")];
+  tabEls.forEach((b, i) => {
+    b.onclick = () => { tab = b.dataset.tab; renderRead(); };
+    b.onkeydown = e => {
+      const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if(!d) return;
+      e.preventDefault();
+      tab = tabEls[(i + d + tabEls.length) % tabEls.length].dataset.tab;
+      renderRead(); $("read").querySelector('.tab[aria-selected="true"]').focus();
+    };
+  });
 }
 
 /* ---------- shapes ---------- */
@@ -1082,6 +1201,9 @@ function applyShape(){
   $("clipMyoPath").setAttribute("d", SHAPES.myo[s.myo]);
   ["sh1","sh2","sh3","myo-shadow"].forEach(i => $(i).setAttribute("d", SHAPES.myo[s.myo]));
   $("myo-rim").setAttribute("d", SHAPES.myo[s.myo]);
+  $("epi-shell").setAttribute("d", SHAPES.myo[s.myo]);
+  $("ra-shell").setAttribute("d", RA_D);
+  $("la-shell").setAttribute("d", SHAPES.la[s.la]);
   $("lv-ish").setAttribute("d", SHAPES.lv[s.lv]);
   $("rv-ish").setAttribute("d", SHAPES.rv[s.rv]);
   $("ra-ish").setAttribute("d", RA_D);
@@ -1090,6 +1212,7 @@ function applyShape(){
   $("la-cav").setAttribute("d", SHAPES.la[s.la]);
   $("myo").setAttribute("d", SHAPES.myo[s.myo]);
   $("lsvcGroup").classList.toggle("hidden", !s.lsvc);
+  $("lsvcEnd").classList.toggle("hidden", !s.lsvc);
   $("collGroup").classList.toggle("hidden", !s.coll);
   $("coarctGroup").classList.toggle("hidden", !s.coarct);
   $("aortaDilGroup").classList.toggle("hidden", !s.aortaDil);
@@ -1122,26 +1245,26 @@ function ridges(path, cx, cy, n, lo, hi, w, f0, f1, op){
     let dx = cx-pt.x, dy = cy-pt.y; const d = Math.hypot(dx,dy) || 1; dx/=d; dy/=d;
     const len = lo + ((i*7)%5)/4*(hi-lo);
     const px = -dy, py = dx, bend = ((i%2)?1:-1)*len*0.34;
-    h += `<path d="M ${pt.x.toFixed(1)},${pt.y.toFixed(1)} Q ${(pt.x+dx*len*0.6+px*bend).toFixed(1)},${(pt.y+dy*len*0.6+py*bend).toFixed(1)} ${(pt.x+dx*len).toFixed(1)},${(pt.y+dy*len).toFixed(1)}" stroke="#8d5146" stroke-width="${w}" fill="none" stroke-linecap="round" opacity="${op}"/>`;
+    h += `<path d="M ${pt.x.toFixed(1)},${pt.y.toFixed(1)} Q ${(pt.x+dx*len*0.6+px*bend).toFixed(1)},${(pt.y+dy*len*0.6+py*bend).toFixed(1)} ${(pt.x+dx*len).toFixed(1)},${(pt.y+dy*len).toFixed(1)}" stroke="#a8624b" stroke-width="${w}" fill="none" stroke-linecap="round" opacity="${op}"/>`;
   }
   return h;
 }
 function buildTrab(){
   const big = !!cur.shape.trab;
-  $("trab").innerHTML = ridges($("lv-cav"), 528, 520, big?26:17, big?20:7, big?38:14, big?7:4.5, 0.05, 0.72, big?0.95:0.75);
-  $("trab-rv").innerHTML = '<g clip-path="url(#clipRV)">' + ridges($("rv-cav"), 312, 500, 18, 9, 19, 5.5, 0.05, 0.62, 0.8) + '</g>';
+  $("trab").innerHTML = ridges($("lv-cav"), 524, 512, big?26:17, big?20:7, big?38:14, big?7:4.5, 0.05, 0.72, big?0.95:0.75);
+  $("trab-rv").innerHTML = '<g clip-path="url(#clipRV)">' + ridges($("rv-cav"), 300, 502, 18, 9, 19, 5.5, 0.05, 0.62, 0.8) + '</g>';
 }
 
 /* ---------- inset ---------- */
 function insetSetup(kind, gid, lid, pref){
   const g = $(gid);
   if(kind === "mitralMS"){
-    g.innerHTML = `<circle r="44" fill="#8a5a52" stroke="#c9b79a" stroke-width="2"/><path id="ins${pref}0" fill="#0a1216"/>`;
+    g.innerHTML = `<circle r="44" fill="#c1946f" stroke="#f2ddc0" stroke-width="2"/><path id="ins${pref}0" fill="#0a1216"/>`;
     $(lid).textContent = "Hiippaläppä — ”kalansuu”";
   } else {
     const n = kind === "aortic2" ? 2 : 3;
-    let h = '<circle r="44" fill="#0a1216" stroke="#3a2b28" stroke-width="1.5"/>';
-    for(let i=0;i<n;i++) h += `<path id="ins${pref}${i}" fill="#8a5a52" stroke="#c9b79a" stroke-width="1.6"/>`;
+    let h = '<circle r="44" fill="#14202a" stroke="#4a3a30" stroke-width="1.5"/>';
+    for(let i=0;i<n;i++) h += `<path id="ins${pref}${i}" fill="#c1946f" stroke="#f2ddc0" stroke-width="1.6"/>`;
     if(kind === "aortic2") h += '<path d="M -30,-4 L 30,-4" stroke="#e0a72e" stroke-width="2.5" stroke-dasharray="4 3"/>';
     g.innerHTML = h;
     $(lid).textContent = kind === "aortic2" ? "Aorttaläppä — kaksi purjetta" : "Aorttaläppä, lyhyt akseli";
@@ -1193,11 +1316,21 @@ function streamMult(s){
 function drawValve(v, f){
   const g = $(v.el), paths = g.querySelectorAll("path"), tips = [];
   [[v.o1,0],[v.o2,1]].forEach(([o,idx]) => {
-    const from = idx === 0 ? v.a : v.b;
-    const tx = lerp(v.closed[0], o[0], f), ty = lerp(v.closed[1], o[1], f);
-    const mx = (from[0]+tx)/2, my = (from[1]+ty)/2 + v.bow*(1-f);
-    paths[idx].setAttribute("d", `M ${from[0]},${from[1]} Q ${mx.toFixed(1)},${my.toFixed(1)} ${tx.toFixed(1)},${ty.toFixed(1)}`);
-    tips.push([tx,ty]);
+    const A = idx === 0 ? v.a : v.b;
+    const T = [lerp(v.closed[0], o[0], f), lerp(v.closed[1], o[1], f)];
+    const M = [(A[0]+T[0])/2, (A[1]+T[1])/2 + v.bow*(1-f)];
+    // quadratic -> cubic control points for the leaflet centre line
+    const c1 = [A[0] + 2/3*(M[0]-A[0]), A[1] + 2/3*(M[1]-A[1])];
+    const c2 = [T[0] + 2/3*(M[0]-T[0]), T[1] + 2/3*(M[1]-T[1])];
+    let nx = T[1]-A[1], ny = -(T[0]-A[0]);
+    const L = Math.hypot(nx, ny) || 1; nx /= L; ny /= L;
+    const w1 = v.w, w2 = v.w*0.52;                    // paksu tyvi, ohut vapaa reuna
+    const P = (p, w) => `${(p[0]+nx*w).toFixed(1)},${(p[1]+ny*w).toFixed(1)}`;
+    let dx = T[0]-c2[0], dy = T[1]-c2[1]; const DL = Math.hypot(dx,dy) || 1; dx /= DL; dy /= DL;
+    const tipQ = `${(T[0]+dx*w2*1.25).toFixed(1)},${(T[1]+dy*w2*1.25).toFixed(1)}`;
+    paths[idx].setAttribute("d",
+      `M ${P(A,w1)} C ${P(c1,w1)} ${P(c2,w2)} ${P(T,w2)} Q ${tipQ} ${P(T,-w2)} C ${P(c2,-w2)} ${P(c1,-w1)} ${P(A,-w1)} Z`);
+    tips.push(T);
   });
   return tips;
 }
@@ -1269,9 +1402,45 @@ function buildTrace(){
 
 
 /* ---------- structure picking ---------- */
+function showPick(el){
+  $("pick").innerHTML = `<b>${el.dataset.name}</b> <i>— ${el.dataset.lat}</i><br>${el.dataset.info}`;
+}
 $("heartSvg").addEventListener("click", e => {
   const el = e.target.closest(".hit"); if(!el) return;
-  $("pick").innerHTML = `<b>${el.dataset.name}</b> <i>— ${el.dataset.lat}</i><br>${el.dataset.info}`;
+  kbdIdx = hitList().indexOf(el);
+  markKbd(el); showPick(el);
+});
+let kbdIdx = -1;
+function hitList(){
+  const seen = new Set();
+  return [...$("heartSvg").querySelectorAll(".hit")].filter(el => {
+    if(el.closest(".hidden")) return false;
+    const k = el.dataset.name; if(seen.has(k)) return false; seen.add(k); return true;
+  });
+}
+function markKbd(el){
+  $("heartSvg").querySelectorAll(".hit.kbd").forEach(x => x.classList.remove("kbd"));
+  if(el) el.classList.add("kbd");
+}
+$("heartSvg").addEventListener("keydown", e => {
+  const list = hitList();
+  const d = /ArrowRight|ArrowDown/.test(e.key) ? 1 : /ArrowLeft|ArrowUp/.test(e.key) ? -1 : 0;
+  if(!d || !list.length) return;
+  e.preventDefault();
+  kbdIdx = (kbdIdx + d + list.length) % list.length;
+  markKbd(list[kbdIdx]); showPick(list[kbdIdx]);
+});
+$("heartSvg").addEventListener("blur", () => markKbd(null));
+
+/* ---------- suurennus ---------- */
+$("zoomBtn").onclick = () => {
+  const on = document.querySelector(".heart-panel").classList.toggle("zoomed");
+  $("zoomBtn").textContent = on ? "Pienennä" : "Suurenna";
+  $("zoomBtn").setAttribute("aria-pressed", on);
+  document.body.style.overflow = on ? "hidden" : "";
+};
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && document.querySelector(".heart-panel.zoomed")) $("zoomBtn").click();
 });
 
 /* ---------- controls ---------- */
@@ -1302,10 +1471,10 @@ function frame(ts){
 
   const lvAmp = 0.16 * (cur.lvContract === undefined ? 1 : cur.lvContract);
   const sLV = 1 - lvAmp*c, sRV = 1 - 0.15*c;
-  setScale("lv-g", sLV, 520, 510);
-  setScale("rv-g", sRV, 300, 502);
-  setScale("ra-g", 1 - 0.10*ac + 0.045*af, 284, 306);
-  setScale("la-g", 1 - 0.10*ac + 0.045*af, 620, 316);
+  setScale("lv-g", sLV, 524, 508);
+  setScale("rv-g", sRV, 300, 504);
+  setScale("ra-g", 1 - 0.10*ac + 0.045*af, 282, 306);
+  setScale("la-g", 1 - 0.10*ac + 0.045*af, 618, 308);
   drawChordae(mvTips, tvTips, sLV, sRV);
 
   particles.forEach(o => {
