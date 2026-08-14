@@ -127,6 +127,9 @@ svg.heart{display:block;width:100%;height:auto;touch-action:manipulation}
 }
 .pick b{color:var(--bone);font-weight:500}
 .pick .hint{color:var(--muted)}
+.abbr{padding:10px 14px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:5px 16px;font-size:12px;color:var(--muted)}
+.abbr b{font-family:"IBM Plex Mono",monospace;color:var(--signal);font-weight:500;margin-right:4px}
+.abbr span{white-space:nowrap}
 .pick i{font-style:italic;color:var(--muted)}
 
 /* ---------- readout ---------- */
@@ -328,8 +331,8 @@ table.cmp tr.ch td.c{color:var(--signal)}
         <path d="M 430,388 C 414,362 418,334 434,314 L 514,310 C 528,332 530,362 516,386 Z" fill="#3e1a20"/>
         <path id="aortic-root" d="M 436,386 C 422,362 426,336 440,318 L 508,314 C 522,334 524,362 512,384 Z" fill="url(#rgArt)"
               class="hit" data-name="Aortan tyvi ja Valsalvan poukamat" data-lat="sinus aortae (Valsalvae)" data-info="Läpän yläpuoliset pullistumat. Kahdesta poukamasta lähtevät sepelvaltimot; poukamiin muodostuvat pyörteet auttavat läppää sulkeutumaan."/>
-        <path d="M 434,352 C 414,356 400,366 388,378 M 512,348 C 532,352 548,362 560,374" stroke="#7e262e" stroke-width="9" fill="none" stroke-linecap="round"/>
-        <path d="M 434,352 C 414,356 400,366 388,378 M 512,348 C 532,352 548,362 560,374" stroke="#d05b62" stroke-width="5" fill="none" stroke-linecap="round"
+        <path d="M 434,352 C 412,354 396,362 384,372 M 384,372 C 340,362 292,364 250,376 M 420,368 C 412,392 404,424 398,452 M 512,348 C 534,352 552,362 566,376 M 566,376 C 590,398 604,428 610,456" stroke="#7e262e" stroke-width="9" fill="none" stroke-linecap="round"/>
+        <path d="M 434,352 C 412,354 396,362 384,372 M 384,372 C 340,362 292,364 250,376 M 420,368 C 412,392 404,424 398,452 M 512,348 C 534,352 552,362 566,376 M 566,376 C 590,398 604,428 610,456" stroke="#d05b62" stroke-width="5" fill="none" stroke-linecap="round"
               class="hit" data-name="Sepelvaltimot" data-lat="arteriae coronariae" data-info="Lähtevät aortan tyven poukamista heti läpän yläpuolelta. Vasen sepelvaltimo haarautuu etulaskevaan ja kiertävään haaraan, oikea kulkee eteis-kammiouurteessa."/>
       </g>
 
@@ -365,7 +368,8 @@ table.cmp tr.ch td.c{color:var(--signal)}
         <path id="sh3" stroke-width="12" stroke-opacity=".16"/>
         <path id="myo-shadow" fill="#000" stroke="none" opacity=".5"/>
       </g>
-      <path id="epi-shell" fill="none" stroke="#d8a0a0" stroke-width="24" stroke-opacity=".9" stroke-linejoin="round" pointer-events="none"/>
+      <path id="epi-shell" fill="none" stroke="#d8a0a0" stroke-width="24" stroke-opacity=".9" stroke-linejoin="round"
+            class="hit" data-name="Sydänpussi" data-lat="pericardium" data-info="Kaksilehtinen pussi sydämen ympärillä. Sisälehti (epikardi) on kiinni sydämen pinnassa, ulkolehti erottaa sydämen keuhkoista ja kiinnittyy palleaan. Lehtien välissä on pieni määrä voitelevaa nestettä. Sydänleikkaus tehdään pussi avaten, ja neste sen sisällä on yksi seurattavista asioista toimenpiteen jälkeen."/>
       <path id="myo" d="M 206,394 C 182,452 190,536 244,594 C 316,660 424,694 512,682 C 596,656 654,520 656,394 Z"
             fill="url(#gMyo)" stroke="#f2ddc0" stroke-width="4.5" stroke-linejoin="round"
             class="hit" data-name="Sydänlihas" data-lat="myocardium" data-info="Kammioiden lihasseinämä, kierteisiä lihaskerroksia. Vasen kammio on noin kolme kertaa oikeaa paksumpi; vastasyntyneellä molemmat ovat vain muutaman millimetrin. Ohuin kohta on kärki."/>
@@ -498,6 +502,24 @@ table.cmp tr.ch td.c{color:var(--signal)}
       </g>
 
       <g id="labels">
+        <g id="valveTags">
+          <rect x="265" y="429" width="34" height="21" rx="2" fill="#0d161c" fill-opacity=".93" stroke="#e0a72e" stroke-opacity=".6"/>
+          <text class="tag-lbl" x="282" y="444" text-anchor="middle">TV</text>
+          <rect x="547" y="407" width="34" height="21" rx="2" fill="#0d161c" fill-opacity=".93" stroke="#e0a72e" stroke-opacity=".6"/>
+          <text class="tag-lbl" x="564" y="422" text-anchor="middle">MV</text>
+          <rect x="360" y="311" width="34" height="21" rx="2" fill="#0d161c" fill-opacity=".93" stroke="#e0a72e" stroke-opacity=".6"/>
+          <text class="tag-lbl" x="377" y="326" text-anchor="middle">PV</text>
+          <rect x="456" y="351" width="34" height="21" rx="2" fill="#0d161c" fill-opacity=".93" stroke="#e0a72e" stroke-opacity=".6"/>
+          <text class="tag-lbl" x="473" y="366" text-anchor="middle">AV</text>
+        </g>
+        <g id="valveKey">
+          <rect x="616" y="624" width="262" height="86" rx="3" fill="#0f1a21" fill-opacity=".93" stroke="#e0a72e" stroke-opacity=".45"/>
+          <text class="lbl small" x="628" y="646" text-anchor="start" style="fill:#e0a72e">Läpät</text>
+          <text class="lbl small" x="628" y="668" text-anchor="start">TV kolmiliuskaläppä</text>
+          <text class="lbl small" x="628" y="690" text-anchor="start">MV hiippaläppä</text>
+          <text class="lbl small" x="752" y="668" text-anchor="start">PV keuhkovaltimoläppä</text>
+          <text class="lbl small" x="752" y="690" text-anchor="start">AV aorttaläppä</text>
+        </g>
         <text class="lbl" x="278" y="304" text-anchor="middle">Oikea eteinen</text>
         <text class="lbl" x="618" y="304" text-anchor="middle">Vasen eteinen</text>
         <text class="lbl" x="272" y="480" text-anchor="middle">Oikea kammio</text>
@@ -506,25 +528,35 @@ table.cmp tr.ch td.c{color:var(--signal)}
         <text class="lbl small" x="120" y="660" text-anchor="middle">Alaonttolaskimo</text>
         <text class="lbl small" x="600" y="164" text-anchor="middle">Aortan kaari</text>
         <text class="lbl small" x="734" y="60" text-anchor="start">a. subclavia sin.</text>
-        <text class="lbl small" x="856" y="520" text-anchor="middle" transform="rotate(-90 856 520)">Laskeva aortta</text>
+        <g id="lsvcLabel" class="hidden">
+          <path d="M 640,116 C 676,118 712,124 730,140" stroke="#8fa4ae" stroke-width="1.2" fill="none" opacity=".75"/>
+          <text class="lbl small" x="636" y="120" text-anchor="end">Vasen yläonttolaskimo (LSVC)</text>
+        </g>
+        <text class="lbl small" x="856" y="440" text-anchor="middle" transform="rotate(-90 856 440)">Laskeva aortta</text>
         <text class="lbl small" x="838" y="188" text-anchor="middle">Keuhkolaskimot</text>
         <text class="lbl small" x="336" y="196" text-anchor="start">Oik. keuhkovaltimo</text>
         <text class="lbl small" x="520" y="240" text-anchor="start">Vas. keuhkovaltimo</text>
-        <text class="lbl small" x="382" y="300" text-anchor="middle" transform="rotate(-64 382 300)">Keuhkovaltimorunko</text>
+        <text class="lbl small" x="406" y="248" text-anchor="middle" transform="rotate(-64 406 248)">Keuhkovaltimorunko</text>
         <text class="lbl small" x="408" y="606" text-anchor="middle">Kammioväliseinä</text>
         <g stroke="#8fa4ae" stroke-width="1.2" fill="none" opacity=".75">
-          <path d="M 258,690 C 296,676 326,590 336,510"/>
+          <path d="M 330,674 C 348,650 348,580 340,512"/>
           <path d="M 352,204 C 344,216 336,226 326,234"/>
           <path d="M 620,600 L 584,574"/>
           <path d="M 628,504 L 564,510"/>
         </g>
-        <text class="lbl small" x="196" y="702" text-anchor="start">Moderaattorikimppu</text>
+        <text class="lbl small" x="336" y="690" text-anchor="middle">Moderaattorikimppu</text>
         <text class="lbl small" x="624" y="606" text-anchor="start">Papillaarilihas</text>
         <text class="lbl small" x="632" y="500" text-anchor="start">Jännesäikeet</text>
-        <text class="tag-lbl" x="214" y="402" text-anchor="end">TV</text>
-        <text class="tag-lbl" x="624" y="390" text-anchor="start">MV</text>
-        <text class="tag-lbl" x="420" y="326" text-anchor="start">PV</text>
-        <text class="tag-lbl" x="428" y="372" text-anchor="end">AV</text>
+        <g stroke="#8fa4ae" stroke-width="1.2" fill="none" opacity=".75">
+          <path d="M 214,368 C 260,344 320,340 372,362"/>
+          <path d="M 236,700 C 226,668 216,600 208,530"/>
+          <path d="M 686,566 C 660,556 632,540 606,520"/>
+          <path d="M 470,712 C 448,690 424,656 404,616"/>
+        </g>
+        <text class="lbl small" x="238" y="716" text-anchor="middle">Sydänpussi</text>
+        <text class="lbl small" x="690" y="570" text-anchor="start">Kiertävä haara (LCx)</text>
+        <text class="lbl small" x="210" y="360" text-anchor="end">Oikea sepelvaltimo (RCA)</text>
+        <text class="lbl small" x="476" y="716" text-anchor="start">Etulaskeva haara (LAD)</text>
       </g>
     </svg>
 
@@ -540,6 +572,16 @@ table.cmp tr.ch td.c{color:var(--signal)}
       </span></span>
       <button class="btn zoombtn" id="zoomBtn" aria-pressed="false">Suurenna</button>
       <span class="phase" id="phaseLbl">Diastole</span>
+    </div>
+    <div class="abbr" aria-label="Kuvan lyhenteet">
+      <span><b>TV</b> kolmiliuskaläppä</span>
+      <span><b>MV</b> hiippaläppä</span>
+      <span><b>PV</b> keuhkovaltimoläppä</span>
+      <span><b>AV</b> aorttaläppä</span>
+      <span><b>RCA</b> oikea sepelvaltimo</span>
+      <span><b>LAD</b> etulaskeva sepelvaltimohaara</span>
+      <span><b>LCx</b> kiertävä sepelvaltimohaara</span>
+      <span><b>LSVC</b> pysyväksi jäänyt vasen yläonttolaskimo</span>
     </div>
     <div class="pick" id="pick" role="status" aria-live="polite"><span class="hint">Napauta rakennetta — nimi ja tehtävä ilmestyvät tähän. Näppäimistöllä: sarkain kuvaan, sitten nuolinäppäimet.</span></div>
   </section>
@@ -1213,6 +1255,7 @@ function applyShape(){
   $("myo").setAttribute("d", SHAPES.myo[s.myo]);
   $("lsvcGroup").classList.toggle("hidden", !s.lsvc);
   $("lsvcEnd").classList.toggle("hidden", !s.lsvc);
+  $("lsvcLabel").classList.toggle("hidden", !s.lsvc);
   $("collGroup").classList.toggle("hidden", !s.coll);
   $("coarctGroup").classList.toggle("hidden", !s.coarct);
   $("aortaDilGroup").classList.toggle("hidden", !s.aortaDil);
